@@ -6,6 +6,9 @@ import com.chuyx.pojo.dto.PublishBlogDTO;
 import com.chuyx.pojo.model.Blog;
 import java.util.List;
 
+/**
+ * @author yasir.chu
+ */
 public interface BlogService {
    List<Blog> queryAllBlog();
 

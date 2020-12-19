@@ -17,6 +17,7 @@ public class EmailServiceImpl implements EmailService {
    @Autowired
    UserService userService;
 
+   @Override
    @Async
    public void sentEmailToMy(String content, int uid) {
       SimpleMailMessage message = new SimpleMailMessage();
@@ -28,6 +29,7 @@ public class EmailServiceImpl implements EmailService {
       this.mailSender.send(message);
    }
 
+   @Override
    @Async
    public void sentToUser(int uid) {
       User user = this.userService.queryUserById(uid);

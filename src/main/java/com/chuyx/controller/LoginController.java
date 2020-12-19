@@ -120,7 +120,7 @@ public class LoginController {
    )
    @ResponseBody
    public String checkOldPwd(@PathVariable("username") String username, @PathVariable("oldPwd") String oldPwd) {
-      LoginUserDTO loginUserDTO = this.loginService.queryUserByName(username);
+      LoginUserDTO loginUserDTO = loginService.queryUserByName(username);
       BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
       Map<String, Integer> map = new HashMap();
       if (bCryptPasswordEncoder.matches(oldPwd, loginUserDTO.getPassword())) {
@@ -135,7 +135,7 @@ public class LoginController {
 
    @RequestMapping({"/blog"})
    public String blog(Model model) {
-      Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
+      Pager<BlogDTO> result = blogService.queryBlogByPage(1, 5);
       model.addAttribute("blogDTOS", result);
       return "ordinary/article";
    }

@@ -16,14 +16,17 @@ public class LoginServiceImpl implements LoginService {
    @Autowired
    CategoryMapper categoryMapper;
 
+   @Override
    public LoginUserDTO loginCheck(LoginUserDTO loginUser) {
       return null;
    }
 
+   @Override
    public List<Category> getAllCategory() {
       return this.categoryMapper.getAllCategory();
    }
 
+   @Override
    public LoginUserDTO queryUserByName(String name) {
       return this.userMapper.queryUserByUsername(name);
    }

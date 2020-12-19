@@ -8,10 +8,12 @@ import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.service.AdminService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -33,13 +35,11 @@ public class AdminController {
       return "admin/blogAdmin";
    }
 
-   @RequestMapping(
-      value = {"/blog"},
-      produces = {"application/json;charset=utf-8"}
-   )
+   @ApiOperation(value = "分页获取博客")
+   @PostMapping(value = {"/blog"}, produces = {"application/json;charset=utf-8"})
    @ResponseBody
    public String blog(Model model) {
-      Pager<BlogDTO> blog = this.adminService.blog();
+      Pager<BlogDTO> blog = adminService.blog();
       return JSON.toJSONString(blog);
    }
 

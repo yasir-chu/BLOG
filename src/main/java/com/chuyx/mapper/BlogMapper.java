@@ -2,48 +2,85 @@ package com.chuyx.mapper;
 
 import com.chuyx.pojo.dto.NewBlogDTO;
 import com.chuyx.pojo.model.Blog;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
 public interface BlogMapper {
-   List<Blog> queryAllBlog();
 
-   int queryAllBlogSize();
+   /**
+    * 查找所有博客列表
+    *
+    * @return 博客列表
+    */
+    List<Blog> queryAllBlog();
 
-   List<Blog> queryBlogByCateId(int categoryId);
+   /**
+    * 统计博客总数量
+    *
+    * @return 博客总数量
+    */
+    int queryAllBlogSize();
 
-   List<Blog> queryHotBlog();
+   /**
+    * 根据类别id找到对应博客
+    *
+    * @param categoryId 类别id
+    * @return 对应类别id的博客
+    */
+    List<Blog> queryBlogByCateId(int categoryId);
 
-   List<Blog> queryNewBlog();
+   /**
+    * 查找访问量前10的博客
+    *
+    * @return 博客列表
+    */
+    List<Blog> queryHotBlog();
 
-   Blog queryBlogById(int id);
+   /**
+    * 查找最新的10篇博客
+    *
+    * @return 博客列表
+    */
+    List<Blog> queryNewBlog();
 
-   void updateBlogVisitCount(Blog blog);
+   /**
+    * 根据博客id查找博客
+    *
+    * @return 博客对象
+    */
+    Blog queryBlogById(int id);
 
-   List<Blog> queryCapacityBlog(int capaId);
+   /**
+    * 更新博客访问量
+    */
+    void updateBlogVisitCount(Blog blog);
 
-   List<Blog> queryBlogByPage(int index, int size);
+    List<Blog> queryCapacityBlog(int capaId);
 
-   int countSize();
+    List<Blog> queryBlogByPage(int index, int size);
 
-   List<Blog> queryBlogByPageCata(int cataId, int index, int size);
+    int countSize();
 
-   int countSizeCata(int id);
+    List<Blog> queryBlogByPageCata(int cataId, int index, int size);
 
-   List<Blog> queryBlogSearch(String name);
+    int countSizeCata(int id);
 
-   int addBlog(NewBlogDTO newBlogDTO);
+    List<Blog> queryBlogSearch(String name);
 
-   List<Blog> queryBlogByAuthorId(int uid);
+    int addBlog(NewBlogDTO newBlogDTO);
 
-   int queryBlogByAuthorIdCount(int uid);
+    List<Blog> queryBlogByAuthorId(int uid);
 
-   List<Blog> queryBlogByAuthorIdPage(int uid, int index, int pageSize);
+    int queryBlogByAuthorIdCount(int uid);
 
-   int delBlog(int id);
+    List<Blog> queryBlogByAuthorIdPage(int uid, int index, int pageSize);
 
-   int updateBlog(NewBlogDTO newBlogDTO);
+    int delBlog(int id);
+
+    int updateBlog(NewBlogDTO newBlogDTO);
 }

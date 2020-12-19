@@ -10,15 +10,25 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 七牛云oss工具类
+ *
+ * @author yasir.chu
+ */
 public class UploadUtil {
+
+   /**
+    * 上传
+    *
+    * @param file 上传文件
+    * @return 下载路径
+    */
    public static String uploadQiniu(MultipartFile file) {
       Configuration cfg = new Configuration(Zone.zone2());
       UploadManager uploadManager = new UploadManager(cfg);
-      String accessKey = "5ngLMovI40oojUYkdSvnORe0JtpY4yH3zjpB7yjr";
-      String secretKey = "FvDyWzPUobu5ctFofYFfyah91vAXcOm7CBv1nbhz";
       String bucket = "chuyx";
       String key = null;
-      Auth auth = Auth.create(accessKey, secretKey);
+      Auth auth = Auth.create(StaParam.QI_NIU_ACCESS_KEY, StaParam.QI_NIU_ACCESS_KEY);
       String upToken = auth.uploadToken(bucket);
 
       try {

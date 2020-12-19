@@ -38,6 +38,7 @@ public class AdminServiceImpl implements AdminService {
    @Autowired
    EmailService emailService;
 
+   @Override
    public AdminIndexMsgDTO toAdmin() {
       int countUserSize = this.userService.getCountUserSize();
       int allBlogSize = this.blogService.getAllBlogSize();
@@ -51,20 +52,24 @@ public class AdminServiceImpl implements AdminService {
       return result;
    }
 
+   @Override
    public Pager<BlogDTO> blog() {
       Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 10);
       return this.toTenPager(result);
    }
 
+   @Override
    public int delBlog(int id) {
       return this.blogService.deleteBlog(id);
    }
 
+   @Override
    public Pager<BlogDTO> adminBlogPage(int page) {
       Pager<BlogDTO> result = this.blogService.queryBlogByPage(page, 10);
       return this.toTenPager(result);
    }
 
+   @Override
    public Pager<LoginUserDTO> allWaitPassAuthor(int page, int size) {
       List<LoginUserDTO> waitAuthorPage = this.userService.getWaitAuthorPage(page, size);
       Pager<LoginUserDTO> pager = new Pager();
@@ -83,12 +88,14 @@ public class AdminServiceImpl implements AdminService {
       return pager;
    }
 
+   @Override
    public int passAuthor(int uid) {
       this.userService.passAuthor(uid);
       this.emailService.sentToUser(uid);
       return 0;
    }
 
+   @Override
    public Pager<AdminComments> getAllCommentsPage(int page, int size) {
       Pager<AdminComments> result = new Pager();
       List<Comments> pageCommentsSize = this.commentsService.getPageCommentsSize(page, 10);
@@ -108,10 +115,12 @@ public class AdminServiceImpl implements AdminService {
       return result;
    }
 
+   @Override
    public int delComment(int id) {
       return this.commentsService.delComment(id);
    }
 
+   @Override
    public Pager<AdminUser> getAllUserPage(int page, int size) {
       Pager<AdminUser> pager = new Pager();
       List<User> allUser = this.userService.getAllUser(page, size);
@@ -131,6 +140,7 @@ public class AdminServiceImpl implements AdminService {
       return pager;
    }
 
+   @Override
    public int delUser(int id) {
       return this.userService.delUser(id);
    }

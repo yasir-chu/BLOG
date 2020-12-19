@@ -25,10 +25,12 @@ public class CommentsServiceImpl implements CommentsService {
    @Autowired
    UserService userService;
 
+   @Override
    public int queryCountByBlogId(int id) {
       return this.commentsMapper.queryCountByBlogId(id);
    }
 
+   @Override
    public boolean addComment(int blogId, int uid, String editorContent) {
       CommentDTO commentDTO = new CommentDTO();
       commentDTO.setBlogId(blogId);
@@ -38,6 +40,7 @@ public class CommentsServiceImpl implements CommentsService {
       return this.commentsMapper.addCommnet(commentDTO);
    }
 
+   @Override
    public Pager<CommentShowDTO> queryByBlogId(int blogId) {
       Pager<CommentShowDTO> result = new Pager();
       List<Comments> comments = this.commentsMapper.queryByBlogId(blogId);
@@ -79,6 +82,7 @@ public class CommentsServiceImpl implements CommentsService {
       return result;
    }
 
+   @Override
    public Pager<CommentShowDTO> queryByBlogIdSmallPage(int blogId, int nowPage) {
       Pager<CommentShowDTO> result = new Pager();
       int index = (nowPage - 1) * 5;
@@ -121,6 +125,7 @@ public class CommentsServiceImpl implements CommentsService {
       return result;
    }
 
+   @Override
    public int addChildComment(String targetUserName, int userId, String userParentName, String replyContent, int blogId, int parrentComId) {
       Comments comments = new Comments();
       comments.setUid(userId);
@@ -135,12 +140,14 @@ public class CommentsServiceImpl implements CommentsService {
       return 0;
    }
 
+   @Override
    public int delComment(int id) {
       this.commentsMapper.delComment(id);
       this.commentsMapper.delCommentChilds(id);
       return 0;
    }
 
+   @Override
    public int addChildComment(int userId, String userParentName, String replyContent, int blogId, int parrentComId) {
       Comments comments = new Comments();
       comments.setUid(userId);
@@ -155,15 +162,18 @@ public class CommentsServiceImpl implements CommentsService {
       return 0;
    }
 
+   @Override
    public int getAllCommentsSize() {
       return this.commentsMapper.getAllCommentsSize();
    }
 
+   @Override
    public List<Comments> getPageCommentsSize(int page, int size) {
       int index = (page - 1) * size;
       return this.commentsMapper.queryPageComment(index, size);
    }
 
+   @Override
    public int delCommentByBlogId(int id) {
       return this.commentsMapper.delCommentBuBlogId(id);
    }

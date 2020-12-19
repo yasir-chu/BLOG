@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
    @Autowired
    LogMapper logMapper;
 
+   @Override
    public int addUser(RegisterDTO registerDTO) throws ParseException {
       User user = new User();
       user.setUname(registerDTO.getUsername());
@@ -39,14 +40,17 @@ public class UserServiceImpl implements UserService {
       return this.userMapper.addUser(user);
    }
 
+   @Override
    public User queryUserById(int id) {
       return this.userMapper.queryUserById(id);
    }
 
+   @Override
    public LoginUserDTO queryUserByUserName(String userName) {
       return this.userMapper.queryUserByUsername(userName);
    }
 
+   @Override
    public int updateUserMsg(UpdateUserDTO updateUserDTO) {
       User user = new User();
       user.setHeadPic(updateUserDTO.getHeadPic());
@@ -72,6 +76,7 @@ public class UserServiceImpl implements UserService {
       return 0;
    }
 
+   @Override
    public int applyBlogUpdate(int uid) {
       this.userMapper.applyBlogUpdate(uid);
       Log log = new Log();
@@ -82,33 +87,40 @@ public class UserServiceImpl implements UserService {
       return 0;
    }
 
+   @Override
    public int getCountUserSize() {
       return this.userMapper.getUsersSize();
    }
 
+   @Override
    public int getCountAuthorSize() {
       return this.userMapper.getAuthorSize();
    }
 
+   @Override
    public List<LoginUserDTO> getWaitAuthorPage(int page, int size) {
       int index = (page - 1) * size;
       List<User> users = this.userMapper.getWaitAuthor(index, size);
       return this.usersToLoginUsers(users);
    }
 
+   @Override
    public int getCountWaitAuthor() {
       return this.userMapper.getCountWaitAuthor();
    }
 
+   @Override
    public int passAuthor(int uid) {
       return this.userMapper.passAuthor(uid);
    }
 
+   @Override
    public List<User> getAllUser(int page, int size) {
       int index = (page - 1) * size;
       return this.userMapper.getAllUser(index, size);
    }
 
+   @Override
    public int delUser(int id) {
       return this.userMapper.delUser(id);
    }

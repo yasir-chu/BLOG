@@ -11,6 +11,7 @@ public class CategoryServiceImpl implements CategoryService {
    @Autowired
    CategoryMapper categoryMapper;
 
+   @Override
    public Category getCategoryById(int id) {
       return this.categoryMapper.getCategoryById(id);
    }

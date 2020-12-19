@@ -19,6 +19,7 @@ public class LoginUserServiceImpl implements LoginUserService {
    @Autowired
    private UserMapper userMapper;
 
+   @Override
    public List<GrantedAuthority> getRoles(String role) {
       if (role.equals("ordinary")) {
          return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_Ordinary");
@@ -29,6 +30,7 @@ public class LoginUserServiceImpl implements LoginUserService {
       }
    }
 
+   @Override
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
       LoginUserDTO userInfo = this.userMapper.queryUserByUsername(username);
       List<GrantedAuthority> roles = new ArrayList();
