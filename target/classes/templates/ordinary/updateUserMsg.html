@@ -1,0 +1,289 @@
+<!--
+Author: xmoban.cn
+Author URL: http://xmoban.cn
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>修改资料</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Pooled Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- Bootstrap Core CSS -->
+    <link th:href="@{../../css/bootstrap.min.css}" rel='stylesheet' type='text/css' />
+    <!-- Custom CSS -->
+    <link th:href="@{../../css/style.css}" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" th:href="@{../../css/morris.css}" type="text/css"/>
+    <!-- Graph CSS -->
+    <link th:href="@{../../font-awesome/css/font-awesome.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{../../css/jquery-ui.css}">
+    <!-- jQuery -->
+    <script th:src="@{../../js/jquery-2.1.4.min.js}"></script>
+    <!-- //jQuery -->
+    <!-- lined-icons -->
+    <link rel="stylesheet" th:href="@{../../css/icon-font.min.css}" type='text/css' />
+    <!-- //lined-icons -->
+    <link rel="shortcut icon" href="/favicon1.ico"/>
+</head>
+<style>
+    .main-wthree form span{
+        width: 20%;
+    }
+    .msg{
+        float: right;
+        width: 19%;
+    }
+    .main-wthree input.password, .main-wthree input.name{
+        width: 61%;
+    }
+    .msg{
+        margin: 0 auto;
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+    }
+</style>
+<body>
+<div class="main-wthree">
+    <div class="container">
+        <div class="sin-w3-agile">
+            <h2>用户信息</h2>
+
+            <form th:action="@{/ordinary/updateuser}" method="post" onsubmit="return checkAll()">
+                <input name="uid" th:value="${oldUserMsg.getUid()}" type="hidden">
+                <div class="username">
+                    <span class="username">上传头像:</span>
+                    <input type="file" id="file" multiple="multiple"  class="name"  onchange="handleFile()">
+                    <input type="hidden" id="url" name="headPic">
+                    <img th:src="${oldUserMsg.getHeadPic()}" id="show" width="200" style="width: 40px; height: 40px;" class="img-circle" >
+                    <div class="clearfix"></div>
+                </div>
+                <div class="username">
+                    <span class="username">用户名:</span>
+                    <input type="text" name="username" id="username" th:value="${oldUserMsg.getUsername()}" class="name" placeholder="" required="" onblur="checkUser()">
+                    <div class="msg" id="userMsg" style="color: red;" hidden>用户名重复！</div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="username">
+                    <span class="username">电话号码:</span>
+                    <input type="text" name="phone" id="phone" th:value="${oldUserMsg.getPhone()}" class="name" placeholder="" required="" maxlength="11" onblur="checkPhone()">
+                    <div class="msg" id="phoneMsg" style="color: red;" hidden>必须为手机号码！</div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="username">
+                    <span class="username">出生年月日:</span>
+                    <input type="date" class="name" name="brith" style="height: 41px;" required="" th:value="${oldUserMsg.getBrith()}">
+    <!--                <input type="date" class="name" name="brith" id="brith" style="height: 41px;" required="" >-->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="username">
+                    <span class="username">邮箱:</span>
+                    <input type="text" name="email" id="email" class="name" placeholder="" required="" onblur="emailCheck()" th:value="${oldUserMsg.getEmail()}">
+                    <div class="msg" id="emailMsg" style="color: red;" hidden>邮箱不正确！</div>
+                    <div class="clearfix"></div>
+                </div>
+                <input type="hidden" th:value="${oldUserMsg.getSex()}" id="oldSex">
+                <div class="username">
+                    <span class="username">性别:</span>
+                    <select id="sex" name="sex" class="name" style="height: 41px; width: 61%; padding: 10px 10px 10px 15px; margin-bottom: 35px;border: white 1px;">
+<!--                        <option value="1" th:selected="${oldUserMsg.getSex() eq 1?true:false}">男</option>-->
+<!--                        <option value="0" th:selected="${oldUserMsg.getSex() eq 0?true:false}">女</option>-->
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="password-agileits">
+                    <span class="username">旧密码:</span>
+                    <input type="password" name="oldPassword" id="oldPwd" class="password" placeholder="" required=""  onblur="checkOldPwd()">
+                    <div class="msg" id="oldPwdMsg" style="color: red;" hidden>密码错误！</div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="password-agileits">
+                    <span class="username">密码:</span>
+                    <input type="password" name="password" id="pwd" class="password" placeholder="" required="">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="password-agileits">
+                    <span class="username">确认密码:</span>
+
+                    <input type="password" name="repeatPassword" id="pwd2" class="password" placeholder="" required="" onblur="checkPassword()">
+                    <div class="msg" id="passwordMsg" style="color: red;" hidden>密码不同！</div>
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="login-w3">
+                    <input type="submit" class="login" value="修改">
+                </div>
+<!--                <div class="clearfix"></div>-->
+            </form>
+            <div class="back">
+                <a href="/index">回到主页</a>
+            </div>
+            <div class="footer">
+                <p></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+        var optiones = "";
+        var oldSex = $("#oldSex").val();
+        if(parseInt(oldSex) === 1){
+            optiones += "<option value=\"1\" selected='selected'>男</option>"
+            optiones += "<option value=\"0\" >女</option>"
+        }else{
+            optiones += "<option value=\"1\">男</option>"
+            optiones += "<option value=\"0\" selected='selected'>女</option>"
+        }
+        //
+        $("#sex").append(optiones);
+    });
+
+    /**
+     * $icon: 文件上传中loading图标
+     * fs: 上传的文件（$("#file")[0].files）
+     * max_size: 文件大小的最大值（1024 * 1024 * 100为100M）
+     */
+    function handleFile() {
+        let $icon = $(".upload-icon");
+        let formData = new FormData(),
+            fs = $("#file")[0].files;
+        let max_size = 1024 * 1024 * 2;
+
+        for (let i = 0; i < fs.length; i++) {
+            let d = fs[0]
+            if(d.size <= max_size){  //文件必须小于100M
+                if(/.(jpg|jpeg|gif|png|bmp|webp)$/.test(d.name)){ //文件必须为文档
+                    formData.append("files", fs[i]);  //文件上传处理
+                }else{
+                    alert('上传文件必须是图片！');
+                    return false
+                }
+
+            }else{
+                alert('上传文件过大！最大为2M');
+                return false
+            }
+
+        }
+
+        var reads= new FileReader();
+
+        f=document.getElementById('file').files[0];
+
+        reads.readAsDataURL(f);
+
+        reads.onload=function (e) {
+
+            document.getElementById('show').src=this.result;
+
+        };
+
+        $icon.removeClass("hidden");
+
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "/uploader/headpic",
+            async: false,
+            cache: false,  //此处设置false
+            contentType: false,//必须设置false ,formupload1表单中必须设置enctype="multipart/form-data"
+            processData: false,  //必须设置fals
+            data: formData,
+        }).then(function(data){
+            $("#url").val(data);
+        }, function(data){
+            alert("失败:"+data);
+        });
+        return true;
+    }
+    function checkPhone() {
+        var a = $("#phone").val();
+        if(a.length !== 11){
+            $("#phoneMsg").removeAttr("hidden");
+        }else{
+            $("#phoneMsg").attr("hidden","hidden");
+        }
+    }
+    function checkPassword(){
+        var a = $("#pwd").val();
+        var b = $("#pwd2").val();
+        if(a !== b){
+            $("#passwordMsg").removeAttr("hidden");
+        }
+        if(a === b){
+            $("#passwordMsg").attr("hidden","hidden");
+        }
+    }
+    function emailCheck(){
+        var email = $("#email").val();
+        var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        if(!reg.test(email)){
+            $("#emailMsg").removeAttr("hidden");
+        }else{
+            $("#emailMsg").attr("hidden","hidden");
+        }
+    }
+    var oldname =$("#username").val();
+    function checkUser(){
+        $.ajax({
+            type: "get",
+            url: "/checkUser/"+$("#username").val(),
+            success: function (data) {
+                if(data.bo === 0 || oldname === $("#username").val()){
+                    $("#userMsg").attr("hidden","hidden");
+                }else{
+                    $("#userMsg").removeAttr("hidden");
+                }
+            }
+        });
+    }
+
+
+    function checkOldPwd() {
+        var oldPassword = $("#oldPwd").val();
+        $.ajax({
+            type: "get",
+            url: "/checkOldPwd/"+oldname+"/"+oldPassword,
+            success: function (data) {
+                if(data.bo === 0){
+                    $("#oldPwdMsg").attr("hidden","hidden");
+                }else{
+                    $("#oldPwdMsg").removeAttr("hidden");
+                }
+            }
+        });
+    }
+    function checkAll() {
+        if($("#userMsg").attr('hidden') === undefined){
+            alert("用户名重复！");
+            return false;
+        }
+        if($("#phoneMsg").attr('hidden')===undefined){
+            alert("请检查手机号码！");
+            return false;
+        }
+        if($("#emailMsg").attr('hidden')===undefined){
+            alert("邮箱格式错误！请检查。");
+            return false;
+        }
+        if($("#oldPwdMsg").attr('hidden')===undefined){
+            alert("旧密码错误！请检查。");
+            return false;
+        }
+        if($("#passwordMsg").attr('hidden')===undefined){
+            alert("两次输入密码不相同！请检查。");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

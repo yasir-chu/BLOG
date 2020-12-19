@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="author" content="www.yanshisan.cn" />
+    <meta name="robots" content="all" />
+    <!-- Bootstrap -->
+    <link th:href="@{../../css/bootstrap.min.css}" rel="stylesheet">
+    <title>博主申请</title>
+    <link rel="stylesheet" th:href="@{../../font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{../../layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{../../css/master.css}"/>
+    <link rel="stylesheet" th:href="@{../../css/gloable.css}"/>
+    <link rel="stylesheet" th:href="@{../../css/nprogress.css}"/>
+    <link rel="stylesheet" th:href="@{../../css/blog.css}"/>
+    <link rel="stylesheet" th:href="@{../../css/message.css}" />
+    <link rel="shortcut icon" href="/favicon1.ico"/>
+</head>
+<body>
+<div class="header">
+</div>
+<header class="gird-header">
+    <div class="header-fixed">
+        <div class="header-inner">
+            <span class="header-logo" id="logo">ChuYX'Blog</span>
+            <nav class="nav" id="nav">
+                <ul>
+                    <li><a href="/index">首页</a></li>
+                    <li><a href="/blog">博客</a></li>
+                    <li style="width: 50px;"></li>
+                </ul>
+            </nav>
+            <div style="float: right;font-size: 15px; font-weight: 600;line-height: 60px;">
+                <a href="/ordinary/toLogin" class="layui-btn layui-btn-normal" th:if="${session.userMsg eq null}">
+                    <i class="">登录</i>
+                </a>
+                <a href="/ordinary/tosignup" class="layui-btn" th:if="${session.userMsg eq null}">
+                    <i class="">注册</i>
+                </a>
+                &ensp;
+                <!-- Single button -->
+                <img th:src="${session.userMsg.getHeadPic()}" style="width: 25px; height: 25px;" class="img-circle"
+                     th:if="${session.userMsg eq null}?false:true"/>
+                <a href="#" class="hover" th:if="${session.userMsg eq null}?false:true">
+                    <li class="dropdown" style="display: inline-block;">
+                        <a href="#" class="dropdown-toggle hover" th:data-toggle="dropdown" role="button"
+                           aria-haspopup="true" aria-expanded="false" th:text="${session.userMsg.getUname()}">
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/ordinary/updateUserMsg/{uid}(uid = ${session.userMsg.getUid()})}">资料</a></li>
+                            <li><a th:href="@{/ordinary/toapply}" th:if="${session.userMsg.getCapacity() eq 0}">博主申请</a></li>
+                            <li><a style="color: #0F9E5E" href="#" th:if="${session.userMsg.getCapacity() eq -1}">博主申请中</a></li>
+                            <li><a th:href="@{/author/blogManger}" th:if="${session.userMsg.getCapacity() gt 0}">作品管理</a></li>
+                            <li><a th:href="@{/author/toPublishBlog}" th:if="${session.userMsg.getCapacity() gt 0}">写博客</a></li>
+                            <li><a th:href="@{/signout}">注销</a></li>
+                        </ul>
+                    </li>
+                    <input type="hidden" th:value="${session.userMsg.getUid()}" id="userId">
+                    <input type="hidden" th:value="${session.userMsg.getUname()}" id="userName">
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="doc-container" id="doc-container">
+    <div class="container-fixed">
+        <div class="container-inner">
+            <section class="msg-remark">
+                <h1>申请博主宣言</h1>
+                <p>
+                    给站长看看你有多想当博主！
+                </p>
+            </section>
+            <form method="post" action="/ordinary/apply" onsubmit="return check()">
+            <div class="textarea-wrap message" id="textarea-wrap">
+                    <div class="layui-form-item">
+                        <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea layui-hide"></textarea>
+                    </div>
+                    <div class="layui-form-item">
+                        <button type="submit" class="layui-btn" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">申请！</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+        <div class="f-cb"></div>
+    </div>
+</div>
+<footer class="grid-footer">
+    <div class="footer-fixed">
+        <div class="copyright">
+            <div class="info">
+<!--                <div class="contact">-->
+<!--                    <a href="javascript:void(0)" class="github" target="_blank"><i class="fa fa-github"></i></a>-->
+<!--                    <a href="#" class="qq" target="_blank" ><i class="fa fa-qq"></i></a>-->
+<!--                    <a href="#" class="email" target="_blank" ><i class="fa fa-envelope"></i></a>-->
+<!--                    <a href="javascript:void(0)" class="weixin"><i class="fa fa-weixin"></i></a>-->
+<!--                </div>-->
+                <p class="mt05">
+                    Copyright &copy; 2020-20xx Chuyx Learn forever and grow forever V.0.2.0 湘ICP备20011227号-1
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<script th:src="@{../../layui/layui.js}"></script>
+<script th:src="@{../../js/yss/gloable.js}"></script>
+<script th:src="@{../../js/plugins/nprogress.js}"></script>
+<script>NProgress.start();</script>
+<script th:src="@{../../js/yss/article.js}"></script>
+<script th:src="@{../../js/jquery-2.1.4.min.js}"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script th:src="@{../../js/bootstrap.min.js}"></script>
+<script th:src="@{../../js/pagemessage.js}"></script>
+<script>
+    function check() {
+        if($("#remarkEditor").val()===""){
+            alert("信息都不填？？？？");
+            return false;
+        }else if($("#remarkEditor").val().length < 20){
+            alert("多写一点点");
+            return false;
+        }
+    }
+    window.onload = function () {
+        NProgress.done();
+    };
+</script>
+</body>
+</html>

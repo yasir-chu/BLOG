@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>后台管理</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Pooled Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+		Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<!-- Bootstrap Core CSS -->
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+	<!-- Custom CSS -->
+	<link th:href="@{../../css/style.css}" rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" th:href="@{../../css/morris.css}" type="text/css"/>
+	<!-- Graph CSS -->
+	<link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
+	<!-- jQuery -->
+	<script th:src="@{../../js/jquery-2.1.4.min.js}"></script>
+	<!-- //jQuery -->
+	<!-- tables -->
+	<link rel="stylesheet" type="text/css" th:href="@{../../css/table-style.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{../../css/basictable.css}" />
+	<link rel="stylesheet" th:href="@{../../../layui/css/layui.css}"/>
+	<script th:src="@{../../layui/layui.js}"></script>
+	<script type="text/javascript" th:src="@{../../js/jquery.basictable.min.js}"></script>
+	<link rel="shortcut icon" href="/favicon1.ico"/>
+	<style>
+
+		* { touch-action: pan-y; }
+
+	</style>
+</head>
+<body>
+
+
+
+
+
+<!-- 侧边栏 -->
+<div class="page-container">
+<div class="left-content">
+	<div class="mother-grid-inner">
+
+
+		<div class="container" style="width: 80%;">
+			<table id="table-two-axis" class="two-axis">
+				<thead>
+				<tr>
+					<th>博客标题</th>
+					<th>发布日期</th>
+					<th>访问量</th>
+					<th>评论数</th>
+					<th>类别</th>
+					<th style="width: 300px;">操作</th>
+				</tr>
+				</thead>
+				<tbody id="showMsg">
+<!--				博客展示-->
+				</tbody>
+			</table>
+			<div style="height: 20px;"></div>
+			<nav aria-label="Page navigation" >
+				<ul class="pagination" id="pageBar">
+					<!--					分页数据-->
+				</ul>
+				<span id="totalPage"></span>
+				<span id="totalCount"></span>
+			</nav>
+		</div>
+		<script>
+			function delBlog(id) {
+				$.ajax({
+					type: "get",
+					url: "/admin/delBlog",
+					data: {id:id},
+					success: function (data) {
+						fillMsg(data);
+					}
+				});
+			}
+			function page(i){
+				$.ajax({
+					type: "get",
+					url: "/admin/page/"+i,
+					data: null,
+					success: function (data) {
+						fillMsg(data);
+					}
+				})
+			}
+
+			function pageside(size,nowPage) {
+				$("#pageBar").empty();
+				var beforNum = parseInt(nowPage)-1;
+				if(beforNum <= 0){
+					beforNum=1
+				}
+				$("#pageBar").append("<li>\n" +
+						"<a onclick='page("+beforNum+")' aria-label='Previous'>\n" +
+						"<span aria-hidden='true'>&laquo;</span>\n" +
+						"</a>\n" +
+						"</li>");
+				/*
+                        分页做到前5后4
+                        若前面不足4个，后面补齐
+                        若后面不足4个，则前面补齐
+                        */
+				//定义开始位置begin和结束位置end
+				var begin;
+				var end;
+				if(size<=10){
+					begin = 1;
+					end = size;
+				}else{
+					begin = nowPage - 5;
+					end = nowPage + 4;
+					//补齐
+					if(begin<1){
+						begin=1;
+						end = 10;
+					}
+					if(end>size){
+						end=size;
+						begin = end - 9;
+					}
+				}
+				//显示10个页码
+				var li = "";
+				for (var i = begin; i <= end; i++){
+					if (i == nowPage){
+						li +=	"<li><a style='background-color: #75BDEE;' onclick='page("+i+")'>"+i+"</a></li>"
+					}else{
+						li +=	"<li><a onclick='page("+i+")'>"+i+"</a></li>"
+					}
+				}
+				$("#pageBar").append(li);
+				var nextNum = parseInt(nowPage)+1;
+				if(nextNum > size){
+					nextNum=size
+				}
+				$("#pageBar").append("<li>\n" +
+						"<a onclick='page("+nextNum+")' aria-label='Next'>\n" +
+						"<span aria-hidden='true'>&raquo;</span>\n" +
+						"</a>\n" +
+						"</li>");
+			}
+
+			function fillMsg(data) {
+				$("#showMsg").empty();
+				var size = data.size;
+				var totalCount = data.total;
+				var nowpage = data.page;
+				$("#totalPage").text("总页数："+data.size);
+				$("#totalCount").text("总记录数："+data.total);
+				var tr = "";
+				for (let i = 0; i < data.rows.length; i++) {
+					tr += "<tr>\n";
+					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].title+"</a></td>";
+					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].year+"年"+data.rows[i].month+"月"+data.rows[i].day+"日"+"</a></td>";
+					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].visitCount+"</a></td>";
+					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].count+"</a></td>";
+					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].catecoty+"</a></td>";
+					tr += "<td>\n" +
+							"\t\t\t\t\t\t\t<button class=\"layui-btn layui-btn-danger\"  onclick='delBlog("+data.rows[i].id+")'>删除</button>\n" +
+							"\t\t\t\t\t</td>";
+					tr += "</tr>";
+					$("#showMsg").append(tr);
+					tr = "";
+				}
+				pageside(size,nowpage);
+			}
+			$(function () {
+
+				$.ajax({
+					type: "post",
+					url: "/admin/blog",
+					data: null,
+					success: function (data) {
+						fillMsg(data);
+					}
+				});
+			})
+		</script>
+
+
+	</div>
+</div>
+
+	<!--//content-inner-->
+	<!--/sidebar-menu-->
+	<div class="sidebar-menu">
+		<header class="logo1">
+			<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a>
+		</header>
+		<div style="border-top:1px ridge rgba(255, 255, 255, 0.15)"></div>
+		<div class="menu">
+			<ul id="menu" >
+				<li><a th:href="@{/admin/}"><i class="fa fa-tachometer"></i> <span>首页</span><div class="clearfix"></div></a></li>
+				<li ><a th:href="@{/admin/tocheckAuthor}"><i class="fa fa-envelope nav_icon"></i><span>审核博主</span><div class="clearfix"></div></a></li>
+				<li><a th:href="@{/admin/toblog}"><i class="fa fa-picture-o" aria-hidden="true"></i><span>博客管理</span><div class="clearfix"></div></a></li>
+				<li ><a th:href="@{/admin/tocommentAdmin}"><i class="fa fa-bar-chart"></i><span>评论管理</span><div class="clearfix"></div></a></li>
+				<li ><a th:href="@{/admin/toUserAdmin}"><i class="fa fa-list-ul" aria-hidden="true"></i><span>用户管理</span><div class="clearfix"></div></a>
+					<!-- <ul id="menu-academico-sub" >
+                        <li id="menu-academico-avaliacoes" ><a href="icons.html">Icons</a></li>
+                        <li id="menu-academico-avaliacoes" ><a href="typography.html">Typography</a></li>
+                        <li id="menu-academico-avaliacoes" ><a href="faq.html">Faq</a></li>
+                    </ul> -->
+				</li>
+				<!-- <li id="menu-academico" ><a href="errorpage.html"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><span>Error Page</span><div class="clearfix"></div></a></li>
+                    <li id="menu-academico" ><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i><span> UI Components</span> <span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
+                        <ul id="menu-academico-sub" >
+                            <li id="menu-academico-avaliacoes" ><a href="button.html">Buttons</a></li>
+                            <li id="menu-academico-avaliacoes" ><a href="grid.html">Grids</a></li>
+                        </ul>
+                    </li>
+                <li><a href="tabels.html"><i class="fa fa-table"></i>  <span>Tables</span><div class="clearfix"></div></a></li>
+                <li><a href="maps.html"><i class="fa fa-map-marker" aria-hidden="true"></i>  <span>Maps</span><div class="clearfix"></div></a></li>
+                <li id="menu-academico" ><a href="#"><i class="fa fa-file-text-o"></i>  <span>Pages</span> <span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
+                    <ul id="menu-academico-sub" >
+                        <li id="menu-academico-boletim" ><a href="calendar.html">Calendar</a></li>
+                        <li id="menu-academico-avaliacoes" ><a href="signin.html">Sign In</a></li>
+                        <li id="menu-academico-avaliacoes" ><a href="signup.html">Sign Up</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i class="fa fa-check-square-o nav_icon"></i><span>Forms</span> <span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
+                    <ul>
+                        <li><a href="input.html"> Input</a></li>
+                        <li><a href="validation.html">Validation</a></li>
+                    </ul>
+                </li> -->
+			</ul>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<script>
+	var toggle = true;
+
+	$(".sidebar-icon").click(function() {
+		if (toggle){
+			$(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+			$("#menu span").css({"position":"absolute"});
+		} else{
+			$(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+			setTimeout(function() {
+				$("#menu span").css({"position":"relative"});
+			}, 400);
+		}
+		toggle = !toggle;
+	});
+</script>
+</body>
+
+<!--js -->
+<script th:src="@{../../js/jquery.nicescroll.js}"></script>
+<script th:src="@{../../js/scripts.js}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{../../js/bootstrap.min.js}"></script>
+<!-- /Bootstrap Core JavaScript -->
+</html>

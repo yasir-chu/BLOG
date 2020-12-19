@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--    namespace（命名空间）绑定一个持久层的接口，包名要和接口的包名一致-->
+<mapper namespace="com.chuyx.mapper.UserMapper">
+    <!--    开启二级缓存-->
+    <cache
+            eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+
+
+<!--    查找所有未被逻辑删除的用户-->
+    <select id="queryAll" resultType="user">
+        select * from user where del = 0
+    </select>
+
+<!--    根据用户名找用户-->
+    <select id="queryUserByUsername" parameterType="string" resultType="loginUserDTO">
+        select uid,uname,password,capacity,head_pic from user where uname = #{username} and del = 0
+    </select>
+
+<!--    新增用户-->
+    <insert id="addUser" parameterType="user">
+        insert into user(uname, password, brith, email, phone, logged)
+        VALUES (#{uname},#{password},#{brith},#{email},#{phone},null)
+    </insert>
+
+<!--    根据id找用户-->
+    <select id="queryUserById" resultType="user">
+        select * from user where uid = #{id} and del = 0
+    </select>
+
+<!--    更新用户信息-->
+    <update id="updateUserMsg" parameterType="user">
+        update user set
+            head_pic = #{headPic},password = #{password}, brith = #{brith},
+                        sex = #{sex},email = #{email},phone = #{phone},
+                        uname = #{uname}
+         where uid = #{uid}
+
+    </update>
+
+
+<!--    申请博主改变用户角色-->
+    <update id="applyBlogUpdate" parameterType="int">
+        update user set capacity = -1 where uid = #{uid}
+    </update>
+
+<!--    查找所有正常用户数量-->
+    <select id="getUsersSize" resultType="int">
+        select count(*) from user where del = 0
+    </select>
+
+<!--    查找博主数量-->
+    <select id="getAuthorSize" resultType="int">
+        select count(*) from user where capacity > 0 and del = 0
+    </select>
+
+<!--    查找申请中的用户-->
+    <select id="getWaitAuthor" resultType="user" parameterType="int">
+        select * from user where capacity = -1 and del = 0 limit #{index},#{size}
+    </select>
+
+<!--    查找申请中用户的数量-->
+    <select id="getCountWaitAuthor" resultType="int">
+        select count(*) from user where capacity = -1 and del = 0
+    </select>
+
+<!--    申请通过，设置用户角色为博主-->
+    <update id="passAuthor" parameterType="int">
+        update user set capacity = 1 where uid = #{uid};
+    </update>
+
+<!--    分页得到正常用户-->
+    <select id="getAllUser" resultType="user">
+        select * from user where del = 0 limit #{index},#{size}
+    </select>
+
+<!--    逻辑删除用户-->
+    <update id="delUser" parameterType="int">
+        update user set del = -1 where uid = #{id}
+    </update>
+
+
+</mapper>

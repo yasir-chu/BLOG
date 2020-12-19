@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>后台管理</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Pooled Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+		Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<!-- Bootstrap Core CSS -->
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+	<!-- Custom CSS -->
+	<link th:href="@{../../css/style.css}" rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" th:href="@{../../css/morris.css}" type="text/css"/>
+	<!-- Graph CSS -->
+	<link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
+	<!-- jQuery -->
+	<script th:src="@{../../js/jquery-2.1.4.min.js}"></script>
+	<!-- //jQuery -->
+	<!-- tables -->
+	<link rel="stylesheet" type="text/css" th:href="@{../../css/table-style.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{../../css/basictable.css}" />
+	<script type="text/javascript" th:src="@{../../js/jquery.basictable.min.js}"></script>
+	<link rel="shortcut icon" href="/favicon1.ico"/>
+</head>
+<body>
+<div class="left-content">
+	<div class="mother-grid-inner">
+
+
+		<div class="four-grids">
+			<div class="col-md-3 four-grid">
+				<div class="four-agileits">
+					<div class="icon">
+						<i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+					</div>
+					<div class="four-text">
+						<h3>用户</h3>
+						<h4 th:text="${adminMsg.getUserSize()}"></h4>
+
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-3 four-grid">
+				<div class="four-agileinfo">
+					<div class="icon">
+						<i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
+					</div>
+					<div class="four-text">
+						<h3>博主</h3>
+						<h4 th:text="${adminMsg.getAuthorSize()}"></h4>
+
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-3 four-grid">
+				<div class="four-w3ls">
+					<div class="icon">
+						<i class="glyphicon glyphicon-book" aria-hidden="true"></i>
+					</div>
+					<div class="four-text">
+						<h3>博客</h3>
+						<h4 th:text="${adminMsg.getBlogSize()}"></h4>
+
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-3 four-grid">
+				<div class="four-wthree">
+					<div class="icon">
+						<i class="glyphicon glyphicon-paperclip" aria-hidden="true"></i>
+					</div>
+					<div class="four-text">
+						<h3>评论</h3>
+						<h4 th:text="${adminMsg.getCommentsSize()}"></h4>
+
+					</div>
+
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<!--//four-grids here-->
+
+
+	</div>
+</div>
+
+
+
+
+
+<!-- 侧边栏 -->
+<div class="page-container">
+	<!--//content-inner-->
+	<!--/sidebar-menu-->
+	<div class="sidebar-menu">
+		<header class="logo1">
+			<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a>
+		</header>
+		<div style="border-top:1px ridge rgba(255, 255, 255, 0.15)"></div>
+		<div class="menu">
+			<ul id="menu" >
+				<li><a th:href="@{/admin/}"><i class="fa fa-tachometer"></i> <span>首页</span><div class="clearfix"></div></a></li>
+				<li ><a th:href="@{/admin/tocheckAuthor}"><i class="fa fa-envelope nav_icon"></i><span>审核博主</span><div class="clearfix"></div></a></li>
+				<li><a th:href="@{/admin/toblog}"><i class="fa fa-picture-o" aria-hidden="true"></i><span>博客管理</span><div class="clearfix"></div></a></li>
+				<li ><a th:href="@{/admin/tocommentAdmin}"><i class="fa fa-bar-chart"></i><span>评论管理</span><div class="clearfix"></div></a></li>
+				<li ><a th:href="@{/admin/toUserAdmin}"><i class="fa fa-list-ul" aria-hidden="true"></i><span>用户管理</span><div class="clearfix"></div></a>
+					<!-- <ul id="menu-academico-sub" >
+                        <li id="menu-academico-avaliacoes" ><a href="icons.html">Icons</a></li>
+                        <li id="menu-academico-avaliacoes" ><a href="typography.html">Typography</a></li>
+                        <li id="menu-academico-avaliacoes" ><a href="faq.html">Faq</a></li>
+                    </ul> -->
+				</li>
+<!--				<li ><a href="#"><i class="fa fa-map-marker"></i><span>博主管理</span><div class="clearfix"></div></a></li>-->
+				<!-- <li id="menu-academico" ><a href="errorpage.html"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><span>Error Page</span><div class="clearfix"></div></a></li>
+                    <li id="menu-academico" ><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i><span> UI Components</span> <span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
+                        <ul id="menu-academico-sub" >
+                            <li id="menu-academico-avaliacoes" ><a href="button.html">Buttons</a></li>
+                            <li id="menu-academico-avaliacoes" ><a href="grid.html">Grids</a></li>
+                        </ul>
+                    </li>
+                <li><a href="tabels.html"><i class="fa fa-table"></i>  <span>Tables</span><div class="clearfix"></div></a></li>
+                <li><a href="maps.html"><i class="fa fa-map-marker" aria-hidden="true"></i>  <span>Maps</span><div class="clearfix"></div></a></li>
+                <li id="menu-academico" ><a href="#"><i class="fa fa-file-text-o"></i>  <span>Pages</span> <span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
+                    <ul id="menu-academico-sub" >
+                        <li id="menu-academico-boletim" ><a href="calendar.html">Calendar</a></li>
+                        <li id="menu-academico-avaliacoes" ><a href="signin.html">Sign In</a></li>
+                        <li id="menu-academico-avaliacoes" ><a href="signup.html">Sign Up</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i class="fa fa-check-square-o nav_icon"></i><span>Forms</span> <span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
+                    <ul>
+                        <li><a href="input.html"> Input</a></li>
+                        <li><a href="validation.html">Validation</a></li>
+                    </ul>
+                </li> -->
+			</ul>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<script>
+	var toggle = true;
+
+	$(".sidebar-icon").click(function() {
+		if (toggle){
+			$(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+			$("#menu span").css({"position":"absolute"});
+		} else{
+			$(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+			setTimeout(function() {
+				$("#menu span").css({"position":"relative"});
+			}, 400);
+		}
+		toggle = !toggle;
+	});
+</script>
+</body>
+
+<!--js -->
+<script th:src="@{../../js/jquery.nicescroll.js}"></script>
+<script th:src="@{../../js/scripts.js}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{../../js/bootstrap.min.js}"></script>
+<!-- /Bootstrap Core JavaScript -->
+</html>

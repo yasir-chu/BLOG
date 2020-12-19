@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--    namespace（命名空间）绑定一个持久层的接口，包名要和接口的包名一致-->
+<mapper namespace="com.chuyx.mapper.CategoryMapper">
+    <!--    开启二级缓存-->
+    <cache
+            eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+
+
+    <select id="getAllCategory" resultType="category">
+        select * from category
+    </select>
+
+    <select id="getCategoryById" parameterType="int" resultType="category">
+        select * from category where id = #{id}
+    </select>
+
+
+</mapper>

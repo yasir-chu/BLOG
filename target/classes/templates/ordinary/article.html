@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.springframework.org/security/tags"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta name="renderer" content="webkit">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+	<!-- Bootstrap -->
+	<link th:href="@{../../css/bootstrap.min.css}" rel="stylesheet">
+	<title>博客主页</title>
+	<link rel="stylesheet" th:href="@{../../font-awesome/css/font-awesome.min.css}">
+	<link rel="stylesheet" th:href="@{../../layui/css/layui.css}"/>
+	<link rel="stylesheet" th:href="@{../../css/master.css}"/>
+	<link rel="stylesheet" th:href="@{../../css/gloable.css}"/>
+	<link rel="stylesheet" th:href="@{../../css/nprogress.css}"/>
+	<link rel="stylesheet" th:href="@{../../css/blog.css}"/>
+	<link rel="shortcut icon" href="/favicon1.ico"/>
+	<style type="text/css">
+		.hover:hover {
+			color: #DEC800;
+			transition-duration: 0.5s;
+		}
+
+		.cataHover:hover{
+			color: #00C2FF;
+			background-color: #0F9E5E;
+			transition-duration: 1s;
+		}
+	</style>
+</head>
+<body>
+<header class="gird-header">
+	<div class="header-fixed">
+		<div class="header-inner">
+			<span class="header-logo" id="logo">ChuYX'Blog</span>
+			<nav class="nav" id="nav">
+				<ul>
+					<li><a href="/index">首页</a></li>
+					<li><a href="/blog">博客</a></li>
+					<li style="width: 50px;"></li>
+				</ul>
+			</nav>
+			<div style="float: right;font-size: 15px; font-weight: 600;line-height: 60px;">
+				<a href="/ordinary/toLogin" class="layui-btn layui-btn-normal" th:if="${session.userMsg eq null}">
+					<i class="">登录</i>
+				</a>
+				<a href="/ordinary/tosignup" class="layui-btn" th:if="${session.userMsg eq null}">
+					<i class="">注册</i>
+				</a>
+				&ensp;
+				<!-- Single button -->
+				<img th:src="${session.userMsg.getHeadPic()}" style="width: 25px; height: 25px;" class="img-circle"
+					 th:if="${session.userMsg eq null}?false:true"/>
+				<a href="#" class="hover" th:if="${session.userMsg eq null}?false:true">
+					<li class="dropdown" style="display: inline-block;">
+						<a href="#" class="dropdown-toggle hover" th:data-toggle="dropdown" role="button"
+						   aria-haspopup="true" aria-expanded="false" th:text="${session.userMsg.getUname()}">
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a th:href="@{/ordinary/updateUserMsg/{uid}(uid = ${session.userMsg.getUid()})}">资料</a></li>
+							<li><a th:href="@{/ordinary/toapply}" th:if="${session.userMsg.getCapacity() eq 0}">博主申请</a></li>
+							<li><a style="color: #0F9E5E" href="#" th:if="${session.userMsg.getCapacity() eq -1}">博主申请中</a></li>
+							<li><a th:href="@{/author/blogManger}" th:if="${session.userMsg.getCapacity() gt 0}">作品管理</a></li>
+							<li><a th:href="@{/author/toPublishBlog}" th:if="${session.userMsg.getCapacity() gt 0}">写博客</a></li>
+							<li><a th:href="@{/signout}">注销</a></li>
+						</ul>
+					</li>
+					<input type="hidden" th:value="${session.userMsg.getUid()}" id="userId">
+					<input type="hidden" th:value="${session.userMsg.getUname()}" id="userName">
+				</a>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+<div class="doc-container" id="doc-container">
+	<div class="container-fixed">
+		<div class="col-content">
+			<div class="inner">
+				<article class="article-list bloglist" id="LAY_bloglist" th:each="blogDTO:${blogDTOS.getRows()}">
+					<section class="article-item zoomIn article">
+						<div class="fc-flag" th:text="${blogDTO.getAuthor()}"></div>
+						<h5 class="title">
+<!--							<span class="fc-blue">【原创】</span>-->
+							<a th:href="@{/ordinary/read/{id}(id=${blogDTO.getId()})}" th:text="${blogDTO.getTitle()}"></a>
+						</h5>
+						<div class="time">
+							<span class="day" th:text="${blogDTO.getDay()}">21</span>
+							<span class="month fs-18">[[${blogDTO.getMonth()}]]月</span>
+
+							<span class="year fs-18 ml10" th:text="${blogDTO.getYear()}">2019</span>
+						</div>
+						<div class="content" th:text="${blogDTO.getSmallTitle()}">
+							Spire.Doc for .NET是一款由E-iceblue公司开发的专业的Word
+							.NET类库，使用该工具开发人员可以在任意.NET平台（C#，VB.NET，ASP.NET）上快速创建，读取，写入，转换，打印Word文档。作为一个独立的Word
+							组件，Spire.Doc的运行无需安装Microsoft Word。而且，它可以将Microsoft Word文档创建功能集成到开发者的任何.NET应用程序。
+						</div>
+						<aside class="f-oh footer">
+							<div class="f-fl tags">
+								<span class="fa fa-tags fs-16"></span>
+								<a class="tag" th:text="${blogDTO.getCatecoty()}"></a>
+							</div>
+							<div class="f-fr">
+								<span class="read">
+									<i class="fa fa-eye fs-16"></i>
+									<i class="num" th:text="${blogDTO.getVisitCount()}"></i>
+								</span>
+								<span class="ml20">
+									<i class="fa fa-comments fs-16"></i>
+									<a href="javascript:void(0)" class="num fc-grey" th:text="${blogDTO.getCount()}"></a>
+								</span>
+							</div>
+						</aside>
+					</section>
+				</article>
+			</div>
+			<nav aria-label="Page navigation" >
+				<ul class="pagination" id="pageBar">
+<!--					分页数据-->
+				</ul>
+			</nav>
+			<span id="totalPage">总页数：[[${blogDTOS.getSize()}]]</span>
+			<span id="totalCount">总记录数：[[${blogDTOS.getTotal()}]]</span>
+		</div>
+		<div class="col-other">
+			<div class="inner">
+				<div class="other-item" id="categoryandsearch">
+					<div class="search">
+						<label class="search-wrap">
+							<input type="text" id="searchtxt" placeholder="输入关键字搜索" onkeyup="searchBlog()"/>
+							<span class="search-icon">
+					            <i class="fa fa-search"></i>
+					        </span>
+						</label>
+						<ul class="search-result" id="searchRes">
+<!--							搜索展示-->
+						</ul>
+					</div>
+					<ul class="category mt20" id="category">
+<!--						分类导航-->
+					</ul>
+				</div>
+				<!--右边悬浮 平板或手机设备显示-->
+				<div class="category-toggle" onclick="showsmall()"><i class="layui-icon">&#xe603;</i></div>
+				<div class="article-category categoryOut" id="catequeue">
+
+					<!--					分类导航-->
+
+
+				</div>
+				<!--遮罩-->
+				<div class="blog-mask animated maskOut layui-hide" onclick="hidsmall()"></div>
+				<script>
+					function showsmall() {
+						$(".category-toggle").addClass("layui-hide");
+						$("#catequeue").addClass("categoryIn layui-show");
+						$("#catequeue").removeClass("categoryOut");
+						$(".animated").addClass("maskIn layui-show");
+						$(".animated").removeClass("maskOut layui-hide");
+
+					}
+					function hidsmall() {
+						$(".category-toggle").removeClass("layui-hide");
+						$("#catequeue").removeClass("categoryIn layui-show");
+						$("#catequeue").addClass("categoryOut");
+						$(".animated").removeClass("maskIn layui-show");
+						$(".animated").addClass("maskOut layui-hide");
+					}
+				</script>
+				<div class="other-item">
+					<h5 class="other-item-title">热门文章</h5>
+					<div class="inner">
+						<ul class="hot-list-article" id="hotblogs">
+<!--							热门文章推荐-->
+						</ul>
+					</div>
+				</div>
+				<div class="other-item">
+					<h5 class="other-item-title">最新推荐</h5>
+					<div class="inner">
+						<ul class="hot-list-article" id="newblogs">
+<!--							最新文章推荐-->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<footer class="grid-footer">
+	<div class="footer-fixed">
+		<div class="copyright">
+			<div class="info">
+				<div class="contact">
+<!--					<a href="javascript:void(0)" class="github" target="_blank"><i class="fa fa-github"></i></a>-->
+<!--					<a href="https://wpa.qq.com/msgrd?v=3&uin=930054439&site=qq&menu=yes" class="qq" target="_blank"-->
+<!--					   title="930054439"><i class="fa fa-qq"></i></a>-->
+<!--					<a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=gbiysbG0tbWyuMHw8K-i7uw"-->
+<!--					   class="email" target="_blank" title="930054439@qq.com"><i class="fa fa-envelope"></i></a>-->
+<!--					<a href="javascript:void(0)" class="weixin"><i class="fa fa-weixin"></i></a>-->
+				</div>
+				<p class="mt05">
+					Copyright &copy; 2020-20xx Chuyx Learn forever and grow forever V.0.2.0 湘ICP备20011227号-1
+				</p>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" th:value="${blogDTOS.getSize()}" id="pageSize">
+	<input type="hidden" th:value="${blogDTOS.getPage()}" id="nowPage">
+	<input type="hidden" th:value="${blogDTOS.getCataId() eq 0?0:blogDTOS.getCataId()}" id="cata">
+</footer>
+<script th:src="@{../../layui/layui.js}"></script>
+<script th:src="@{../../js/yss/gloable.js}"></script>
+<script th:src="@{../../js/plugins/nprogress.js}"></script>
+<script>NProgress.start();</script>
+<script th:src="@{../../js/yss/article.js}"></script>
+<script th:src="@{../../js/jquery-2.1.4.min.js}"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script th:src="@{../../js/bootstrap.min.js}"></script>
+<script>
+	window.onload = function () {
+		NProgress.done();
+	};
+	//搜索功能
+	function searchBlog() {
+		if($("#searchtxt").val()==""){
+			$("#searchRes").empty();
+			$("#searchRes").attr("style","display:none");
+		}else{
+			$("#searchRes").empty();
+			$("#searchRes").attr("style","display:block");
+			$.ajax({
+				type: "get",
+				url: "/ordinary/serach",
+				data: {name:$("#searchtxt").val()},
+				success: function (data) {
+					$("#searchRes").empty();
+					for (var i = 0; i < data.length; i++){
+						$("#searchRes").append("<li class='child'><a href=\"/ordinary/read/"+data[i].id+"\" style='display: block'>"+data[i].title+"</a></li>");
+					}
+				}
+			});
+		}
+
+	}
+</script>
+<script>
+	$(function () {
+		//分页加载
+		var size = $("#pageSize").val();
+		var nowPage = $("#nowPage").val();
+		var cataId = $("#cata").val();
+		if(cataId == 0){
+			var beforNum = parseInt(nowPage)-1;
+			if(beforNum <= 0){
+				beforNum=1
+			}
+			$("#pageBar").append("<li>\n" +
+					"<a href='/ordinary/page/"+beforNum+"' aria-label='Previous'>\n" +
+					"<span aria-hidden='true'>&laquo;</span>\n" +
+					"</a>\n" +
+					"</li>");
+			/*
+                    分页做到前5后4
+                    若前面不足4个，后面补齐
+                    若后面不足4个，则前面补齐
+                    */
+			//定义开始位置begin和结束位置end
+			var begin;
+			var end;
+			if(size<=10){
+				begin = 1;
+				end = size;
+			}else{
+				begin = nowPage - 5;
+				end = nowPage + 4;
+				//补齐
+				if(begin<1){
+					begin=1;
+					end = 10;
+				}
+				if(end>size){
+					end=size;
+					begin = end - 9;
+				}
+			}
+			//显示10个页码
+			var li = "";
+			for (var i = begin; i <= end; i++){
+				if (i == nowPage){
+					li +=	"<li><a style='background-color: #75BDEE;' href='/ordinary/page/"+i+"'>"+i+"</a></li>"
+				}else{
+					li +=	"<li><a href='/ordinary/page/"+i+"'>"+i+"</a></li>"
+				}
+			}
+			$("#pageBar").append(li);
+			var nextNum = parseInt(nowPage)+1;
+			if(nextNum > size){
+				nextNum=size
+			}
+			$("#pageBar").append("<li>\n" +
+					"<a href='/ordinary/page/"+nextNum+"' aria-label='Next'>\n" +
+					"<span aria-hidden='true'>&raquo;</span>\n" +
+					"</a>\n" +
+					"</li>");
+		}else{
+			var beforNum = parseInt(nowPage)-1;
+			if(beforNum <= 0){
+				beforNum=1
+			}
+			$("#pageBar").append("<li>\n" +
+					"<a href='/ordinary/page/"+cataId+"/"+beforNum+"' aria-label='Previous'>\n" +
+					"<span aria-hidden='true'>&laquo;</span>\n" +
+					"</a>\n" +
+					"</li>");
+			/*
+                    分页做到前5后4
+                    若前面不足4个，后面补齐
+                    若后面不足4个，则前面补齐
+                    */
+			//定义开始位置begin和结束位置end
+			var begin;
+			var end;
+			if(size<=10){
+				begin = 1;
+				end = size;
+			}else{
+				begin = nowPage - 5;
+				end = nowPage + 4;
+				//补齐
+				if(begin<1){
+					begin=1;
+					end = 10;
+				}
+				if(end>size){
+					end=size;
+					begin = end - 9;
+				}
+			}
+			//显示10个页码
+			var li = "";
+			for (var i = begin; i <= end; i++){
+				if (i == nowPage){
+					li +=	"<li><a style='background-color: #75BDEE;' href='/ordinary/page/"+cataId+"/"+i+"'>"+i+"</a></li>"
+				}else{
+					li +=	"<li><a href='/ordinary/page/"+cataId+"/"+i+"'>"+i+"</a></li>"
+				}
+			}
+			$("#pageBar").append(li);
+			var nextNum = parseInt(nowPage)+1;
+			if(nextNum > size){
+				nextNum=size
+			}
+			$("#pageBar").append("<li>\n" +
+					"<a href='/ordinary/page/"+cataId+"/"+nextNum+"' aria-label='Next'>\n" +
+					"<span aria-hidden='true'>&raquo;</span>\n" +
+					"</a>\n" +
+					"</li>");
+		}
+
+
+
+
+		$.ajax({
+			type: "get",
+			url: "/capacityShow",
+			data: null,
+			success: function (data) {
+				//<li data-index="1"><a href="/Blog/Article">全部文章</a></li>
+				$("#catequeue").append("<div class=\"article-category-title\">分类导航</div>");
+				for (var i = 0; i < data.length; i++) {
+					$("#category").append("<li data-index='" + data[i].id + "' class='cataHover'><a href='/ordinary/capacity/"+data[i].id+"'>" + data[i].name + "</a></li>");
+					//
+					$("#catequeue").append("<a href='@{/ordinary/capacity/" + data[i].id + "'>" + data[i].name + "</a>");
+				}
+				$("#catequeue").append("<div class=\"f-cb\"></div>");
+			}
+		});
+
+		$.ajax({
+			type: "get",
+			url: "/ordinary/hotblog",
+			data: null,
+			success: function (data) {
+				for (var i = 0; i < data.length; i++){
+					$("#hotblogs").append("<li><a href='/ordinary/read/"+data[i].id+"'>"+data[i].title+"</a></li>");
+				}
+			}
+		});
+
+		$.ajax({
+			type: "get",
+			url: "/ordinary/newblogs",
+			data: null,
+			success: function (data) {
+				for (var i = 0; i < data.length; i++){
+					$("#newblogs").append("<li> <a href='/ordinary/read/"+data[i].id+"'>"+data[i].title+"</a></li>");
+				}
+			}
+		});
+	});
+</script>
+</body>
+</html>
