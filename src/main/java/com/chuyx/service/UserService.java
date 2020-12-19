@@ -4,31 +4,32 @@ import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.RegisterDTO;
 import com.chuyx.pojo.dto.UpdateUserDTO;
 import com.chuyx.pojo.model.User;
+
 import java.text.ParseException;
 import java.util.List;
 
 public interface UserService {
-   int addUser(RegisterDTO registerDTO) throws ParseException;
+    int addUser(RegisterDTO registerDTO) throws ParseException;
 
-   User queryUserById(int id);
+    User queryUserById(int id);
 
-   LoginUserDTO queryUserByUserName(String userName);
+    LoginUserDTO queryUserByUserName(String userName);
 
-   int updateUserMsg(UpdateUserDTO updateUserDTO);
+    int updateUserMsg(UpdateUserDTO updateUserDTO);
 
-   int applyBlogUpdate(int uid);
+    int applyBlogUpdate(int uid);
 
-   int getCountUserSize();
+    int getCountUserSize();
 
-   int getCountAuthorSize();
+    int getCountAuthorSize();
 
-   List<LoginUserDTO> getWaitAuthorPage(int page, int size);
+    List<LoginUserDTO> getWaitAuthorPage(int page, int size);
 
-   int getCountWaitAuthor();
+    int getCountWaitAuthor();
 
-   int passAuthor(int uid);
+    int passAuthor(int uid);
 
-   List<User> getAllUser(int page, int size);
+    List<User> getAllUser(int page, int size);
 
-   int delUser(int id);
+    int delUser(int id);
 }

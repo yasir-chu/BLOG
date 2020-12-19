@@ -10,14 +10,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginUserDTO implements Serializable {
-   private int uid;
+    private int uid;
 
-   private String uname;
+    private String uname;
 
-   private String password;
+    private String password;
 
-   private int capacity;
+    private int capacity;
 
-   private String headPic;
+    private String headPic;
 
 }

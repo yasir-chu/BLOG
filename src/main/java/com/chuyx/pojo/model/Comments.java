@@ -1,5 +1,6 @@
 package com.chuyx.pojo.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,25 +8,36 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author yasir.chu
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comments implements Serializable {
 
-   private int id;
+    @ApiModelProperty("评论id")
+    private int id;
 
-   private int uid;
+    @ApiModelProperty("用户id")
+    private int uid;
 
-   private Date createTime;
+    @ApiModelProperty("创建时间")
+    private Date createTime;
 
-   private String content;
+    @ApiModelProperty("评论内容")
+    private String content;
 
-   private int parentId;
+    @ApiModelProperty("父评论")
+    private int parentId;
 
-   private int blogId;
+    @ApiModelProperty("博客id")
+    private int blogId;
 
-   private String authorOne;
+    @ApiModelProperty("父评论作者昵称")
+    private String authorOne;
 
-   private String authorTwe;
+    @ApiModelProperty("当前作者昵称")
+    private String authorTwe;
 }
 

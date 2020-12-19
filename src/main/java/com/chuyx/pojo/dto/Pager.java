@@ -11,13 +11,13 @@ import java.util.List;
 @Data
 public class Pager<T> implements Serializable {
 
-   private int page;
+    private int page;
 
-   private int size;
+    private int size;
 
-   private List<T> rows;
+    private List<T> rows;
 
-   private long total;
+    private long total;
 
-   private int cataId;
+    private int cataId;
 }

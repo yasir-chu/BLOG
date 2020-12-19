@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BlogDTO {
 
-   private int id;
+   private Integer id;
 
-   private int uid;
+   private Integer uid;
 
    private String author;
 
@@ -27,9 +27,9 @@ public class BlogDTO {
 
    private String smallTitle;
 
-   private int visitCount;
+   private Integer visitCount;
 
    private String catecoty;
 
-   private int count;
+   private Integer count;
 }

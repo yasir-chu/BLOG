@@ -14,14 +14,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AdminComments implements Serializable {
 
-   private int id;
+    private int id;
 
-   private String blogName;
+    private String blogName;
 
-   private String conment;
+    private String conment;
 
-   private String time;
+    private String time;
 
-   private String author;
+    private String author;
 
 }

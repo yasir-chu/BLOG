@@ -1,17 +1,23 @@
 package com.chuyx.pojo.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * @author yasir.chu
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category implements Serializable {
 
-   private int id;
+    @TableField("主键id")
+    private int id;
 
-   private String name;
+    @TableField("类别名")
+    private String name;
 }

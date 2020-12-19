@@ -2,62 +2,61 @@ package com.chuyx.mapper;
 
 import com.chuyx.pojo.dto.NewBlogDTO;
 import com.chuyx.pojo.model.Blog;
-
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
 public interface BlogMapper {
 
-   /**
-    * 查找所有博客列表
-    *
-    * @return 博客列表
-    */
+    /**
+     * 查找所有博客列表
+     *
+     * @return 博客列表
+     */
     List<Blog> queryAllBlog();
 
-   /**
-    * 统计博客总数量
-    *
-    * @return 博客总数量
-    */
+    /**
+     * 统计博客总数量
+     *
+     * @return 博客总数量
+     */
     int queryAllBlogSize();
 
-   /**
-    * 根据类别id找到对应博客
-    *
-    * @param categoryId 类别id
-    * @return 对应类别id的博客
-    */
+    /**
+     * 根据类别id找到对应博客
+     *
+     * @param categoryId 类别id
+     * @return 对应类别id的博客
+     */
     List<Blog> queryBlogByCateId(int categoryId);
 
-   /**
-    * 查找访问量前10的博客
-    *
-    * @return 博客列表
-    */
+    /**
+     * 查找访问量前10的博客
+     *
+     * @return 博客列表
+     */
     List<Blog> queryHotBlog();
 
-   /**
-    * 查找最新的10篇博客
-    *
-    * @return 博客列表
-    */
+    /**
+     * 查找最新的10篇博客
+     *
+     * @return 博客列表
+     */
     List<Blog> queryNewBlog();
 
-   /**
-    * 根据博客id查找博客
-    *
-    * @return 博客对象
-    */
+    /**
+     * 根据博客id查找博客
+     *
+     * @return 博客对象
+     */
     Blog queryBlogById(int id);
 
-   /**
-    * 更新博客访问量
-    */
+    /**
+     * 更新博客访问量
+     */
     void updateBlogVisitCount(Blog blog);
 
     List<Blog> queryCapacityBlog(int capaId);

@@ -10,14 +10,24 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterDTO implements Serializable {
-   private int uid;
-   private int capacity;
-   public String username;
-   public String phone;
-   public String brith;
-   public String email;
-   public int sex;
-   public String password;
-   public String repeatPassword;
-   private String headPic;
+
+    private int uid;
+
+    private int capacity;
+
+    public String username;
+
+    public String phone;
+
+    public String brith;
+
+    public String email;
+
+    public int sex;
+
+    public String password;
+
+    public String repeatPassword;
+
+    private String headPic;
 }

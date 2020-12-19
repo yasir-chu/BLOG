@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAsync
 @EnableSwagger2
 public class ChuyxBlogApplication {
-   public static void main(String[] args) {
-      SpringApplication.run(ChuyxBlogApplication.class, args);
-   }
+    public static void main(String[] args) {
+        SpringApplication.run(ChuyxBlogApplication.class, args);
+    }
 }

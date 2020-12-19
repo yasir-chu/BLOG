@@ -1,5 +1,6 @@
 package com.chuyx.pojo.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,29 +8,42 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author yasir.chu
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {
 
-   private int uid;
+    @ApiModelProperty("主键id")
+    private int uid;
 
-   private String uname;
+    @ApiModelProperty("用户名")
+    private String uname;
 
-   private String password;
+    @ApiModelProperty("密码")
+    private String password;
 
-   private Date brith;
+    @ApiModelProperty("生日")
+    private Date brith;
 
-   private int sex;
+    @ApiModelProperty("性别")
+    private int sex;
 
-   private String email;
+    @ApiModelProperty("email")
+    private String email;
 
-   private String phone;
+    @ApiModelProperty("电话")
+    private String phone;
 
-   private int capacity;
+    @ApiModelProperty("身份")
+    private int capacity;
 
-   private String logged;
+    @ApiModelProperty("签名")
+    private String logged;
 
-   private String headPic;
+    @ApiModelProperty("头像路径")
+    private String headPic;
 }
 

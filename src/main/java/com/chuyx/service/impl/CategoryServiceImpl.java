@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-   @Autowired
-   CategoryMapper categoryMapper;
+    @Autowired
+    CategoryMapper categoryMapper;
 
-   @Override
-   public Category getCategoryById(int id) {
-      return this.categoryMapper.getCategoryById(id);
-   }
+    @Override
+    public Category getCategoryById(int id) {
+        return this.categoryMapper.getCategoryById(id);
+    }
 }

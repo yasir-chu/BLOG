@@ -14,15 +14,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AdminUser implements Serializable {
 
-   private int uid;
+    private int uid;
 
-   private String uname;
+    private String uname;
 
-   private int capacity;
+    private int capacity;
 
-   private String email;
+    private String email;
 
-   private String brith;
+    private String brith;
 
 
 }

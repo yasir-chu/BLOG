@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -138,7 +139,7 @@ public class BlogServiceImpl implements BlogService {
         NewBlogDTO newBlogDTO = new NewBlogDTO();
         newBlogDTO.setTitle(publishBlogDTO.getTitle());
         newBlogDTO.setSmallTitle(publishBlogDTO.getSmallTitle());
-        newBlogDTO.setCatecoty(publishBlogDTO.getCapacity());
+        newBlogDTO.setCategory(publishBlogDTO.getCapacity());
         newBlogDTO.setContent(publishBlogDTO.getContent());
         newBlogDTO.setUid(uid);
         newBlogDTO.setAuthor(this.userService.queryUserById(uid).getUname());
@@ -152,7 +153,7 @@ public class BlogServiceImpl implements BlogService {
         NewBlogDTO newBlogDTO = new NewBlogDTO();
         newBlogDTO.setTitle(publishBlogDTO.getTitle());
         newBlogDTO.setSmallTitle(publishBlogDTO.getSmallTitle());
-        newBlogDTO.setCatecoty(publishBlogDTO.getCapacity());
+        newBlogDTO.setCategory(publishBlogDTO.getCapacity());
         newBlogDTO.setContent(publishBlogDTO.getContent());
         newBlogDTO.setUid(uid);
         newBlogDTO.setAuthor(this.userService.queryUserById(uid).getUname());

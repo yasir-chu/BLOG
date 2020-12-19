@@ -9,21 +9,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentShowMsgDTO {
 
-   private int id;
+    private int id;
 
-   private String author;
+    private String author;
 
-   private String repleaseDate;
+    private String repleaseDate;
 
-   private String content;
+    private String content;
 
-   private String authorOne;
+    private String authorOne;
 
-   private String authorTwe;
+    private String authorTwe;
 
-   private String oneHeadPic;
+    private String oneHeadPic;
 
-   private String tweHeadPic;
+    private String tweHeadPic;
 
 
 }

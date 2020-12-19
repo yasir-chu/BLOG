@@ -1,5 +1,7 @@
 package com.chuyx.pojo.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,24 +9,38 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.sql.Date;
 
+/**
+ * @author yasir.chu
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Blog implements Serializable {
-   private int id;
 
+    @TableField("")
+    @ApiModelProperty("主键id")
+    private int id;
 
-   private int uid;
+    @TableField("")
+    @ApiModelProperty("用户id")
+    private Integer uid;
 
-   private Date releaseDate;
+    @TableField("")
+    @ApiModelProperty("发布时间")
+    private Date releaseDate;
 
-   private String title;
+    @ApiModelProperty("主标题")
+    private String title;
 
-   private String smallTitle;
+    @ApiModelProperty("副标题")
+    private String smallTitle;
 
-   private int categoryId;
+    @ApiModelProperty("类别id")
+    private Integer categoryId;
 
-   private int visitCount;
+    @ApiModelProperty("访问数")
+    private Integer visitCount;
 
-   private String content;
+    @ApiModelProperty("博客内容")
+    private String content;
 }

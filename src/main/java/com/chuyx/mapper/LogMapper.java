@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface LogMapper {
-   int inserntLog(Log log);
+    int inserntLog(Log log);
 }

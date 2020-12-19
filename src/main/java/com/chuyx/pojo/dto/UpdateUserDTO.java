@@ -11,19 +11,19 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UpdateUserDTO implements Serializable {
 
-   private int uid;
+    private int uid;
 
-   private String headPic;
+    private String headPic;
 
-   private String username;
+    private String username;
 
-   private String phone;
+    private String phone;
 
-   private String brith;
+    private String brith;
 
-   private String email;
+    private String email;
 
-   private int sex;
+    private int sex;
 
-   private String password;
+    private String password;
 }

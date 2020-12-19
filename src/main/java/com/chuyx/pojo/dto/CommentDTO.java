@@ -11,11 +11,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CommentDTO implements Serializable {
 
-   private int uid;
+    private int uid;
 
-   private String content;
+    private String content;
 
-   private int parentId;
+    private int parentId;
 
-   private int blogId;
+    private int blogId;
 }

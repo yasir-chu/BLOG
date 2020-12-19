@@ -17,36 +17,36 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class UploadUtil {
 
-   /**
-    * 上传
-    *
-    * @param file 上传文件
-    * @return 下载路径
-    */
-   public static String uploadQiniu(MultipartFile file) {
-      Configuration cfg = new Configuration(Zone.zone2());
-      UploadManager uploadManager = new UploadManager(cfg);
-      String bucket = "chuyx";
-      String key = null;
-      Auth auth = Auth.create(StaParam.QI_NIU_ACCESS_KEY, StaParam.QI_NIU_ACCESS_KEY);
-      String upToken = auth.uploadToken(bucket);
+    /**
+     * 上传
+     *
+     * @param file 上传文件
+     * @return 下载路径
+     */
+    public static String uploadQiniu(MultipartFile file) {
+        Configuration cfg = new Configuration(Zone.zone2());
+        UploadManager uploadManager = new UploadManager(cfg);
+        String bucket = "chuyx";
+        String key = null;
+        Auth auth = Auth.create(StaParam.QI_NIU_ACCESS_KEY, StaParam.QI_NIU_ACCESS_KEY);
+        String upToken = auth.uploadToken(bucket);
 
-      try {
-         Response response = uploadManager.put(file.getBytes(), (String)key, upToken);
-         DefaultPutRet putRet = (DefaultPutRet)(new Gson()).fromJson(response.bodyString(), DefaultPutRet.class);
-         return putRet.key;
-      } catch (QiniuException var13) {
-         Response r = var13.response;
-         System.err.println(r.toString());
+        try {
+            Response response = uploadManager.put(file.getBytes(), (String) key, upToken);
+            DefaultPutRet putRet = (DefaultPutRet) (new Gson()).fromJson(response.bodyString(), DefaultPutRet.class);
+            return putRet.key;
+        } catch (QiniuException var13) {
+            Response r = var13.response;
+            System.err.println(r.toString());
 
-         try {
-            System.err.println(r.bodyString());
-         } catch (QiniuException var12) {
-         }
-      } catch (Exception var14) {
-         var14.printStackTrace();
-      }
+            try {
+                System.err.println(r.bodyString());
+            } catch (QiniuException var12) {
+            }
+        } catch (Exception var14) {
+            var14.printStackTrace();
+        }
 
-      return null;
-   }
+        return null;
+    }
 }

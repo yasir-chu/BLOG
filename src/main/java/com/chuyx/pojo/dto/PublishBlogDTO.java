@@ -11,13 +11,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class PublishBlogDTO implements Serializable {
 
-   private int id;
+    private int id;
 
-   private String title;
+    private String title;
 
-   private String smallTitle;
+    private String smallTitle;
 
-   private String content;
+    private String content;
 
-   private int capacity;
+    private int capacity;
 }

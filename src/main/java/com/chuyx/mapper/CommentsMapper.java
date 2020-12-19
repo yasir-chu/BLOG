@@ -2,34 +2,35 @@ package com.chuyx.mapper;
 
 import com.chuyx.pojo.dto.CommentDTO;
 import com.chuyx.pojo.model.Comments;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
 public interface CommentsMapper {
-   int queryCountByBlogId(int id);
+    int queryCountByBlogId(int id);
 
-   boolean addCommnet(CommentDTO comments);
+    boolean addCommnet(CommentDTO comments);
 
-   List<Comments> queryByBlogId(int blogId);
+    List<Comments> queryByBlogId(int blogId);
 
-   List<Comments> queryByBlogIdByPage(int blogId, int index, int size);
+    List<Comments> queryByBlogIdByPage(int blogId, int index, int size);
 
-   List<Comments> queryByComId(int comId, int blogId);
+    List<Comments> queryByComId(int comId, int blogId);
 
-   int addChildComment(Comments comments);
+    int addChildComment(Comments comments);
 
-   int countSize(int blogId);
+    int countSize(int blogId);
 
-   int getAllCommentsSize();
+    int getAllCommentsSize();
 
-   List<Comments> queryPageComment(int index, int size);
+    List<Comments> queryPageComment(int index, int size);
 
-   int delComment(int id);
+    int delComment(int id);
 
-   int delCommentChilds(int id);
+    int delCommentChilds(int id);
 
-   int delCommentBuBlogId(int id);
+    int delCommentBuBlogId(int id);
 }

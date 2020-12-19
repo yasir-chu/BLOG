@@ -11,8 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CommentShowDTO {
 
-   private CommentShowMsgDTO parent;
+    private CommentShowMsgDTO parent;
 
-   private List<CommentShowMsgDTO> childs;
+    private List<CommentShowMsgDTO> childs;
 
 }

@@ -14,19 +14,19 @@ import java.util.Date;
 @NoArgsConstructor
 public class NewBlogDTO {
 
-   private int id;
+    private int id;
 
-   private int uid;
+    private int uid;
 
-   private String author;
+    private String author;
 
-   private String content;
+    private String content;
 
-   private Date repleseaDate;
+    private Date repleseaDate;
 
-   private String title;
+    private String title;
 
-   private String smallTitle;
+    private String smallTitle;
 
-   private int catecoty;
+    private Integer category;
 }

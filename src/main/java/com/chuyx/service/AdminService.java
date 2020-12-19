@@ -1,33 +1,28 @@
 package com.chuyx.service;
 
-import com.chuyx.pojo.dto.AdminComments;
-import com.chuyx.pojo.dto.AdminIndexMsgDTO;
-import com.chuyx.pojo.dto.AdminUser;
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.Pager;
+import com.chuyx.pojo.dto.*;
 
 /**
  * @author yasir.chu
  */
 public interface AdminService {
-   AdminIndexMsgDTO toAdmin();
+    AdminIndexMsgDTO toAdmin();
 
-   Pager<BlogDTO> blog();
+    Pager<BlogDTO> blog();
 
-   int delBlog(int id);
+    int delBlog(int id);
 
-   Pager<BlogDTO> adminBlogPage(int page);
+    Pager<BlogDTO> adminBlogPage(int page);
 
-   Pager<LoginUserDTO> allWaitPassAuthor(int page, int size);
+    Pager<LoginUserDTO> allWaitPassAuthor(int page, int size);
 
-   int passAuthor(int uid);
+    int passAuthor(int uid);
 
-   Pager<AdminComments> getAllCommentsPage(int page, int size);
+    Pager<AdminComments> getAllCommentsPage(int page, int size);
 
-   int delComment(int id);
+    int delComment(int id);
 
-   Pager<AdminUser> getAllUserPage(int page, int size);
+    Pager<AdminUser> getAllUserPage(int page, int size);
 
-   int delUser(int id);
+    int delUser(int id);
 }

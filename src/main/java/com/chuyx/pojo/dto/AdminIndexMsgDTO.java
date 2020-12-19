@@ -14,11 +14,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AdminIndexMsgDTO implements Serializable {
 
-   private int userSize;
+    private int userSize;
 
-   private int authorSize;
+    private int authorSize;
 
-   private int blogSize;
+    private int blogSize;
 
-   private int commentsSize;
+    private int commentsSize;
 }
