@@ -33,14 +33,14 @@ public class LoginUserServiceImpl implements LoginUserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LoginUserDTO userInfo = this.userMapper.queryUserByUsername(username);
+        LoginUserDTO userInfo = userMapper.queryUserByUsername(username);
         List<GrantedAuthority> roles = new ArrayList();
         if (userInfo.getCapacity() == 0) {
-            roles = this.getRoles("ordinary");
+            roles = getRoles("ordinary");
         } else if (userInfo.getCapacity() == 1) {
-            roles = this.getRoles("author");
+            roles = getRoles("author");
         } else if (userInfo.getCapacity() == 2) {
-            roles = this.getRoles("admin");
+            roles = getRoles("admin");
         }
 
         User user = new User(userInfo.getUname(), userInfo.getPassword(), (Collection) roles);

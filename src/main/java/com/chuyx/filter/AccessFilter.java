@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
+ * 过滤身份信息
+ *
  * @author yasir.chu
  */
 @WebFilter(filterName = "accessFilter", urlPatterns = {"/*"})
@@ -42,7 +44,7 @@ public class AccessFilter implements Filter {
             session.setAttribute("errMsg", "您还未登陆！！！");
             servletResponse.sendRedirect("/ordinary/toLogin");
         } else {
-            servletRequest.getRequestDispatcher("/failed").forward(request, response);
+
         }
     }
 

@@ -1,6 +1,6 @@
 package com.chuyx.mapper;
 
-import com.chuyx.pojo.model.Category;
+import com.chuyx.pojo.po.Category;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

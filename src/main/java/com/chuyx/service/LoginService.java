@@ -1,7 +1,7 @@
 package com.chuyx.service;
 
 import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.model.Category;
+import com.chuyx.pojo.po.Category;
 
 import java.util.List;
 

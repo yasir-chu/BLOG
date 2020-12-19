@@ -3,7 +3,7 @@ package com.chuyx.service.impl;
 import com.chuyx.mapper.CategoryMapper;
 import com.chuyx.mapper.UserMapper;
 import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.model.Category;
+import com.chuyx.pojo.po.Category;
 import com.chuyx.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +24,11 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public List<Category> getAllCategory() {
-        return this.categoryMapper.getAllCategory();
+        return categoryMapper.getAllCategory();
     }
 
     @Override
     public LoginUserDTO queryUserByName(String name) {
-        return this.userMapper.queryUserByUsername(name);
+        return userMapper.queryUserByUsername(name);
     }
 }

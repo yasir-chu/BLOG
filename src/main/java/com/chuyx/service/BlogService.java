@@ -3,7 +3,7 @@ package com.chuyx.service;
 import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.dto.PublishBlogDTO;
-import com.chuyx.pojo.model.Blog;
+import com.chuyx.pojo.po.Blog;
 
 import java.util.List;
 

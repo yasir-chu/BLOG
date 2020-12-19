@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
+ * springSecurity的配置
+ *
  * @author yasir.chu
  */
 @EnableWebSecurity

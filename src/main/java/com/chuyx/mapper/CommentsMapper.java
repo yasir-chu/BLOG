@@ -1,7 +1,7 @@
 package com.chuyx.mapper;
 
 import com.chuyx.pojo.dto.CommentDTO;
-import com.chuyx.pojo.model.Comments;
+import com.chuyx.pojo.po.Comments;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

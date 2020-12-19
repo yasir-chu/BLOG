@@ -5,9 +5,9 @@ import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.NewBlogDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.dto.PublishBlogDTO;
-import com.chuyx.pojo.model.Blog;
-import com.chuyx.pojo.model.Category;
-import com.chuyx.pojo.model.User;
+import com.chuyx.pojo.po.Blog;
+import com.chuyx.pojo.po.Category;
+import com.chuyx.pojo.po.User;
 import com.chuyx.service.BlogService;
 import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;
@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.dozer.DozerBeanMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,42 +37,42 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> queryAllBlog() {
-        return this.blogMapper.queryAllBlog();
+        return blogMapper.queryAllBlog();
     }
 
     @Override
     public int queryAllBlogSize() {
-        return this.blogMapper.queryAllBlogSize();
+        return blogMapper.queryAllBlogSize();
     }
 
     @Override
     public List<Blog> queryBlogByCateId(int categoryId) {
-        return this.blogMapper.queryBlogByCateId(categoryId);
+        return blogMapper.queryBlogByCateId(categoryId);
     }
 
     @Override
     public List<Blog> queryHotBlog() {
-        return this.blogMapper.queryHotBlog();
+        return blogMapper.queryHotBlog();
     }
 
     @Override
     public List<Blog> queryNewBlog() {
-        return this.blogMapper.queryNewBlog();
+        return blogMapper.queryNewBlog();
     }
 
     @Override
     public Blog queryBlogById(int id) {
-        return this.blogMapper.queryBlogById(id);
+        return blogMapper.queryBlogById(id);
     }
 
     @Override
     public void updateBlogVisitCount(Blog blog) {
-        this.blogMapper.updateBlogVisitCount(blog);
+        blogMapper.updateBlogVisitCount(blog);
     }
 
     @Override
     public List<Blog> queryCapacityBlog(int capaId) {
-        return this.blogMapper.queryCapacityBlog(capaId);
+        return blogMapper.queryCapacityBlog(capaId);
     }
 
     @Override
@@ -100,11 +99,11 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Pager<BlogDTO> queryBlogByPageCata(int cataId, int page, int size) {
         int index = (page - 1) * 5;
-        List<Blog> blogs = this.blogMapper.queryBlogByPageCata(cataId, index, size);
+        List<Blog> blogs = blogMapper.queryBlogByPageCata(cataId, index, size);
         Pager<BlogDTO> result = new Pager();
-        List<BlogDTO> blogDTOS = this.pageBlogUtil(blogs);
+        List<BlogDTO> blogDTOS = pageBlogUtil(blogs);
         result.setRows(blogDTOS);
-        int countSize = this.blogMapper.countSizeCata(cataId);
+        int countSize = blogMapper.countSizeCata(cataId);
         result.setTotal((long) countSize);
         result.setPage(page);
         if (countSize < 5) {
@@ -122,8 +121,8 @@ public class BlogServiceImpl implements BlogService {
     public List<BlogDTO> queryBlogSearch(String name) {
         char[] chars = name.toCharArray();
         String name2 = "%" + name + "%";
-        List<Blog> blogs = this.blogMapper.queryBlogSearch(name2);
-        List<BlogDTO> blogDTOS = this.pageBlogUtil(blogs);
+        List<Blog> blogs = blogMapper.queryBlogSearch(name2);
+        List<BlogDTO> blogDTOS = pageBlogUtil(blogs);
         Iterator var6 = blogDTOS.iterator();
 
         while (var6.hasNext()) {
@@ -142,9 +141,9 @@ public class BlogServiceImpl implements BlogService {
         newBlogDTO.setCategory(publishBlogDTO.getCapacity());
         newBlogDTO.setContent(publishBlogDTO.getContent());
         newBlogDTO.setUid(uid);
-        newBlogDTO.setAuthor(this.userService.queryUserById(uid).getUname());
+        newBlogDTO.setAuthor(userService.queryUserById(uid).getUname());
         newBlogDTO.setRepleseaDate(new Date());
-        this.blogMapper.addBlog(newBlogDTO);
+        blogMapper.addBlog(newBlogDTO);
         return 0;
     }
 
@@ -156,19 +155,19 @@ public class BlogServiceImpl implements BlogService {
         newBlogDTO.setCategory(publishBlogDTO.getCapacity());
         newBlogDTO.setContent(publishBlogDTO.getContent());
         newBlogDTO.setUid(uid);
-        newBlogDTO.setAuthor(this.userService.queryUserById(uid).getUname());
+        newBlogDTO.setAuthor(userService.queryUserById(uid).getUname());
         newBlogDTO.setId(publishBlogDTO.getId());
-        this.blogMapper.updateBlog(newBlogDTO);
+        blogMapper.updateBlog(newBlogDTO);
         return 0;
     }
 
     @Override
     public Pager<BlogDTO> queryBlogByPageAuthord(int uid) {
         Pager<BlogDTO> result = new Pager();
-        List<Blog> blogs = this.blogMapper.queryBlogByAuthorId(uid);
-        List<BlogDTO> blogDTOS = this.pageBlogUtil(blogs);
+        List<Blog> blogs = blogMapper.queryBlogByAuthorId(uid);
+        List<BlogDTO> blogDTOS = pageBlogUtil(blogs);
         result.setRows(blogDTOS);
-        int count = this.blogMapper.queryBlogByAuthorIdCount(uid);
+        int count = blogMapper.queryBlogByAuthorIdCount(uid);
         result.setTotal((long) count);
         result.setPage(1);
         if (count <= 10) {
@@ -186,10 +185,10 @@ public class BlogServiceImpl implements BlogService {
     public Pager<BlogDTO> queryBlogByPageAuthordPage(int uid, int page) {
         Pager<BlogDTO> result = new Pager();
         int index = (page - 1) * 10;
-        List<Blog> blogs = this.blogMapper.queryBlogByAuthorIdPage(uid, index, 10);
-        List<BlogDTO> blogDTOS = this.pageBlogUtil(blogs);
+        List<Blog> blogs = blogMapper.queryBlogByAuthorIdPage(uid, index, 10);
+        List<BlogDTO> blogDTOS = pageBlogUtil(blogs);
         result.setRows(blogDTOS);
-        int count = this.blogMapper.queryBlogByAuthorIdCount(uid);
+        int count = blogMapper.queryBlogByAuthorIdCount(uid);
         result.setTotal((long) count);
         result.setPage(page);
         if (count <= 10) {
@@ -205,14 +204,14 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public int deleteBlog(int id) {
-        this.blogMapper.delBlog(id);
-        this.commentsService.delCommentByBlogId(id);
+        blogMapper.delBlog(id);
+        commentsService.delCommentByBlogId(id);
         return 0;
     }
 
     @Override
     public int getAllBlogSize() {
-        return this.blogMapper.countSize();
+        return blogMapper.countSize();
     }
 
     public List<BlogDTO> pageBlogUtil(List<Blog> blogs) {
@@ -226,11 +225,11 @@ public class BlogServiceImpl implements BlogService {
             simpleDateFormat.format(blog.getReleaseDate());
             blogDTO = BlogUtils.BolgDateToYMD(blog, blogDTO);
             BeanUtils.copyProperties(blog, blogDTO);
-            Category category = this.categoryService.getCategoryById(blog.getCategoryId());
+            Category category = categoryService.getCategoryById(blog.getCategoryId());
             blogDTO.setCatecoty(category.getName());
-            int count = this.commentsService.queryCountByBlogId(blog.getId());
+            int count = commentsService.queryCountByBlogId(blog.getId());
             blogDTO.setCount(count);
-            User user = this.userService.queryUserById(blog.getUid());
+            User user = userService.queryUserById(blog.getUid());
             blogDTO.setAuthor(user.getUname());
             blogDTOS.add(blogDTO);
         }

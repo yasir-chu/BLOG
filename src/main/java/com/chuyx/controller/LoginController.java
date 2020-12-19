@@ -2,9 +2,9 @@ package com.chuyx.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.chuyx.pojo.dto.*;
-import com.chuyx.pojo.model.Blog;
-import com.chuyx.pojo.model.Category;
-import com.chuyx.pojo.model.User;
+import com.chuyx.pojo.po.Blog;
+import com.chuyx.pojo.po.Category;
+import com.chuyx.pojo.po.User;
 import com.chuyx.service.*;
 import com.chuyx.utils.BlogUtils;
 import org.springframework.beans.BeanUtils;
@@ -44,7 +44,7 @@ public class LoginController {
 
     @RequestMapping({"/loginCheck"})
     public String loginCheck(LoginUserDTO loginUser, HttpSession session, Model model) {
-        LoginUserDTO loginUserDTO = this.loginService.queryUserByName(loginUser.getUname());
+        LoginUserDTO loginUserDTO = loginService.queryUserByName(loginUser.getUname());
         if (loginUserDTO == null) {
             model.addAttribute("errMsg", "用户不存在！");
             return "ordinary/signin";
@@ -58,7 +58,7 @@ public class LoginController {
                 loginUser.setUid(loginUserDTO.getUid());
                 loginUser.setHeadPic(loginUserDTO.getHeadPic());
                 session.setAttribute("userMsg", loginUser);
-                Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
+                Pager<BlogDTO> result = blogService.queryBlogByPage(1, 5);
                 model.addAttribute("blogDTOS", result);
                 String beforeSignin = (String) session.getAttribute("beforeSignin");
                 session.removeAttribute("beforeSignin");
@@ -70,17 +70,17 @@ public class LoginController {
     @RequestMapping({"/signout"})
     public String signout(HttpSession session, Model model) {
         session.removeAttribute("userMsg");
-        Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
+        Pager<BlogDTO> result = blogService.queryBlogByPage(1, 5);
         model.addAttribute("blogDTOS", result);
         return "redirect:blog";
     }
 
     @RequestMapping({"/signup"})
     public String signup(RegisterDTO registerDTO, HttpSession session, Model model) throws ParseException {
-        this.userService.addUser(registerDTO);
-        LoginUserDTO loginUserDTO = this.loginService.queryUserByName(registerDTO.getUsername());
+        userService.addUser(registerDTO);
+        LoginUserDTO loginUserDTO = loginService.queryUserByName(registerDTO.getUsername());
         session.setAttribute("userMsg", loginUserDTO);
-        Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
+        Pager<BlogDTO> result = blogService.queryBlogByPage(1, 5);
         model.addAttribute("blogDTOS", result);
         return "ordinary/article";
     }
@@ -88,7 +88,7 @@ public class LoginController {
     @RequestMapping(value = {"/checkUser/{username}"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String checkUser(@PathVariable("username") String username) {
-        LoginUserDTO loginUserDTO = this.loginService.queryUserByName(username);
+        LoginUserDTO loginUserDTO = loginService.queryUserByName(username);
         Map<String, Integer> map = new HashMap();
         if (loginUserDTO != null && !StringUtils.isEmpty(loginUserDTO.getUname())) {
             map.put("bo", 1);
@@ -126,19 +126,19 @@ public class LoginController {
     @RequestMapping(value = {"/comments"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String comments(int id) {
-        Pager<CommentShowDTO> shows = this.commentsService.queryByBlogId(id);
+        Pager<CommentShowDTO> shows = commentsService.queryByBlogId(id);
         return JSON.toJSONString(shows);
     }
 
     @RequestMapping(value = {"/capacityShow"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String capacityShow(HttpServletResponse response) throws IOException {
-        List<Category> allCategory = this.loginService.getAllCategory();
+        List<Category> allCategory = loginService.getAllCategory();
         return JSON.toJSONString(allCategory);
     }
 
     public List<BlogDTO> allBlog() {
-        List<Blog> blogs = this.blogService.queryAllBlog();
+        List<Blog> blogs = blogService.queryAllBlog();
         List<BlogDTO> blogDTOS = new ArrayList();
         Iterator var3 = blogs.iterator();
 
@@ -149,11 +149,11 @@ public class LoginController {
             simpleDateFormat.format(blog.getReleaseDate());
             blogDTO = BlogUtils.BolgDateToYMD(blog, blogDTO);
             BeanUtils.copyProperties(blog, blogDTO);
-            Category category = this.categoryService.getCategoryById(blog.getCategoryId());
+            Category category = categoryService.getCategoryById(blog.getCategoryId());
             blogDTO.setCatecoty(category.getName());
-            int count = this.commentsService.queryCountByBlogId(blog.getId());
+            int count = commentsService.queryCountByBlogId(blog.getId());
             blogDTO.setCount(count);
-            User user = this.userService.queryUserById(blog.getUid());
+            User user = userService.queryUserById(blog.getUid());
             blogDTO.setAuthor(user.getUname());
             blogDTOS.add(blogDTO);
         }

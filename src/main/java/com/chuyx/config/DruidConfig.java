@@ -8,13 +8,14 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 /**
+ * Druid数据库连接池注入
+ *
  * @author yasir.chu
  */
 @Configuration
 public class DruidConfig {
-    @ConfigurationProperties(
-            prefix = "spring.datasource"
-    )
+
+    @ConfigurationProperties(prefix = "spring.datasource")
     @Bean
     public DataSource druidDataSource() {
         return new DruidDataSource();

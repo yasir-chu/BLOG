@@ -1,7 +1,7 @@
 package com.chuyx.mapper;
 
 import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.model.User;
+import com.chuyx.pojo.po.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

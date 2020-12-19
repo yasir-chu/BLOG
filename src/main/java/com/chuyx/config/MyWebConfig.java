@@ -13,6 +13,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 import java.util.ArrayList;
 
 /**
+ * web的配置
+ *
  * @author yasir.chu
  */
 @Configuration
@@ -22,6 +24,11 @@ public class MyWebConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**").allowedOrigins(new String[]{"*"}).allowedMethods(new String[]{"GET", "POST", "OPTIONS"}).allowedHeaders(new String[]{"*"}).allowCredentials(true).maxAge(3600L);
     }
 
+    /**
+     * swagger配置
+     *
+     * @return bean
+     */
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)

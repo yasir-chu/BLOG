@@ -7,6 +7,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源
 
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
 mybatis:
   type-aliases-package: com.chuyx.pojo
   mapper-locations: classpath:mybatis/mapper/*.xml

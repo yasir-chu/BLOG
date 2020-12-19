@@ -1,5 +1,6 @@
 package com.chuyx.utils;
 
+import com.chuyx.constant.NormalConstant;
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -28,7 +29,7 @@ public class UploadUtil {
         UploadManager uploadManager = new UploadManager(cfg);
         String bucket = "chuyx";
         String key = null;
-        Auth auth = Auth.create(StaParam.QI_NIU_ACCESS_KEY, StaParam.QI_NIU_ACCESS_KEY);
+        Auth auth = Auth.create(NormalConstant.QI_NIU_ACCESS_KEY, NormalConstant.QI_NIU_ACCESS_KEY);
         String upToken = auth.uploadToken(bucket);
 
         try {

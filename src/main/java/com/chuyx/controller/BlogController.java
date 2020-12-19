@@ -4,7 +4,7 @@ import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.dto.PublishBlogDTO;
-import com.chuyx.pojo.model.Blog;
+import com.chuyx.pojo.po.Blog;
 import com.chuyx.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,8 +29,8 @@ public class BlogController {
     @RequestMapping({"/publishBlog"})
     public String publishBlog(PublishBlogDTO publishBlogDTO, HttpSession session, Model model) {
         LoginUserDTO userMsg = (LoginUserDTO) session.getAttribute("userMsg");
-        this.blogService.addBlog(publishBlogDTO, userMsg.getUid());
-        Pager<BlogDTO> blogDTOPager = this.blogService.queryBlogByPageAuthord(userMsg.getUid());
+        blogService.addBlog(publishBlogDTO, userMsg.getUid());
+        Pager<BlogDTO> blogDTOPager = blogService.queryBlogByPageAuthord(userMsg.getUid());
         model.addAttribute("userBlogs", blogDTOPager);
         return "author/blogManger";
     }
@@ -39,7 +39,7 @@ public class BlogController {
     public String blogManger(HttpSession session, Model model) {
         LoginUserDTO userMsg = (LoginUserDTO) session.getAttribute("userMsg");
         int uid = userMsg.getUid();
-        Pager<BlogDTO> blogDTOPager = this.blogService.queryBlogByPageAuthord(uid);
+        Pager<BlogDTO> blogDTOPager = blogService.queryBlogByPageAuthord(uid);
         model.addAttribute("userBlogs", blogDTOPager);
         return "author/blogManger";
     }
@@ -48,24 +48,24 @@ public class BlogController {
     public String blogManger(@PathVariable("page") int page, HttpSession session, Model model) {
         LoginUserDTO userMsg = (LoginUserDTO) session.getAttribute("userMsg");
         int uid = userMsg.getUid();
-        Pager<BlogDTO> blogDTOPager = this.blogService.queryBlogByPageAuthordPage(uid, page);
+        Pager<BlogDTO> blogDTOPager = blogService.queryBlogByPageAuthordPage(uid, page);
         model.addAttribute("userBlogs", blogDTOPager);
         return "author/blogManger";
     }
 
     @RequestMapping({"/userblog/del/{id}"})
     public String blogMangerDelBlog(@PathVariable("id") int id, HttpServletRequest request, HttpSession session, Model model) {
-        this.blogService.deleteBlog(id);
+        blogService.deleteBlog(id);
         LoginUserDTO userMsg = (LoginUserDTO) session.getAttribute("userMsg");
         int uid = userMsg.getUid();
-        Pager<BlogDTO> blogDTOPager = this.blogService.queryBlogByPageAuthord(uid);
+        Pager<BlogDTO> blogDTOPager = blogService.queryBlogByPageAuthord(uid);
         model.addAttribute("userBlogs", blogDTOPager);
         return "author/blogManger";
     }
 
     @RequestMapping({"/userBlog/toupdate/{id}"})
     public String blogMangerUpdateBlog(@PathVariable("id") int id, Model model) {
-        Blog blog = this.blogService.queryBlogById(id);
+        Blog blog = blogService.queryBlogById(id);
         model.addAttribute("updateBlog", blog);
         return "author/updateBlog";
     }
@@ -74,8 +74,8 @@ public class BlogController {
     public String blogMangerUpdateBlogUp(@PathVariable("id") int id, Model model, PublishBlogDTO publishBlogDTO, HttpSession session) {
         LoginUserDTO userMsg = (LoginUserDTO) session.getAttribute("userMsg");
         int uid = userMsg.getUid();
-        this.blogService.updateBlog(publishBlogDTO, uid);
-        Pager<BlogDTO> blogDTOPager = this.blogService.queryBlogByPageAuthord(uid);
+        blogService.updateBlog(publishBlogDTO, uid);
+        Pager<BlogDTO> blogDTOPager = blogService.queryBlogByPageAuthord(uid);
         model.addAttribute("userBlogs", blogDTOPager);
         return "author/blogManger";
     }

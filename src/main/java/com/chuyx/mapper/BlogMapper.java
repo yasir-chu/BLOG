@@ -1,7 +1,7 @@
 package com.chuyx.mapper;
 
 import com.chuyx.pojo.dto.NewBlogDTO;
-import com.chuyx.pojo.model.Blog;
+import com.chuyx.pojo.po.Blog;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

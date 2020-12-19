@@ -2,7 +2,7 @@ package com.chuyx.service;
 
 import com.chuyx.pojo.dto.CommentShowDTO;
 import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.model.Comments;
+import com.chuyx.pojo.po.Comments;
 
 import java.util.List;
 

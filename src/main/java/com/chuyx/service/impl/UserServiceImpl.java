@@ -5,8 +5,8 @@ import com.chuyx.mapper.UserMapper;
 import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.RegisterDTO;
 import com.chuyx.pojo.dto.UpdateUserDTO;
-import com.chuyx.pojo.model.Log;
-import com.chuyx.pojo.model.User;
+import com.chuyx.pojo.po.Log;
+import com.chuyx.pojo.po.User;
 import com.chuyx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,17 +42,17 @@ public class UserServiceImpl implements UserService {
         user.setEmail(registerDTO.getEmail());
         user.setPhone(registerDTO.getPhone());
         user.setSex(registerDTO.getSex());
-        return this.userMapper.addUser(user);
+        return userMapper.addUser(user);
     }
 
     @Override
     public User queryUserById(int id) {
-        return this.userMapper.queryUserById(id);
+        return userMapper.queryUserById(id);
     }
 
     @Override
     public LoginUserDTO queryUserByUserName(String userName) {
-        return this.userMapper.queryUserByUsername(userName);
+        return userMapper.queryUserByUsername(userName);
     }
 
     @Override
@@ -77,57 +77,57 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encode = bCryptPasswordEncoder.encode(updateUserDTO.getPassword());
         user.setPassword(encode);
-        this.userMapper.updateUserMsg(user);
+        userMapper.updateUserMsg(user);
         return 0;
     }
 
     @Override
     public int applyBlogUpdate(int uid) {
-        this.userMapper.applyBlogUpdate(uid);
+        userMapper.applyBlogUpdate(uid);
         Log log = new Log();
         log.setConnent("用户" + uid + "申请博主资格");
         log.setUid(uid);
         log.setEvent("博主申请");
-        this.logMapper.inserntLog(log);
+        logMapper.inserntLog(log);
         return 0;
     }
 
     @Override
     public int getCountUserSize() {
-        return this.userMapper.getUsersSize();
+        return userMapper.getUsersSize();
     }
 
     @Override
     public int getCountAuthorSize() {
-        return this.userMapper.getAuthorSize();
+        return userMapper.getAuthorSize();
     }
 
     @Override
     public List<LoginUserDTO> getWaitAuthorPage(int page, int size) {
         int index = (page - 1) * size;
-        List<User> users = this.userMapper.getWaitAuthor(index, size);
-        return this.usersToLoginUsers(users);
+        List<User> users = userMapper.getWaitAuthor(index, size);
+        return usersToLoginUsers(users);
     }
 
     @Override
     public int getCountWaitAuthor() {
-        return this.userMapper.getCountWaitAuthor();
+        return userMapper.getCountWaitAuthor();
     }
 
     @Override
     public int passAuthor(int uid) {
-        return this.userMapper.passAuthor(uid);
+        return userMapper.passAuthor(uid);
     }
 
     @Override
     public List<User> getAllUser(int page, int size) {
         int index = (page - 1) * size;
-        return this.userMapper.getAllUser(index, size);
+        return userMapper.getAllUser(index, size);
     }
 
     @Override
     public int delUser(int id) {
-        return this.userMapper.delUser(id);
+        return userMapper.delUser(id);
     }
 
     public List<LoginUserDTO> usersToLoginUsers(List<User> users) {

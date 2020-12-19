@@ -20,7 +20,7 @@ public class AdminController {
 
     @RequestMapping({"/"})
     public String toAdmin(Model model) {
-        AdminIndexMsgDTO result = this.adminService.toAdmin();
+        AdminIndexMsgDTO result = adminService.toAdmin();
         model.addAttribute("adminMsg", result);
         return "admin/admin";
     }
@@ -44,8 +44,8 @@ public class AdminController {
     )
     @ResponseBody
     public String delBlog(int id, Model model) {
-        this.adminService.delBlog(id);
-        Pager<BlogDTO> blog = this.adminService.blog();
+        adminService.delBlog(id);
+        Pager<BlogDTO> blog = adminService.blog();
         return JSON.toJSONString(blog);
     }
 
@@ -55,7 +55,7 @@ public class AdminController {
     )
     @ResponseBody
     public String blogPage(@PathVariable("page") int page, Model model) {
-        Pager<BlogDTO> blogDTOPager = this.adminService.adminBlogPage(page);
+        Pager<BlogDTO> blogDTOPager = adminService.adminBlogPage(page);
         return JSON.toJSONString(blogDTOPager);
     }
 
@@ -70,22 +70,22 @@ public class AdminController {
     )
     @ResponseBody
     public String passAuthor() {
-        Pager<LoginUserDTO> pager = this.adminService.allWaitPassAuthor(1, 10);
+        Pager<LoginUserDTO> pager = adminService.allWaitPassAuthor(1, 10);
         return JSON.toJSONString(pager);
     }
 
     @PostMapping(value = {"/allWaitPassAuthor/{page}"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String passAuthor(@PathVariable("page") int page) {
-        Pager<LoginUserDTO> pager = this.adminService.allWaitPassAuthor(page, 10);
+        Pager<LoginUserDTO> pager = adminService.allWaitPassAuthor(page, 10);
         return JSON.toJSONString(pager);
     }
 
     @PostMapping(value = {"/passAuthor"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String passAuthor(Model model, int id) {
-        this.adminService.passAuthor(id);
-        Pager<LoginUserDTO> pager = this.adminService.allWaitPassAuthor(1, 10);
+        adminService.passAuthor(id);
+        Pager<LoginUserDTO> pager = adminService.allWaitPassAuthor(1, 10);
         return JSON.toJSONString(pager);
     }
 
@@ -97,7 +97,7 @@ public class AdminController {
     @PostMapping(value = {"/allComments"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String allComments() {
-        Pager<AdminComments> allCommentsPage = this.adminService.getAllCommentsPage(1, 10);
+        Pager<AdminComments> allCommentsPage = adminService.getAllCommentsPage(1, 10);
         return JSON.toJSONString(allCommentsPage);
     }
 
@@ -107,15 +107,15 @@ public class AdminController {
     )
     @ResponseBody
     public String allComments(@PathVariable("page") int page) {
-        Pager<AdminComments> allCommentsPage = this.adminService.getAllCommentsPage(page, 10);
+        Pager<AdminComments> allCommentsPage = adminService.getAllCommentsPage(page, 10);
         return JSON.toJSONString(allCommentsPage);
     }
 
     @RequestMapping(value = {"/delComments"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String delComments(int id) {
-        this.adminService.delComment(id);
-        Pager<AdminComments> allCommentsPage = this.adminService.getAllCommentsPage(1, 10);
+        adminService.delComment(id);
+        Pager<AdminComments> allCommentsPage = adminService.getAllCommentsPage(1, 10);
         return JSON.toJSONString(allCommentsPage);
     }
 
@@ -127,22 +127,22 @@ public class AdminController {
     @RequestMapping(value = {"/allUser"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String allUser() {
-        Pager<AdminUser> allCommentsPage = this.adminService.getAllUserPage(1, 10);
+        Pager<AdminUser> allCommentsPage = adminService.getAllUserPage(1, 10);
         return JSON.toJSONString(allCommentsPage);
     }
 
     @RequestMapping(value = {"/allUser/{page}"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String allUserPage(@PathVariable("page") int page) {
-        Pager<AdminUser> allCommentsPage = this.adminService.getAllUserPage(page, 10);
+        Pager<AdminUser> allCommentsPage = adminService.getAllUserPage(page, 10);
         return JSON.toJSONString(allCommentsPage);
     }
 
     @RequestMapping(value = {"/delUser"}, produces = {"application/json;charset=utf-8"})
     @ResponseBody
     public String delUser(int id) {
-        this.adminService.delUser(id);
-        Pager<AdminUser> allCommentsPage = this.adminService.getAllUserPage(1, 10);
+        adminService.delUser(id);
+        Pager<AdminUser> allCommentsPage = adminService.getAllUserPage(1, 10);
         return JSON.toJSONString(allCommentsPage);
     }
 }

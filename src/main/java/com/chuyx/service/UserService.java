@@ -3,7 +3,7 @@ package com.chuyx.service;
 import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.RegisterDTO;
 import com.chuyx.pojo.dto.UpdateUserDTO;
-import com.chuyx.pojo.model.User;
+import com.chuyx.pojo.po.User;
 
 import java.text.ParseException;
 import java.util.List;
