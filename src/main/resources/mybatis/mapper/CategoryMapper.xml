@@ -11,11 +11,6 @@
             size="512"
             readOnly="true"/>
 
-
-    <select id="getAllCategory" resultType="category">
-        select * from category
-    </select>
-
     <select id="getCategoryById" parameterType="int" resultType="category">
         select * from category where id = #{id}
     </select>

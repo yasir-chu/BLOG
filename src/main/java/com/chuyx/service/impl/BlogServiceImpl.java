@@ -1,5 +1,8 @@
 package com.chuyx.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.BlogMapper;
 import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.NewBlogDTO;
@@ -48,11 +51,6 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> queryBlogByCateId(int categoryId) {
         return this.blogMapper.queryBlogByCateId(categoryId);
-    }
-
-    @Override
-    public List<Blog> queryHotBlog() {
-        return this.blogMapper.queryHotBlog();
     }
 
     @Override
@@ -212,6 +210,20 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public int getAllBlogSize() {
         return this.blogMapper.countSize();
+    }
+
+    @Override
+    public List<Blog> getHotBlog() {
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("visit_count");
+        return blogMapper.selectPage(NormalConstant.RANKING_PAGE, wrapper).getRecords();
+    }
+
+    @Override
+    public List<Blog> getNewestBlog() {
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("release_date");
+        return blogMapper.selectPage(NormalConstant.RANKING_PAGE, wrapper).getRecords();
     }
 
     public List<BlogDTO> pageBlogUtil(List<Blog> blogs) {

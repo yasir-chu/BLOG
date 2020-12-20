@@ -7,7 +7,6 @@ import java.util.List;
 public interface LoginService {
    LoginUserDTO loginCheck(LoginUserDTO loginUser);
 
-   List<Category> getAllCategory();
 
    LoginUserDTO queryUserByName(String name);
 }

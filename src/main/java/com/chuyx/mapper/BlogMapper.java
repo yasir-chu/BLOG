@@ -1,5 +1,6 @@
 package com.chuyx.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.chuyx.pojo.dto.NewBlogDTO;
 import com.chuyx.pojo.model.Blog;
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface BlogMapper {
+public interface BlogMapper extends BaseMapper<Blog> {
 
    /**
     * 查找所有博客列表
@@ -34,12 +35,6 @@ public interface BlogMapper {
     */
     List<Blog> queryBlogByCateId(int categoryId);
 
-   /**
-    * 查找访问量前10的博客
-    *
-    * @return 博客列表
-    */
-    List<Blog> queryHotBlog();
 
    /**
     * 查找最新的10篇博客

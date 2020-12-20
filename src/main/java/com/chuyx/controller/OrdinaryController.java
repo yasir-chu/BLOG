@@ -58,16 +58,6 @@ public class OrdinaryController {
    }
 
    @RequestMapping(
-      value = {"/hotblog"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String hotBlog() {
-      List<Blog> hotBlogs = this.blogService.queryHotBlog();
-      return JSON.toJSONString(hotBlogs);
-   }
-
-   @RequestMapping(
       value = {"/newblogs"},
       produces = {"application/json;charset=utf-8"}
    )
@@ -190,7 +180,7 @@ public class OrdinaryController {
    )
    @ResponseBody
    public String getAllCa() {
-      List<Category> all = this.loginService.getAllCategory();
+      List<Category> all = this.categoryService.getAllCategory();
       return JSON.toJSONString(all);
    }
 

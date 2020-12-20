@@ -16,8 +16,6 @@ public interface BlogService {
 
    List<Blog> queryBlogByCateId(int categoryId);
 
-   List<Blog> queryHotBlog();
-
    List<Blog> queryNewBlog();
 
    Blog queryBlogById(int id);
@@ -43,4 +41,18 @@ public interface BlogService {
    int deleteBlog(int id);
 
    int getAllBlogSize();
+
+   /**
+    * 获取访问量最多的10篇博客
+    *
+    * @return 博客列表
+    */
+   List<Blog> getHotBlog();
+
+   /**
+    * 获取最新的10篇博客
+    *
+    * @return 博客列表
+    */
+   List<Blog> getNewestBlog();
 }
