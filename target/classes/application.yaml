@@ -8,8 +8,8 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源
 
 mybatis:
-  type-aliases-package: com.chuyx.pojo
-  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.chuyx.pojo.*
+  mapper-locations: classpath:mapper/*.xml
 
 # 开启数据库字段映射
   configuration:
