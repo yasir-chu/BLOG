@@ -1,8 +1,8 @@
 package com.chuyx.service;
 
-import com.chuyx.pojo.dto.CommentShowDTO;
-import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.model.Comments;
+import com.chuyx.entity.dto.CommentShowDTO;
+import com.chuyx.entity.dto.Pager;
+import com.chuyx.entity.po.Comments;
 import java.util.List;
 
 public interface CommentsService {

@@ -1,8 +1,8 @@
 package com.chuyx.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.chuyx.pojo.dto.NewBlogDTO;
-import com.chuyx.pojo.model.Blog;
+import com.chuyx.entity.dto.NewBlogDTO;
+import com.chuyx.entity.po.Blog;
 
 import java.util.List;
 

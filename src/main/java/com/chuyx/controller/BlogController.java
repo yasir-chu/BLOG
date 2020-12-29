@@ -1,10 +1,10 @@
 package com.chuyx.controller;
 
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.dto.PublishBlogDTO;
-import com.chuyx.pojo.model.Blog;
+import com.chuyx.entity.dto.BlogDTO;
+import com.chuyx.entity.dto.LoginUserDTO;
+import com.chuyx.entity.dto.Pager;
+import com.chuyx.entity.dto.PublishBlogDTO;
+import com.chuyx.entity.po.Blog;
 import com.chuyx.service.BlogService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

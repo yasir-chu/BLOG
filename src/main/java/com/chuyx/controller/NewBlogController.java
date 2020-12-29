@@ -2,12 +2,9 @@ package com.chuyx.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.chuyx.api.BlogApi;
-import com.chuyx.pojo.model.Blog;
 import com.chuyx.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 /**
  * @author chuyx

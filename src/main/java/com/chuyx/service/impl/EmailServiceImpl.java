@@ -1,6 +1,6 @@
 package com.chuyx.service.impl;
 
-import com.chuyx.pojo.model.User;
+import com.chuyx.entity.po.User;
 import com.chuyx.service.EmailService;
 import com.chuyx.service.UserService;
 import com.chuyx.constant.NormalConstant;

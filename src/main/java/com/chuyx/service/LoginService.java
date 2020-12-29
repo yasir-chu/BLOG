@@ -1,8 +1,6 @@
 package com.chuyx.service;
 
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.model.Category;
-import java.util.List;
+import com.chuyx.entity.dto.LoginUserDTO;
 
 public interface LoginService {
    LoginUserDTO loginCheck(LoginUserDTO loginUser);

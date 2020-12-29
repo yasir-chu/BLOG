@@ -1,11 +1,11 @@
 package com.chuyx.service;
 
-import com.chuyx.pojo.dto.AdminComments;
-import com.chuyx.pojo.dto.AdminIndexMsgDTO;
-import com.chuyx.pojo.dto.AdminUser;
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.Pager;
+import com.chuyx.entity.dto.AdminComments;
+import com.chuyx.entity.dto.AdminIndexMsgDTO;
+import com.chuyx.entity.dto.AdminUser;
+import com.chuyx.entity.dto.BlogDTO;
+import com.chuyx.entity.dto.LoginUserDTO;
+import com.chuyx.entity.dto.Pager;
 
 /**
  * @author yasir.chu

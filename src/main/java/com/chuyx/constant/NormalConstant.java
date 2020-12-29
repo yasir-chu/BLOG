@@ -1,7 +1,7 @@
 package com.chuyx.constant;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.chuyx.pojo.model.Blog;
+import com.chuyx.entity.po.Blog;
 
 /**
  * 常量

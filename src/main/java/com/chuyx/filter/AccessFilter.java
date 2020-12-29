@@ -1,6 +1,6 @@
 package com.chuyx.filter;
 
-import com.chuyx.pojo.dto.LoginUserDTO;
+import com.chuyx.entity.dto.LoginUserDTO;
 
 import java.io.IOException;
 import javax.servlet.Filter;

@@ -2,11 +2,11 @@ package com.chuyx.service.impl;
 
 import com.chuyx.mapper.LogMapper;
 import com.chuyx.mapper.UserMapper;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.RegisterDTO;
-import com.chuyx.pojo.dto.UpdateUserDTO;
-import com.chuyx.pojo.model.Log;
-import com.chuyx.pojo.model.User;
+import com.chuyx.entity.dto.LoginUserDTO;
+import com.chuyx.entity.dto.RegisterDTO;
+import com.chuyx.entity.dto.UpdateUserDTO;
+import com.chuyx.entity.po.Log;
+import com.chuyx.entity.po.User;
 import com.chuyx.service.UserService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

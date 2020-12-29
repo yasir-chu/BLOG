@@ -1,15 +1,15 @@
 package com.chuyx.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.CommentShowDTO;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.dto.RegisterDTO;
-import com.chuyx.pojo.dto.UpdateUserDTO;
-import com.chuyx.pojo.model.Blog;
-import com.chuyx.pojo.model.Category;
-import com.chuyx.pojo.model.User;
+import com.chuyx.entity.dto.BlogDTO;
+import com.chuyx.entity.dto.CommentShowDTO;
+import com.chuyx.entity.dto.LoginUserDTO;
+import com.chuyx.entity.dto.Pager;
+import com.chuyx.entity.dto.RegisterDTO;
+import com.chuyx.entity.dto.UpdateUserDTO;
+import com.chuyx.entity.po.Blog;
+import com.chuyx.entity.po.Category;
+import com.chuyx.entity.po.User;
 import com.chuyx.service.BlogService;
 import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;

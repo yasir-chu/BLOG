@@ -1,9 +1,9 @@
 package com.chuyx.service;
 
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.RegisterDTO;
-import com.chuyx.pojo.dto.UpdateUserDTO;
-import com.chuyx.pojo.model.User;
+import com.chuyx.entity.dto.LoginUserDTO;
+import com.chuyx.entity.dto.RegisterDTO;
+import com.chuyx.entity.dto.UpdateUserDTO;
+import com.chuyx.entity.po.User;
 import java.text.ParseException;
 import java.util.List;
 

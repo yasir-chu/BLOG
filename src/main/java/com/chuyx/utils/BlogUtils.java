@@ -1,7 +1,7 @@
 package com.chuyx.utils;
 
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.model.Blog;
+import com.chuyx.entity.dto.BlogDTO;
+import com.chuyx.entity.po.Blog;
 
 import java.text.SimpleDateFormat;
 

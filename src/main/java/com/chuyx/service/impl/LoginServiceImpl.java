@@ -1,11 +1,8 @@
 package com.chuyx.service.impl;
 
-import com.chuyx.mapper.CategoryMapper;
 import com.chuyx.mapper.UserMapper;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.model.Category;
+import com.chuyx.entity.dto.LoginUserDTO;
 import com.chuyx.service.LoginService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

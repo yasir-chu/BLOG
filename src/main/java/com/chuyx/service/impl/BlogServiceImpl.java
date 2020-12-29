@@ -1,16 +1,15 @@
 package com.chuyx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.BlogMapper;
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.NewBlogDTO;
-import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.dto.PublishBlogDTO;
-import com.chuyx.pojo.model.Blog;
-import com.chuyx.pojo.model.Category;
-import com.chuyx.pojo.model.User;
+import com.chuyx.entity.dto.BlogDTO;
+import com.chuyx.entity.dto.NewBlogDTO;
+import com.chuyx.entity.dto.Pager;
+import com.chuyx.entity.dto.PublishBlogDTO;
+import com.chuyx.entity.po.Blog;
+import com.chuyx.entity.po.Category;
+import com.chuyx.entity.po.User;
 import com.chuyx.service.BlogService;
 import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;

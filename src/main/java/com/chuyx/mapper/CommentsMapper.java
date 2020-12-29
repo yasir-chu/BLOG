@@ -1,8 +1,8 @@
 package com.chuyx.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.chuyx.pojo.dto.CommentDTO;
-import com.chuyx.pojo.model.Comments;
+import com.chuyx.entity.dto.CommentDTO;
+import com.chuyx.entity.po.Comments;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

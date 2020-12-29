@@ -1,8 +1,8 @@
 package com.chuyx.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.model.User;
+import com.chuyx.entity.dto.LoginUserDTO;
+import com.chuyx.entity.po.User;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

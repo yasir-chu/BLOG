@@ -1,7 +1,7 @@
 package com.chuyx.service.impl;
 
 import com.chuyx.mapper.UserMapper;
-import com.chuyx.pojo.dto.LoginUserDTO;
+import com.chuyx.entity.dto.LoginUserDTO;
 import com.chuyx.service.LoginUserService;
 import java.util.ArrayList;
 import java.util.Collection;

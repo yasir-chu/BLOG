@@ -1,13 +1,13 @@
 package com.chuyx.service.impl;
 
 import com.chuyx.mapper.CommentsMapper;
-import com.chuyx.pojo.dto.CommentDTO;
-import com.chuyx.pojo.dto.CommentShowDTO;
-import com.chuyx.pojo.dto.CommentShowMsgDTO;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.model.Comments;
-import com.chuyx.pojo.model.User;
+import com.chuyx.entity.dto.CommentDTO;
+import com.chuyx.entity.dto.CommentShowDTO;
+import com.chuyx.entity.dto.CommentShowMsgDTO;
+import com.chuyx.entity.dto.LoginUserDTO;
+import com.chuyx.entity.dto.Pager;
+import com.chuyx.entity.po.Comments;
+import com.chuyx.entity.po.User;
 import com.chuyx.service.CommentsService;
 import com.chuyx.service.UserService;
 import java.text.SimpleDateFormat;
