@@ -1,9 +1,12 @@
 package com.chuyx.service;
 
 import com.chuyx.pojo.dto.BlogDTO;
+import com.chuyx.pojo.dto.BlogWrapper;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.dto.PublishBlogDTO;
 import com.chuyx.pojo.model.Blog;
+import com.chuyx.pojo.vo.BlogBaseVO;
+
 import java.util.List;
 
 /**
@@ -55,4 +58,19 @@ public interface BlogService {
     * @return 博客列表
     */
    List<Blog> getNewestBlog();
+
+   /**
+    * 分页获取博客
+    * @param req 分页信息
+    * @return 分页结果
+    */
+   Pager<BlogBaseVO> queryPageBlog(BlogWrapper.QueryPageDTO req);
+
+   /**
+    * 获取一篇博客
+    *
+    * @param id 博客id
+    * @return 博客列表
+    */
+   BlogBaseVO queryBlogById(Integer id);
 }

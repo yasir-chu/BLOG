@@ -18,7 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
 
    @Override
    public Category getCategoryById(int id) {
-      return this.categoryMapper.getCategoryById(id);
+      return categoryMapper.selectById(id);
    }
 
    @Override

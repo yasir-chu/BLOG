@@ -7,12 +7,15 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.sql.Date;
 
+/**
+ * @author yasir.chu
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Blog implements Serializable {
-   private int id;
 
+   private int id;
 
    private int uid;
 

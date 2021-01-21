@@ -1,16 +1,15 @@
 package com.chuyx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.BlogMapper;
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.NewBlogDTO;
-import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.dto.PublishBlogDTO;
+import com.chuyx.pojo.dto.*;
 import com.chuyx.pojo.model.Blog;
 import com.chuyx.pojo.model.Category;
 import com.chuyx.pojo.model.User;
+import com.chuyx.pojo.vo.BlogBaseVO;
 import com.chuyx.service.BlogService;
 import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;
@@ -23,9 +22,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.chuyx.utils.DozerUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -224,6 +225,69 @@ public class BlogServiceImpl implements BlogService {
         QueryWrapper<Blog> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("release_date");
         return blogMapper.selectPage(NormalConstant.RANKING_PAGE, wrapper).getRecords();
+    }
+
+    @Override
+    public Pager<BlogBaseVO> queryPageBlog(BlogWrapper.QueryPageDTO req) {
+        Pager<BlogBaseVO> result = new Pager<>();
+        ArrayList<BlogBaseVO> rows = new ArrayList<>();
+        Page<Blog> page = new Page<>(req.getPage(), req.getSize());
+        IPage<Blog> blog = blogMapper.selectPage(page, null);
+        if (CollectionUtils.isEmpty(page.getRecords())){
+            return result;
+        }
+        blog.getRecords().forEach((a) -> {
+            rows.add(blogToBlogVO(a));
+        });
+        result.setPage(req.getPage());
+        result.setRows(rows);
+        result.setTotal(blog.getTotal());
+        result.setSize(req.getSize());
+        return result;
+    }
+
+    @Override
+    public BlogBaseVO queryBlogById(Integer id) {
+        Blog blog = blogMapper.selectById(id);
+        return blogToBlogVO(blog);
+    }
+
+
+    /**
+     * blog实体类转blog视图类
+     *
+     * @param blog 实体类
+     * @return 视图类
+     */
+    private BlogBaseVO blogToBlogVO(Blog blog) {
+        BlogBaseVO result = DozerUtil.map(blog, BlogBaseVO.class);
+        setBlogVoData(blog, result);
+        Category category = categoryService.getCategoryById(blog.getCategoryId());
+        result.setCategory(category.getName());
+        User user = userService.queryUserById(blog.getUid());
+        if (user != null) {
+            result.setAuthor(user.getUname());
+        }
+        int count = commentsService.queryCountByBlogId(blog.getId());
+        result.setCount(count);
+        return result;
+    }
+
+    /**
+     * 将blog的发布时间分成年月日
+     *
+     * @param blog 博客po
+     * @param blogVo 博客vo
+     */
+    private void setBlogVoData(Blog blog, BlogBaseVO blogVo) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String releaseTime = simpleDateFormat.format(blog.getReleaseDate());
+        String year = releaseTime.substring(0, 4);
+        blogVo.setYear(year);
+        String month = releaseTime.substring(5, 7);
+        blogVo.setMonth(month);
+        String day = releaseTime.substring(8, 10);
+        blogVo.setDay(day);
     }
 
     public List<BlogDTO> pageBlogUtil(List<Blog> blogs) {
