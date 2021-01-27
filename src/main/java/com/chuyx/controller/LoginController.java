@@ -9,6 +9,7 @@ import com.chuyx.pojo.dto.RegisterDTO;
 import com.chuyx.pojo.model.Blog;
 import com.chuyx.pojo.model.Category;
 import com.chuyx.pojo.model.User;
+import com.chuyx.pojo.vo.BlogBaseVO;
 import com.chuyx.service.BlogService;
 import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;
@@ -25,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.chuyx.wrapper.BlogWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +35,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -120,7 +124,7 @@ public class LoginController {
    )
    @ResponseBody
    public String checkOldPwd(@PathVariable("username") String username, @PathVariable("oldPwd") String oldPwd) {
-      LoginUserDTO loginUserDTO = this.loginService.queryUserByName(username);
+      LoginUserDTO loginUserDTO = loginService.queryUserByName(username);
       BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
       Map<String, Integer> map = new HashMap();
       if (bCryptPasswordEncoder.matches(oldPwd, loginUserDTO.getPassword())) {
@@ -128,7 +132,6 @@ public class LoginController {
       } else {
          map.put("bo", 1);
       }
-
       String s = JSON.toJSONString(map);
       return s;
    }
@@ -150,15 +153,12 @@ public class LoginController {
       return JSON.toJSONString(shows);
    }
 
-   @RequestMapping(
-      value = {"/capacityShow"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String capacityShow(HttpServletResponse response) throws IOException {
-      List<Category> allCategory = this.loginService.getAllCategory();
-      return JSON.toJSONString(allCategory);
-   }
+//   @PostMapping(value = {"/capacityShow"}, produces = {"application/json;charset=utf-8"})
+//   @ResponseBody
+//   public String capacityShow(HttpServletResponse response) throws IOException {
+//      List<Category> allCategory = this.loginService.getAllCategory();
+//      return JSON.toJSONString(allCategory);
+//   }
 
    public List<BlogDTO> allBlog() {
       List<Blog> blogs = this.blogService.queryAllBlog();

@@ -7,6 +7,9 @@ import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.Pager;
 
+/**
+ * @author yasir.chu
+ */
 public interface AdminService {
    AdminIndexMsgDTO toAdmin();
 

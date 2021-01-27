@@ -123,8 +123,8 @@
         NProgress.done();
 
         $.ajax({
-            type: "get",
-            url: "/capacityShow",
+            type: "post",
+            url: "/capacity/getAllOrdinary",
             data: null,
             success: function (data) {
                 var opention = "";

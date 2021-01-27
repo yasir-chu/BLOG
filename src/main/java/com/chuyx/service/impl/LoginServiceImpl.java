@@ -13,17 +13,14 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
    @Autowired
    UserMapper userMapper;
-   @Autowired
-   CategoryMapper categoryMapper;
 
+   @Override
    public LoginUserDTO loginCheck(LoginUserDTO loginUser) {
       return null;
    }
 
-   public List<Category> getAllCategory() {
-      return this.categoryMapper.getAllCategory();
-   }
 
+   @Override
    public LoginUserDTO queryUserByName(String name) {
       return this.userMapper.queryUserByUsername(name);
    }

@@ -1,14 +1,12 @@
 package com.chuyx.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.chuyx.pojo.model.Category;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface CategoryMapper {
-   List<Category> getAllCategory();
-
+public interface CategoryMapper extends BaseMapper<Category> {
    Category getCategoryById(int id);
 }

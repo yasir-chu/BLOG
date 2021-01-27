@@ -103,7 +103,7 @@
 						<aside class="f-oh footer">
 							<div class="f-fl tags">
 								<span class="fa fa-tags fs-16"></span>
-								<a class="tag" th:text="${blogDTO.getCatecoty()}"></a>
+								<a class="tag" th:text="${blogDTO.getCategory()}"></a>
 							</div>
 							<div class="f-fr">
 								<span class="read">
@@ -367,8 +367,8 @@
 
 
 		$.ajax({
-			type: "get",
-			url: "/capacityShow",
+			type: "post",
+			url: "/ordinaryApi/getAllOrdinary",
 			data: null,
 			success: function (data) {
 				//<li data-index="1"><a href="/Blog/Article">全部文章</a></li>
@@ -383,8 +383,8 @@
 		});
 
 		$.ajax({
-			type: "get",
-			url: "/ordinary/hotblog",
+			type: "post",
+			url: "/blog/getHotBlog",
 			data: null,
 			success: function (data) {
 				for (var i = 0; i < data.length; i++){
@@ -394,8 +394,8 @@
 		});
 
 		$.ajax({
-			type: "get",
-			url: "/ordinary/newblogs",
+			type: "post",
+			url: "/blog/getNewestBlog",
 			data: null,
 			success: function (data) {
 				for (var i = 0; i < data.length; i++){

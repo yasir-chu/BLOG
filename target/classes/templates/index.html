@@ -28,7 +28,7 @@
             <li><a th:if="${session.userMsg eq null}" th:href="@{/ordinary/toLogin}">登录</a></li>
             <li><a th:if="${session.userMsg eq null}" th:href="@{/ordinary/tosignup}">注册</a></li>
             <li><a th:href="@{/blog}">博客</a></li>
-            <li><a href="http://chuyx.top/chuyxmsg">chuyx的简历</a></li>
+<!--            <li><a href="http://chuyx.top/chuyxmsg">chuyx的简历</a></li>-->
         </ul>
         <div class="logo"><a>Chuyx`Blog</a></div>
     </div>
@@ -39,7 +39,7 @@
                     <h1>chuyx</h1>
                     <p>一定要成为优秀的男人</p>
 					<p>Please & Love</p>
-                    <a class="layui-btn layui-btn-normal" style="margin-top: 20px" th:href="@{/blog}">Enter Blog</a>
+                    <a class="layui-btn layui-btn-normal" style="margin-top: 20px" th:href="@{/views/blogPage}">Enter Blog</a>
                 </div>
                 <a class="next wow fadeInUp" data-wow-duration="2s" id="next"></a>
             </div>
@@ -108,17 +108,17 @@
                             <div class="footer-logo">
                                 <h2>宇翔</h2>
                             </div>
-                            <p>A time will come for me to ride the wind and cleane the waves!</p>
-                            <div class="button">
-                                <a href="http://chuyx.top/chuyxmsg/" class="btn layui-btn layui-btn-normal">简 历</a>
-                            </div>
+                            <p style="color:#1EC8D1">须知少年凌云志！</p>
+<!--                            <div class="button">-->
+<!--                                <a href="http://chuyx.top/chuyxmsg/" class="btn layui-btn layui-btn-normal">简 历</a>-->
+<!--                            </div>-->
                         </div>
                     </div>
                     <div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
                         <div class="single-widget">
                             <h2>相关链接</h2>
                             <ul class="social-icon">
-                                <li class="active"><a href="https://blog.csdn.net/AK_bigboy" target="_blank"><i class="fa fa-book"></i>博文</a></li>
+                                <li class="active" style="color: #0F9E5E"><a href="https://blog.csdn.net/AK_bigboy" target="_blank" style="color:#E9B428"><i class="fa fa-book"></i>博文</a></li>
 <!--                                <li class="active"><a href="#"><i class="fa fa-comments"></i>留言</a></li>-->
 <!--                                <li class="active"><a href="#"><i class="fa fa-share"></i>资源</a></li>-->
 <!--                                <li class="active"><a href="#"><i class="fa fa-snowflake-o"></i>日记</a></li>-->
@@ -130,9 +130,9 @@
                         <div class="single-widget contact">
                             <h2>联系我</h2>
                             <ul class="list">
-                                <li><i class="fa fa-map"></i>地址: 湖南工业大学26栋</li>
-                                <li><i class="fa fa-qq"></i>QQ: 205084601 </li>
-                                <li><i class="fa fa-envelope"></i>邮箱: cyx_serendipity@126.com</li>
+                                <li style="color:#BB3AB4"><i class="fa fa-map"></i>地址: 深圳市南山区</li>
+                                <li style="color:#BB3AB4"><i class="fa fa-qq"></i>QQ: 205084601 </li>
+                                <li style="color:#BB3AB4"><i class="fa fa-envelope"></i>邮箱: cyx_serendipity@126.com</li>
                             </ul>
                         </div>
                     </div>

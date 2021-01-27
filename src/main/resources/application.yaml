@@ -6,13 +6,27 @@ spring:
     url: jdbc:mysql://localhost:3306/chuyxblog?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源
+  mail:
+    username: cyx_serendipity@126.com
+    password: TUOEHWMMYZSKMUFK
+    host: smtp.126.com
+    default-encoding: utf-8
+    # qq需要配置ssl
+    properties.mail.smtp.ssl.enable: true
 
-mybatis:
-  type-aliases-package: com.chuyx.pojo.*
-  mapper-locations: classpath:mapper/*.xml
+#mybatis:
+#  type-aliases-package: com.chuyx.pojo
+#  mapper-locations: classpath:mybatis/mapper/*.xml
 
 # 开启数据库字段映射
-  configuration:
-    map-underscore-to-camel-case: true
+#  configuration:
+#    map-underscore-to-camel-case: true
 server:
   port: 8088
+mybatis-plus:
+  type-aliases-package: com.chuyx.pojo.*
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
