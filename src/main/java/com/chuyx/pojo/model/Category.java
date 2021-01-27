@@ -18,9 +18,15 @@ import java.io.Serializable;
 @TableName("category")
 public class Category implements Serializable {
 
+   /**
+    * 主键id
+    */
    @TableId
-   private int id;
+   private Integer id;
 
+   /**
+    * 类别名
+    */
    @TableField("name")
    private String name;
 }

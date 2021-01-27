@@ -1,6 +1,8 @@
 package com.chuyx.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
@@ -22,7 +24,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.chuyx.utils.DateUtils;
 import com.chuyx.utils.DozerUtil;
+import com.chuyx.utils.NormalUtils;
+import com.chuyx.wrapper.BlogWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -232,24 +237,41 @@ public class BlogServiceImpl implements BlogService {
         Pager<BlogBaseVO> result = new Pager<>();
         ArrayList<BlogBaseVO> rows = new ArrayList<>();
         Page<Blog> page = new Page<>(req.getPage(), req.getSize());
-        IPage<Blog> blog = blogMapper.selectPage(page, null);
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        if (req.getOrdinaryId() != null){
+            wrapper.eq("categoryId", req.getOrdinaryId());
+        }
+        IPage<Blog> blog = blogMapper.selectPage(page, wrapper);
         if (CollectionUtils.isEmpty(page.getRecords())){
             return result;
         }
-        blog.getRecords().forEach((a) -> {
-            rows.add(blogToBlogVO(a));
-        });
-        result.setPage(req.getPage());
-        result.setRows(rows);
-        result.setTotal(blog.getTotal());
-        result.setSize(req.getSize());
-        return result;
+        blog.getRecords().forEach((a) -> rows.add(blogToBlogVO(a)));
+        return NormalUtils.pagerRows(blog, rows);
     }
 
     @Override
     public BlogBaseVO queryBlogById(Integer id) {
         Blog blog = blogMapper.selectById(id);
         return blogToBlogVO(blog);
+    }
+
+    @Override
+    public Integer save(BlogWrapper.SaveBlogDTO req) {
+        Blog blog = DozerUtil.map(req, Blog.class);
+        blog.setReleaseDate(DateUtils.getSqlNowDate());
+        // todo 获取uid 并set session
+        if (blog.getId() != null){
+            return blogMapper.updateById(blog);
+        }
+        return blogMapper.insert(blog);
+    }
+
+    @Override
+    public Integer softDeleteBlog(Integer id) {
+        if (id == null){
+            return 0;
+        }
+        return blogMapper.deleteById(id);
     }
 
 

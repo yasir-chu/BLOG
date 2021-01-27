@@ -1,11 +1,11 @@
 package com.chuyx.service;
 
 import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.BlogWrapper;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.dto.PublishBlogDTO;
 import com.chuyx.pojo.model.Blog;
 import com.chuyx.pojo.vo.BlogBaseVO;
+import com.chuyx.wrapper.BlogWrapper;
 
 import java.util.List;
 
@@ -73,4 +73,18 @@ public interface BlogService {
     * @return 博客列表
     */
    BlogBaseVO queryBlogById(Integer id);
+
+   /**
+    * 保存博客
+    * @param req 博客信息
+    * @return 0为失败，其他为成功
+    */
+   Integer save(BlogWrapper.SaveBlogDTO req);
+
+   /**
+    * 删除博客  软删除
+    * @param id 博客id
+    * @return 删除数量  为0就是失败
+    */
+   Integer softDeleteBlog(Integer id);
 }

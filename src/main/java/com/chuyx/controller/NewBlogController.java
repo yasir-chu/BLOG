@@ -2,13 +2,10 @@ package com.chuyx.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.chuyx.api.BlogApi;
-import com.chuyx.pojo.dto.BlogWrapper;
-import com.chuyx.pojo.model.Blog;
 import com.chuyx.service.BlogService;
+import com.chuyx.wrapper.BlogWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 /**
  * @author chuyx
@@ -33,11 +30,21 @@ public class NewBlogController implements BlogApi {
 
     @Override
     public String queryPageBlog(BlogWrapper.QueryPageDTO req) {
-        return null;
+        return JSON.toJSONString(blogService.queryPageBlog(req));
     }
 
     @Override
-    public String queryBlogById(Integer id) {
-        return JSON.toJSONString(blogService.queryBlogById(id));
+    public String queryBlogById(BlogWrapper.QueryBlogDTO req) {
+        return JSON.toJSONString(blogService.queryBlogById(req.getId()));
+    }
+
+    @Override
+    public Integer save(BlogWrapper.SaveBlogDTO req) {
+        return blogService.save(req);
+    }
+
+    @Override
+    public Integer softDelete(BlogWrapper.SoftDeleteDTO req) {
+        return blogService.softDeleteBlog(req.getId());
     }
 }
