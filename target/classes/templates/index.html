@@ -25,8 +25,8 @@
     <div id="navgation" class="navgation navgation_close">
         <ul class="point">
             <li><a th:href="@{/index}">首页</a></li>
-            <li><a th:if="${session.userMsg eq null}" th:href="@{/ordinary/toLogin}">登录</a></li>
-            <li><a th:if="${session.userMsg eq null}" th:href="@{/ordinary/tosignup}">注册</a></li>
+            <li><a th:if="${session.userMsg eq null}" th:href="@{/views/login}">登录</a></li>
+            <li><a th:if="${session.userMsg eq null}" th:href="@{/views/signUp}">注册</a></li>
             <li><a th:href="@{/views/blogPage}">博客</a></li>
 <!--            <li><a href="http://chuyx.top/chuyxmsg">chuyx的简历</a></li>-->
         </ul>

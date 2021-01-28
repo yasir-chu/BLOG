@@ -70,8 +70,8 @@ public class BlogServiceImpl implements BlogService {
 //    }
 
     @Override
-    public void updateBlogVisitCount(Blog blog) {
-        this.blogMapper.updateBlogVisitCount(blog);
+    public Integer updateBlogVisitCount(Integer visitCount, Integer id) {
+        return blogMapper.updateBlogVisitCount(visitCount, id);
     }
 
     @Override
@@ -252,6 +252,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public BlogBaseVO queryBlogById(Integer id) {
         Blog blog = blogMapper.selectById(id);
+
         return blogToBlogVO(blog);
     }
 

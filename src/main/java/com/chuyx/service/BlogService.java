@@ -23,7 +23,11 @@ public interface BlogService {
 
   // Blog queryBlogById(int id);
 
-   void updateBlogVisitCount(Blog blog);
+   /**
+    * 更新博客访问量
+    * @param visitCount 更新值
+    */
+   Integer updateBlogVisitCount(Integer visitCount, Integer id);
 
    List<Blog> queryCapacityBlog(int capaId);
 

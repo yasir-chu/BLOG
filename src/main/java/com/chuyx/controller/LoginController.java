@@ -53,11 +53,6 @@ public class LoginController {
    @Autowired
    UserService userService;
 
-   @RequestMapping({"/", "/index"})
-   public String index() {
-      return "index";
-   }
-
    @RequestMapping({"/loginCheck"})
    public String loginCheck(LoginUserDTO loginUser, HttpSession session, Model model) {
       LoginUserDTO loginUserDTO = this.loginService.queryUserByName(loginUser.getUname());

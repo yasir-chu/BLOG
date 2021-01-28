@@ -42,10 +42,10 @@
                     </ul>
                 </nav>
                 <div style="float: right;font-size: 15px; font-weight: 600;line-height: 60px;">
-                    <a href="/ordinary/toLogin" class="layui-btn layui-btn-normal" th:if="${session.userMsg eq null}">
+                    <a href="/views/login" class="layui-btn layui-btn-normal" th:if="${session.userMsg eq null}">
                         <i class="">登录</i>
                     </a>
-                    <a href="/ordinary/tosignup" class="layui-btn" th:if="${session.userMsg eq null}">
+                    <a href="/views/signUp" class="layui-btn" th:if="${session.userMsg eq null}">
                         <i class="">注册</i>
                     </a>
                     &ensp;
