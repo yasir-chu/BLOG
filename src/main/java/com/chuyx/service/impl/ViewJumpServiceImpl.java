@@ -40,9 +40,8 @@ public class ViewJumpServiceImpl implements ViewJumpService {
      */
     private void updateVisitCount(Blog blog) {
         Integer visitCount = blog.getVisitCount();
-        blog.setVisitCount(++visitCount);
-        BlogWrapper.SaveBlogDTO update = DozerUtil.map(blog, BlogWrapper.SaveBlogDTO.class);
-        Integer save = blogService.save(update);
+        visitCount += 1;
+        Integer save = blogService.updateBlogVisitCount(visitCount, blog.getId());
         if (save < 1){
             log.info("更新博客访问量失败");
         }

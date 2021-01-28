@@ -7,6 +7,7 @@ import com.chuyx.pojo.model.Blog;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Mapper
@@ -53,7 +54,7 @@ public interface BlogMapper extends BaseMapper<Blog> {
    /**
     * 更新博客访问量
     */
-    void updateBlogVisitCount(Blog blog);
+    Integer updateBlogVisitCount(@Param("visitCount") Integer visitCount, @Param("id") Integer id);
 
     List<Blog> queryCapacityBlog(int capaId);
 

@@ -38,7 +38,7 @@
     </select>
 
 <!--    更新访问次数-->
-    <update id="updateBlogVisitCount" parameterType="blog">
+    <update id="updateBlogVisitCount" parameterType="java.lang.Integer">
         UPDATE blog set visit_count = #{visitCount} where id = #{id};
     </update>
 

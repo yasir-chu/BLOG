@@ -71,7 +71,7 @@ public class OrdinaryController {
    public String read(@PathVariable("id") int id, Model model) {
       Blog blog = this.blogService.queryBlogById(id);
       blog.setVisitCount(blog.getVisitCount() + 1);
-      this.blogService.updateBlogVisitCount(blog);
+      this.blogService.updateBlogVisitCount(blog.getVisitCount(), id);
       BlogDTO blogDTO = new BlogDTO();
       blogDTO = BlogUtils.BolgDateToYMD(blog, blogDTO);
       model.addAttribute("blog", blogDTO);
