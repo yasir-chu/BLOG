@@ -72,7 +72,7 @@ public interface BlogService {
     * @param id 博客id
     * @return 博客列表
     */
-   BlogBaseVO queryBlogById(Integer id);
+   BlogBaseVO queryBlogById2(Integer id);
 
    /**
     * 保存博客

@@ -44,7 +44,7 @@ public class AccessFilter implements Filter {
             chain.doFilter(request, response);
         } else if (requestURI.contains("updateUserMsg")) {
             session.setAttribute("errMsg", "您还未登陆！！！");
-            servletResponse.sendRedirect("/ordinary/toLogin");
+            servletResponse.sendRedirect("/views/login");
         } else {
             servletRequest.getRequestDispatcher("/failed").forward(request, response);
         }

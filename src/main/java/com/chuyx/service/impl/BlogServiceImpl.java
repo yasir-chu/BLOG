@@ -250,7 +250,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogBaseVO queryBlogById(Integer id) {
+    public BlogBaseVO queryBlogById2(Integer id) {
         Blog blog = blogMapper.selectById(id);
         return blogToBlogVO(blog);
     }
