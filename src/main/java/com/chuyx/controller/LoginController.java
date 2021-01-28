@@ -1,6 +1,7 @@
 package com.chuyx.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.chuyx.constant.NormalConstant;
 import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.CommentShowDTO;
 import com.chuyx.pojo.dto.LoginUserDTO;
@@ -95,7 +96,7 @@ public class LoginController {
       this.userService.addUser(registerDTO);
       LoginUserDTO loginUserDTO = this.loginService.queryUserByName(registerDTO.getUsername());
       session.setAttribute("userMsg", loginUserDTO);
-      Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
+      Pager<BlogBaseVO> result = this.blogService.queryPageBlog(new BlogWrapper.QueryPageDTO(NormalConstant.TOP_SIZE, NormalConstant.ONE, null));
       model.addAttribute("blogDTOS", result);
       return "ordinary/article";
    }

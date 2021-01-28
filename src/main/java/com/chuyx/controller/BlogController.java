@@ -64,8 +64,8 @@ public class BlogController {
 
    @RequestMapping({"/userBlog/toupdate/{id}"})
    public String blogMangerUpdateBlog(@PathVariable("id") int id, Model model) {
-      Blog blog = this.blogService.queryBlogById(id);
-      model.addAttribute("updateBlog", blog);
+//      Blog blog = this.blogService.queryBlogById(id);
+      model.addAttribute("updateBlog", null);
       return "author/updateBlog";
    }
 

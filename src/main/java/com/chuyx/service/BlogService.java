@@ -21,7 +21,7 @@ public interface BlogService {
 
    List<Blog> queryNewBlog();
 
-   Blog queryBlogById(int id);
+  // Blog queryBlogById(int id);
 
    void updateBlogVisitCount(Blog blog);
 

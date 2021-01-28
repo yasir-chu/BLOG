@@ -9,14 +9,14 @@
 	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 
 	<!-- Bootstrap -->
-	<link th:href="@{../../css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{../../../css/bootstrap.min.css}" rel="stylesheet">
 	<title>博客主页</title>
-	<link rel="stylesheet" th:href="@{../../font-awesome/css/font-awesome.min.css}">
-	<link rel="stylesheet" th:href="@{../../layui/css/layui.css}"/>
-	<link rel="stylesheet" th:href="@{../../css/master.css}"/>
-	<link rel="stylesheet" th:href="@{../../css/gloable.css}"/>
-	<link rel="stylesheet" th:href="@{../../css/nprogress.css}"/>
-	<link rel="stylesheet" th:href="@{../../css/blog.css}"/>
+	<link rel="stylesheet" th:href="@{../../../font-awesome/css/font-awesome.min.css}">
+	<link rel="stylesheet" th:href="@{../../../layui/css/layui.css}"/>
+	<link rel="stylesheet" th:href="@{../../../css/master.css}"/>
+	<link rel="stylesheet" th:href="@{../../../css/gloable.css}"/>
+	<link rel="stylesheet" th:href="@{../../../css/nprogress.css}"/>
+	<link rel="stylesheet" th:href="@{../../../css/blog.css}"/>
 	<link rel="shortcut icon" href="/favicon1.ico"/>
 	<style type="text/css">
 		.hover:hover {
@@ -39,7 +39,7 @@
 			<nav class="nav" id="nav">
 				<ul>
 					<li><a href="/index">首页</a></li>
-					<li><a href="/blog">博客</a></li>
+					<li><a href="/views/blogPage">博客</a></li>
 					<li style="width: 50px;"></li>
 				</ul>
 			</nav>
@@ -66,7 +66,7 @@
 							<li><a style="color: #0F9E5E" href="#" th:if="${session.userMsg.getCapacity() eq -1}">博主申请中</a></li>
 							<li><a th:href="@{/author/blogManger}" th:if="${session.userMsg.getCapacity() gt 0}">作品管理</a></li>
 							<li><a th:href="@{/author/toPublishBlog}" th:if="${session.userMsg.getCapacity() gt 0}">写博客</a></li>
-							<li><a th:href="@{/signout}">注销</a></li>
+							<li><a th:href="@{/views/signOut/bye}">注销</a></li>
 						</ul>
 					</li>
 					<input type="hidden" th:value="${session.userMsg.getUid()}" id="userId">
@@ -87,7 +87,7 @@
 						<div class="fc-flag" th:text="${blogDTO.getAuthor()}"></div>
 						<h5 class="title">
 <!--							<span class="fc-blue">【原创】</span>-->
-							<a th:href="@{/ordinary/read/{id}(id=${blogDTO.getId()})}" th:text="${blogDTO.getTitle()}"></a>
+							<a th:href="@{/views/blog/read/{id}(id=${blogDTO.getId()})}" th:text="${blogDTO.getTitle()}"></a>
 						</h5>
 						<div class="time">
 							<span class="day" th:text="${blogDTO.getDay()}">21</span>
@@ -214,14 +214,14 @@
 	<input type="hidden" th:value="${blogDTOS.getPage()}" id="nowPage">
 	<input type="hidden" th:value="${blogDTOS.getCataId() eq 0?0:blogDTOS.getCataId()}" id="cata">
 </footer>
-<script th:src="@{../../layui/layui.js}"></script>
-<script th:src="@{../../js/yss/gloable.js}"></script>
-<script th:src="@{../../js/plugins/nprogress.js}"></script>
+<script th:src="@{../../../layui/layui.js}"></script>
+<script th:src="@{../../../js/yss/gloable.js}"></script>
+<script th:src="@{../../../js/plugins/nprogress.js}"></script>
 <script>NProgress.start();</script>
-<script th:src="@{../../js/yss/article.js}"></script>
-<script th:src="@{../../js/jquery-2.1.4.min.js}"></script>
+<script th:src="@{../../../js/yss/article.js}"></script>
+<script th:src="@{../../../js/jquery-2.1.4.min.js}"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script th:src="@{../../js/bootstrap.min.js}"></script>
+<script th:src="@{../../../js/bootstrap.min.js}"></script>
 <script>
 	window.onload = function () {
 		NProgress.done();
@@ -255,151 +255,96 @@
 		var size = $("#pageSize").val();
 		var nowPage = $("#nowPage").val();
 		var cataId = $("#cata").val();
-		if(cataId == 0){
-			var beforNum = parseInt(nowPage)-1;
-			if(beforNum <= 0){
-				beforNum=1
-			}
-			$("#pageBar").append("<li>\n" +
-					"<a href='/ordinary/page/"+beforNum+"' aria-label='Previous'>\n" +
-					"<span aria-hidden='true'>&laquo;</span>\n" +
-					"</a>\n" +
-					"</li>");
-			/*
-                    分页做到前5后4
-                    若前面不足4个，后面补齐
-                    若后面不足4个，则前面补齐
-                    */
-			//定义开始位置begin和结束位置end
-			var begin;
-			var end;
-			if(size<=10){
-				begin = 1;
-				end = size;
-			}else{
-				begin = nowPage - 5;
-				end = nowPage + 4;
-				//补齐
-				if(begin<1){
-					begin=1;
-					end = 10;
-				}
-				if(end>size){
-					end=size;
-					begin = end - 9;
-				}
-			}
-			//显示10个页码
-			var li = "";
-			for (var i = begin; i <= end; i++){
-				if (i == nowPage){
-					li +=	"<li><a style='background-color: #75BDEE;' href='/ordinary/page/"+i+"'>"+i+"</a></li>"
-				}else{
-					li +=	"<li><a href='/ordinary/page/"+i+"'>"+i+"</a></li>"
-				}
-			}
-			$("#pageBar").append(li);
-			var nextNum = parseInt(nowPage)+1;
-			if(nextNum > size){
-				nextNum=size
-			}
-			$("#pageBar").append("<li>\n" +
-					"<a href='/ordinary/page/"+nextNum+"' aria-label='Next'>\n" +
-					"<span aria-hidden='true'>&raquo;</span>\n" +
-					"</a>\n" +
-					"</li>");
-		}else{
-			var beforNum = parseInt(nowPage)-1;
-			if(beforNum <= 0){
-				beforNum=1
-			}
-			$("#pageBar").append("<li>\n" +
-					"<a href='/ordinary/page/"+cataId+"/"+beforNum+"' aria-label='Previous'>\n" +
-					"<span aria-hidden='true'>&laquo;</span>\n" +
-					"</a>\n" +
-					"</li>");
-			/*
-                    分页做到前5后4
-                    若前面不足4个，后面补齐
-                    若后面不足4个，则前面补齐
-                    */
-			//定义开始位置begin和结束位置end
-			var begin;
-			var end;
-			if(size<=10){
-				begin = 1;
-				end = size;
-			}else{
-				begin = nowPage - 5;
-				end = nowPage + 4;
-				//补齐
-				if(begin<1){
-					begin=1;
-					end = 10;
-				}
-				if(end>size){
-					end=size;
-					begin = end - 9;
-				}
-			}
-			//显示10个页码
-			var li = "";
-			for (var i = begin; i <= end; i++){
-				if (i == nowPage){
-					li +=	"<li><a style='background-color: #75BDEE;' href='/ordinary/page/"+cataId+"/"+i+"'>"+i+"</a></li>"
-				}else{
-					li +=	"<li><a href='/ordinary/page/"+cataId+"/"+i+"'>"+i+"</a></li>"
-				}
-			}
-			$("#pageBar").append(li);
-			var nextNum = parseInt(nowPage)+1;
-			if(nextNum > size){
-				nextNum=size
-			}
-			$("#pageBar").append("<li>\n" +
-					"<a href='/ordinary/page/"+cataId+"/"+nextNum+"' aria-label='Next'>\n" +
-					"<span aria-hidden='true'>&raquo;</span>\n" +
-					"</a>\n" +
-					"</li>");
+
+		var beforNum = parseInt(nowPage)-1;
+		if(beforNum <= 0){
+			beforNum=1
 		}
+		$("#pageBar").append("<li>\n" +
+				"<a href='/views/blogPage/"+cataId+"/"+beforNum+"' aria-label='Previous'>\n" +
+				"<span aria-hidden='true'>&laquo;</span>\n" +
+				"</a>\n" +
+				"</li>");
+		/*
+                分页做到前5后4
+                若前面不足4个，后面补齐
+                若后面不足4个，则前面补齐
+                */
+		//定义开始位置begin和结束位置end
+		var begin;
+		var end;
+		if(size<=10){
+			begin = 1;
+			end = size;
+		}else{
+			begin = nowPage - 5;
+			end = nowPage + 4;
+			//补齐
+			if(begin<1){
+				begin=1;
+				end = 10;
+			}
+			if(end>size){
+				end=size;
+				begin = end - 9;
+			}
+		}
+		//显示10个页码
+		var li = "";
+		for (var i = begin; i <= end; i++){
+			if (i == nowPage){
+				li +=	"<li><a style='background-color: #75BDEE;' href='/views/blogPage/"+cataId+"/"+i+"'>"+i+"</a></li>"
+			}else{
+				li +=	"<li><a href='/views/blogPage/"+cataId+"/"+i+"'>"+i+"</a></li>"
+			}
+		}
+		$("#pageBar").append(li);
+		var nextNum = parseInt(nowPage)+1;
+		if(nextNum > size){
+			nextNum=size
+		}
+		$("#pageBar").append("<li>\n" +
+				"<a href='/views/blogPage/"+cataId+"/"+nextNum+"' aria-label='Next'>\n" +
+				"<span aria-hidden='true'>&raquo;</span>\n" +
+				"</a>\n" +
+				"</li>");
 
-
-
-
+		// 获取所有分类
 		$.ajax({
 			type: "post",
-			url: "/ordinaryApi/getAllOrdinary",
+			url: "/capacity/getAllOrdinary",
 			data: null,
 			success: function (data) {
-				//<li data-index="1"><a href="/Blog/Article">全部文章</a></li>
 				$("#catequeue").append("<div class=\"article-category-title\">分类导航</div>");
 				for (var i = 0; i < data.length; i++) {
-					$("#category").append("<li data-index='" + data[i].id + "' class='cataHover'><a href='/ordinary/capacity/"+data[i].id+"'>" + data[i].name + "</a></li>");
+					$("#category").append("<li data-index='" + data[i].id + "' class='cataHover'><a href='/views/blogPage/"+data[i].id+"/"+1+"'>" + data[i].name + "</a></li>");
 					//
-					$("#catequeue").append("<a href='@{/ordinary/capacity/" + data[i].id + "'>" + data[i].name + "</a>");
+					$("#catequeue").append("<a href='@{/views/blogPage/" + data[i].id + "/"+1+"'>" + data[i].name + "</a>");
 				}
 				$("#catequeue").append("<div class=\"f-cb\"></div>");
 			}
 		});
 
+		// 获取最热门10篇博客
 		$.ajax({
 			type: "post",
 			url: "/blog/getHotBlog",
 			data: null,
 			success: function (data) {
 				for (var i = 0; i < data.length; i++){
-					$("#hotblogs").append("<li><a href='/ordinary/read/"+data[i].id+"'>"+data[i].title+"</a></li>");
+					$("#hotblogs").append("<li><a href='/views/blog/read/"+data[i].id+"'>"+data[i].title+"</a></li>");
 				}
 			}
 		});
 
+		// 获取10篇最新博客
 		$.ajax({
 			type: "post",
 			url: "/blog/getNewestBlog",
 			data: null,
 			success: function (data) {
 				for (var i = 0; i < data.length; i++){
-					$("#newblogs").append("<li> <a href='/ordinary/read/"+data[i].id+"'>"+data[i].title+"</a></li>");
+					$("#newblogs").append("<li> <a href='/views/blog/read/"+data[i].id+"'>"+data[i].title+"</a></li>");
 				}
 			}
 		});

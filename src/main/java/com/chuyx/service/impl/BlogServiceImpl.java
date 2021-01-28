@@ -64,10 +64,10 @@ public class BlogServiceImpl implements BlogService {
         return this.blogMapper.queryNewBlog();
     }
 
-    @Override
-    public Blog queryBlogById(int id) {
-        return this.blogMapper.queryBlogById(id);
-    }
+//    @Override
+//    public Blog queryBlogById(int id) {
+//        return this.blogMapper.queryBlogById(id);
+//    }
 
     @Override
     public void updateBlogVisitCount(Blog blog) {
@@ -239,7 +239,7 @@ public class BlogServiceImpl implements BlogService {
         Page<Blog> page = new Page<>(req.getPage(), req.getSize());
         QueryWrapper<Blog> wrapper = new QueryWrapper<>();
         if (req.getOrdinaryId() != null){
-            wrapper.eq("categoryId", req.getOrdinaryId());
+            wrapper.eq("category_id", req.getOrdinaryId());
         }
         IPage<Blog> blog = blogMapper.selectPage(page, wrapper);
         if (CollectionUtils.isEmpty(page.getRecords())){

@@ -1,6 +1,7 @@
 package com.chuyx.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.chuyx.constant.NormalConstant;
 import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.CommentShowDTO;
 import com.chuyx.pojo.dto.LoginUserDTO;
@@ -10,6 +11,7 @@ import com.chuyx.pojo.dto.UpdateUserDTO;
 import com.chuyx.pojo.model.Blog;
 import com.chuyx.pojo.model.Category;
 import com.chuyx.pojo.model.User;
+import com.chuyx.pojo.vo.BlogBaseVO;
 import com.chuyx.service.BlogService;
 import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;
@@ -21,6 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import com.chuyx.wrapper.BlogWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -67,24 +71,6 @@ public class OrdinaryController {
       return JSON.toJSONString(newblogs);
    }
 
-   @RequestMapping({"/read/{id}"})
-   public String read(@PathVariable("id") int id, Model model) {
-      Blog blog = this.blogService.queryBlogById(id);
-      blog.setVisitCount(blog.getVisitCount() + 1);
-      this.blogService.updateBlogVisitCount(blog);
-      BlogDTO blogDTO = new BlogDTO();
-      blogDTO = BlogUtils.BolgDateToYMD(blog, blogDTO);
-      model.addAttribute("blog", blogDTO);
-      BeanUtils.copyProperties(blog, blogDTO);
-      Category category = this.categoryService.getCategoryById(blog.getCategoryId());
-      blogDTO.setCatecoty(category.getName());
-      int count = this.commentsService.queryCountByBlogId(blog.getId());
-      blogDTO.setCount(count);
-      User user = this.userService.queryUserById(blog.getUid());
-      blogDTO.setAuthor(user.getUname());
-      return "ordinary/read";
-   }
-
    @RequestMapping({"/capacity/{id}"})
    public String capacityBlog(@PathVariable("id") int id, Model model) {
       Pager<BlogDTO> result = this.blogService.queryBlogByPageCata(id, 1, 5);
@@ -95,7 +81,8 @@ public class OrdinaryController {
 
    @RequestMapping({"/page/{page}"})
    public String queryBypage(@PathVariable("page") int page, Model model) {
-      Pager<BlogDTO> result = this.blogService.queryBlogByPage(page, 5);
+      BlogWrapper.QueryPageDTO queryPageDTO = new BlogWrapper.QueryPageDTO(NormalConstant.TOP_SIZE, page, null);
+      Pager<BlogBaseVO> result = blogService.queryPageBlog(queryPageDTO);
       model.addAttribute("blogDTOS", result);
       return "ordinary/article";
    }

@@ -1,5 +1,6 @@
 package com.chuyx.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chuyx.mapper.LogMapper;
 import com.chuyx.mapper.UserMapper;
 import com.chuyx.pojo.dto.LoginUserDTO;
@@ -14,7 +15,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import com.chuyx.utils.DozerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

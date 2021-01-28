@@ -8,26 +8,26 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 
     <!-- Bootstrap -->
-    <link th:href="@{../../css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{../../../css/bootstrap.min.css}" rel="stylesheet">
     <title>文章阅读->[[${blog.getTitle()}]]</title>
-    <link rel="stylesheet" th:href="@{../../font-awesome/css/font-awesome.min.css}">
-    <link rel="stylesheet" th:href="@{../../layui/css/layui.css}" />
-    <link rel="stylesheet" th:href="@{../../css/master.css}" />
-    <link rel="stylesheet" th:href="@{../../css/gloable.css}" />
-    <link rel="stylesheet" th:href="@{../../css/nprogress.css}" />
-    <link rel="stylesheet" th:href="@{../../css/blog.css}" />
+    <link rel="stylesheet" th:href="@{../../../font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{../../../layui/css/layui.css}" />
+    <link rel="stylesheet" th:href="@{../../../css/master.css}" />
+    <link rel="stylesheet" th:href="@{../../../css/gloable.css}" />
+    <link rel="stylesheet" th:href="@{../../../css/nprogress.css}" />
+    <link rel="stylesheet" th:href="@{../../../css/blog.css}" />
 <!--    mackDown-->
-    <link rel="stylesheet" th:href="@{../../mackdown/css/editormd.preview.css}" />
+    <link rel="stylesheet" th:href="@{../../../mackdown/css/editormd.preview.css}" />
     <link rel="shortcut icon" href="/favicon1.ico"/>
-    <script type="text/javascript" th:src="@{../../mackdown/js/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../mackdown/lib/marked.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../mackdown/lib/prettify.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../mackdown/lib/raphael.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../mackdown/lib/underscore.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../mackdown/lib/sequence-diagram.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../mackdown/lib/flowchart.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../mackdown/lib/jquery.flowchart.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../mackdown/js/editormd.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/lib/marked.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/lib/prettify.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/lib/raphael.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/lib/underscore.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/lib/sequence-diagram.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/lib/flowchart.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/lib/jquery.flowchart.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../../mackdown/js/editormd.min.js}"></script>
 </head>
 <body>
     <header class="gird-header">
@@ -37,7 +37,7 @@
                 <nav class="nav" id="nav">
                     <ul>
                         <li><a href="/index">首页</a></li>
-                        <li><a href="/blog">博客</a></li>
+                        <li><a href="/views/blogPage">博客</a></li>
                         <li style="width: 50px;"></li>
                     </ul>
                 </nav>
@@ -64,7 +64,7 @@
                                 <li><a style="color: #0F9E5E" href="#" th:if="${session.userMsg.getCapacity() eq -1}">博主申请中</a></li>
                                 <li><a th:href="@{/author/blogManger}" th:if="${session.userMsg.getCapacity() gt 0}">作品管理</a></li>
                                 <li><a th:href="@{/author/toPublishBlog}" th:if="${session.userMsg.getCapacity() gt 0}">写博客</a></li>
-                                <li><a th:href="@{/signout}">注销</a></li>
+                                <li><a th:href="@{/views/signOut/bye}">注销</a></li>
                             </ul>
                         </li>
                         <input type="hidden" th:value="${session.userMsg.getUid()}" id="userId">
@@ -169,13 +169,13 @@
             </div>
         </div>
     </footer>
-    <script type="text/javascript" th:src="@{../../layui/layui.js}"></script>
-    <script type="text/javascript" th:src="@{../../js/yss/gloable.js}"></script>
-    <script type="text/javascript" th:src="@{../../js/plugins/nprogress.js}"></script>
-    <script type="text/javascript" th:src="@{../../js/pagecomment.js}"></script>
+    <script type="text/javascript" th:src="@{../../../layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{../../../js/yss/gloable.js}"></script>
+    <script type="text/javascript" th:src="@{../../../js/plugins/nprogress.js}"></script>
+    <script type="text/javascript" th:src="@{../../../js/pagecomment.js}"></script>
     <script>NProgress.start();</script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script th:src="@{../../js/bootstrap.min.js}"></script>
+    <script th:src="@{../../../js/bootstrap.min.js}"></script>
     <script> 
         window.onload = function () {
             NProgress.done();
