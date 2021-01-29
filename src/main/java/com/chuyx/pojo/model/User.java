@@ -1,5 +1,6 @@
 package com.chuyx.pojo.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -22,7 +23,7 @@ public class User implements Serializable {
    /**
     * 主键id
     */
-   @TableId
+   @TableId(type = IdType.AUTO)
    private Integer uid;
 
    /**
@@ -76,7 +77,13 @@ public class User implements Serializable {
    /**
     * 头像地址
     */
-   @TableField("headPic")
+   @TableField("head_pic")
    private String headPic;
+
+   /**
+    * 逻辑删除位 默认0
+    */
+   @TableField("del")
+   private String del;
 }
 

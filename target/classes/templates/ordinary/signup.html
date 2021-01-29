@@ -52,10 +52,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="container">
 	<div class="sin-w3-agile">
 		<h2>注 册</h2>
-		<form th:action="@{/signup}" method="post" onsubmit="return checkAll()">
+		<form th:action="@{/views/register}" method="post" onsubmit="return checkAll()">
 			<div class="username">
 				<span class="username">用户名:</span>
-				<input type="text" name="username" id="username" class="name" placeholder="" required="" onblur="checkUser()">
+				<input type="text" name="uname" id="username" class="name" placeholder="" required="" onblur="checkUser()">
 				<div class="msg" id="userMsg" style="color: red;" hidden>用户名重复！</div>
 				<div class="clearfix"></div>
 			</div>
@@ -66,7 +66,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="clearfix"></div>
 			</div><div class="username">
 				<span class="username">出生年月日:</span>
-				<input type="date" class="name" name="brith" style="height: 41px;" required="">
+				<input type="date" class="name" name="brithDay" style="height: 41px;" required="">
 				<div class="clearfix"></div>
 			</div>
 			
@@ -143,7 +143,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		function checkUser(){
 			$.ajax({
 				type: "get",
-				url: "/checkUser/"+$("#username").val(),
+				url: "/user/checkUser/"+$("#username").val(),
 				success: function (data) {
 					if(data.bo === 0 ){
 						$("#userMsg").attr("hidden","hidden");

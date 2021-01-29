@@ -129,7 +129,7 @@
                                             <input type="hidden" th:value="${blog.getId()}" id="blogId" name="blogId">
                                             <input type="hidden" name="uid" id="articleid" th:value="${(session.userMsg eq null)?0:session.userMsg.getUid()}">
                                             <div class="layui-form-item">
-                                                <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea" onclick="comment()" ></textarea>
+                                                <textarea name="content" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea" onclick="comment()" ></textarea>
                                             </div>
                                             <div class="layui-form-item">
                                                 <button class="layui-btn" type="submit" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">提交留言</button>
@@ -201,9 +201,8 @@
                 codeFold: true
             });
             $.ajax({
-                type: "get",
-                url: "/comments",
-                data: {id:$("#blogId").val()},
+                type: "post",
+                url: "/comments/queryPage/"+1+"/"+blogId,
                 success: function (data) {
                     for (var i =0;i<data.rows.length;i++){
                         var commentli = "";
@@ -216,25 +215,27 @@
                             "                                        </div>\n" +
                             "                                        <div class=\"comment-content\">"+data.rows[i].parent.content+"</div>\n" +
                             "                                        <p class=\"info info-footer\">\n" +
-                            "                                            <span class=\"comment-time\">"+data.rows[i].parent.repleaseDate+"</span>\n" +
+                            "                                            <span class=\"comment-time\">"+data.rows[i].parent.releaseDate+"</span>\n" +
                             "                                            <a onclick=\"getTartgetName('"+data.rows[i].parent.author+"')\" href=\"javascript:;\" class=\"btn-reply\" data-targetid=\"645\" data-targetname='"+data.rows[i].parent.author+"'>回复</a>\n" +
                             "                                        </p>\n" +
                             "                                    </div>\n";
-                        for (var j=0;j<data.rows[i].childs.length;j++){
+                        if (data.rows[i].children != null){
+                        for (var j=0;j<data.rows[i].children.length;j++){
                             commentli +="<div class=\"comment-child\">\n" +
                                 "                                        <a></a>\n" +
-                                "                                        <img src='"+data.rows[i].childs[j].tweHeadPic+"'>\n" +
+                                "                                        <img src='"+data.rows[i].children[j].tweHeadPic+"'>\n" +
                                 "                                        <div class=\"info\">\n" +
-                                "                                            <span class=\"username\">"+data.rows[i].childs[j].authorTwe+"</span>\n" +
+                                "                                            <span class=\"username\">"+data.rows[i].children[j].authorTwe+"</span>\n" +
                                 "                                            <span style=\"padding-right:0;margin-left:-5px;\"'>回复</span>\n" +
-                                "                                            <span class=\"username\">"+data.rows[i].childs[j].authorOne+"</span>\n" +
-                                "                                            <span>"+data.rows[i].childs[j].content+"</span>\n" +
+                                "                                            <span class=\"username\">"+data.rows[i].children[j].authorOne+"</span>\n" +
+                                "                                            <span>"+data.rows[i].children[j].content+"</span>\n" +
                                 "                                        </div>\n" +
                                 "                                        <p class=\"info info-footer\">\n" +
-                                "                                            <span class=\"comment-time\">"+data.rows[i].childs[j].repleaseDate+"</span>\n" +
-                                "                                            <a href=\"javascript:;\" class=\"btn-reply\" data-targetid=\"645\" data-targetname=\""+data.rows[i].childs[j].authorTwe+"\" onclick=\"getTartgetName('"+data.rows[i].childs[j].authorTwe+"')\">回复</a>\n" +
+                                "                                            <span class=\"comment-time\">"+data.rows[i].children[j].releaseDate+"</span>\n" +
+                                "                                            <a href=\"javascript:;\" class=\"btn-reply\" data-targetid=\"645\" data-targetname=\""+data.rows[i].children[j].authorTwe+"\" onclick=\"getTartgetName('"+data.rows[i].children[j].authorTwe+"')\">回复</a>\n" +
                                 "                                        </p>\n" +
                                 "                                    </div>";
+                        }
                         }
                         commentli +=" <div class=\"replycontainer layui-hide\">\n" +
                             "                                        <form class=\"layui-form blog-editor\" onsubmit=\"return comment()\" action='/ordinary/addChildComment' method='get'>\n" +
@@ -341,8 +342,8 @@
 
         function pageFun(page) {
             $.ajax({
-                type: "get",
-                url: "/ordinary/page/comments/"+page+"/"+blogId,
+                type: "post",
+                url: "/comments/queryPage/"+page+"/"+blogId,
                 data: null,
                 success: function (data) {
                     $("#blog-comment").empty();
@@ -357,23 +358,23 @@
                             "                                        </div>\n" +
                             "                                        <div class=\"comment-content\">"+data.rows[i].parent.content+"</div>\n" +
                             "                                        <p class=\"info info-footer\">\n" +
-                            "                                            <span class=\"comment-time\">"+data.rows[i].parent.repleaseDate+"</span>\n" +
+                            "                                            <span class=\"comment-time\">"+data.rows[i].parent.releaseDate+"</span>\n" +
                             "                                            <a onclick=\"getTartgetName('"+data.rows[i].parent.author+"')\" href=\"javascript:;\" class=\"btn-reply\" data-targetid=\"645\" data-targetname='"+data.rows[i].parent.author+"'>回复</a>\n" +
                             "                                        </p>\n" +
                             "                                    </div>\n";
-                        for (var j=0;j<data.rows[i].childs.length;j++){
+                        for (var j=0;j<data.rows[i].children.length;j++){
                             commentli +="<div class=\"comment-child\">\n" +
                                 "                                        <a></a>\n" +
-                                "                                        <img src='"+data.rows[i].childs[j].tweHeadPic+"'>\n" +
+                                "                                        <img src='"+data.rows[i].children[j].tweHeadPic+"'>\n" +
                                 "                                        <div class=\"info\">\n" +
-                                "                                            <span class=\"username\">"+data.rows[i].childs[j].authorTwe+"</span>\n" +
+                                "                                            <span class=\"username\">"+data.rows[i].children[j].authorTwe+"</span>\n" +
                                 "                                            <span style=\"padding-right:0;margin-left:-5px;\"'>回复</span>\n" +
-                                "                                            <span class=\"username\">"+data.rows[i].childs[j].authorOne+"</span>\n" +
-                                "                                            <span>"+data.rows[i].childs[j].content+"</span>\n" +
+                                "                                            <span class=\"username\">"+data.rows[i].children[j].authorOne+"</span>\n" +
+                                "                                            <span>"+data.rows[i].children[j].content+"</span>\n" +
                                 "                                        </div>\n" +
                                 "                                        <p class=\"info info-footer\">\n" +
-                                "                                            <span class=\"comment-time\">"+data.rows[i].childs[j].repleaseDate+"</span>\n" +
-                                "                                            <a href=\"javascript:;\" class=\"btn-reply\" data-targetid=\"645\" data-targetname=\""+data.rows[i].childs[j].authorTwe+"\" onclick=\"getTartgetName('"+data.rows[i].childs[j].authorTwe+"')\">回复</a>\n" +
+                                "                                            <span class=\"comment-time\">"+data.rows[i].children[j].releaseDate+"</span>\n" +
+                                "                                            <a href=\"javascript:;\" class=\"btn-reply\" data-targetid=\"645\" data-targetname=\""+data.rows[i].children[j].authorTwe+"\" onclick=\"getTartgetName('"+data.rows[i].children[j].authorTwe+"')\">回复</a>\n" +
                                 "                                        </p>\n" +
                                 "                                    </div>";
                         }

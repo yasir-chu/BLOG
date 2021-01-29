@@ -3,6 +3,7 @@ package com.chuyx.utils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.chuyx.pojo.dto.Pager;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -36,5 +37,26 @@ public class NormalUtils {
         vPager.setRows(rows);
         vPager.setPage(Integer.parseInt(String.valueOf(iPage.getCurrent())));
         return vPager;
+    }
+
+    /**
+     * 密码加密
+     * @param password 加密前密码
+     * @return 加密后密码
+     */
+    public static String encodePassword(String password){
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder.encode(password);
+    }
+
+    /**
+     * 比较两个密码是否相同
+     * @param password 输入密码
+     * @param sqlPassword 数据库保存的加密密码
+     * @return 结果
+     */
+    public static Boolean comparePassword(String password, String sqlPassword){
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder.matches(password, sqlPassword);
     }
 }

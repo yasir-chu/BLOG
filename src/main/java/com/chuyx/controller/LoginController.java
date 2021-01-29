@@ -53,67 +53,7 @@ public class LoginController {
    @Autowired
    UserService userService;
 
-   @RequestMapping({"/loginCheck"})
-   public String loginCheck(LoginUserDTO loginUser, HttpSession session, Model model) {
-      LoginUserDTO loginUserDTO = this.loginService.queryUserByName(loginUser.getUname());
-      if (loginUserDTO == null) {
-         model.addAttribute("errMsg", "用户不存在！");
-         return "ordinary/signin";
-      } else {
-         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-         if (!bCryptPasswordEncoder.matches(loginUser.getPassword(), loginUserDTO.getPassword())) {
-            model.addAttribute("errMsg", "密码错误！");
-            return "ordinary/signin";
-         } else {
-            loginUser.setCapacity(loginUserDTO.getCapacity());
-            loginUser.setUid(loginUserDTO.getUid());
-            loginUser.setHeadPic(loginUserDTO.getHeadPic());
-            session.setAttribute("userMsg", loginUser);
-            Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
-            model.addAttribute("blogDTOS", result);
-            String beforeSignin = (String)session.getAttribute("beforeSignin");
-            session.removeAttribute("beforeSignin");
-            return "redirect:" + beforeSignin;
-         }
-      }
-   }
-
-   @RequestMapping({"/signout"})
-   public String signout(HttpSession session, Model model) {
-      session.removeAttribute("userMsg");
-      Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
-      model.addAttribute("blogDTOS", result);
-      return "redirect:blog";
-   }
-
-   @RequestMapping({"/signup"})
-   public String signup(RegisterDTO registerDTO, HttpSession session, Model model) throws ParseException {
-      this.userService.addUser(registerDTO);
-      LoginUserDTO loginUserDTO = this.loginService.queryUserByName(registerDTO.getUsername());
-      session.setAttribute("userMsg", loginUserDTO);
-      Pager<BlogBaseVO> result = this.blogService.queryPageBlog(new BlogWrapper.QueryPageDTO(NormalConstant.TOP_SIZE, NormalConstant.ONE, null));
-      model.addAttribute("blogDTOS", result);
-      return "ordinary/article";
-   }
-
-   @RequestMapping(
-      value = {"/checkUser/{username}"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String checkUser(@PathVariable("username") String username) {
-      LoginUserDTO loginUserDTO = this.loginService.queryUserByName(username);
-      Map<String, Integer> map = new HashMap();
-      if (loginUserDTO != null && !StringUtils.isEmpty(loginUserDTO.getUname())) {
-         map.put("bo", 1);
-      } else {
-         map.put("bo", 0);
-      }
-
-      String s = JSON.toJSONString(map);
-      return s;
-   }
-
+   // TODO 检查老密码的判断还没更新
    @RequestMapping(
       value = {"/checkOldPwd/{username}/{oldPwd}"},
       produces = {"application/json;charset=utf-8"}
@@ -130,53 +70,5 @@ public class LoginController {
       }
       String s = JSON.toJSONString(map);
       return s;
-   }
-
-   @RequestMapping({"/blog"})
-   public String blog(Model model) {
-      Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
-      model.addAttribute("blogDTOS", result);
-      return "ordinary/article";
-   }
-
-   @RequestMapping(
-      value = {"/comments"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String comments(int id) {
-      Pager<CommentShowDTO> shows = this.commentsService.queryByBlogId(id);
-      return JSON.toJSONString(shows);
-   }
-
-//   @PostMapping(value = {"/capacityShow"}, produces = {"application/json;charset=utf-8"})
-//   @ResponseBody
-//   public String capacityShow(HttpServletResponse response) throws IOException {
-//      List<Category> allCategory = this.loginService.getAllCategory();
-//      return JSON.toJSONString(allCategory);
-//   }
-
-   public List<BlogDTO> allBlog() {
-      List<Blog> blogs = this.blogService.queryAllBlog();
-      List<BlogDTO> blogDTOS = new ArrayList();
-      Iterator var3 = blogs.iterator();
-
-      while(var3.hasNext()) {
-         Blog blog = (Blog)var3.next();
-         BlogDTO blogDTO = new BlogDTO();
-         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-         simpleDateFormat.format(blog.getReleaseDate());
-         blogDTO = BlogUtils.BolgDateToYMD(blog, blogDTO);
-         BeanUtils.copyProperties(blog, blogDTO);
-         Category category = this.categoryService.getCategoryById(blog.getCategoryId());
-         blogDTO.setCatecoty(category.getName());
-         int count = this.commentsService.queryCountByBlogId(blog.getId());
-         blogDTO.setCount(count);
-         User user = this.userService.queryUserById(blog.getUid());
-         blogDTO.setAuthor(user.getUname());
-         blogDTOS.add(blogDTO);
-      }
-
-      return blogDTOS;
    }
 }

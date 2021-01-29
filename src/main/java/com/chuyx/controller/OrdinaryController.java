@@ -56,44 +56,6 @@ public class OrdinaryController {
       return "ordinary/signin";
    }
 
-   @RequestMapping({"/tosignup"})
-   public String toSignup(Model model) {
-      return "ordinary/signup";
-   }
-
-   @RequestMapping(
-      value = {"/newblogs"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String newBlog() {
-      List<Blog> newblogs = this.blogService.queryNewBlog();
-      return JSON.toJSONString(newblogs);
-   }
-
-   @RequestMapping({"/capacity/{id}"})
-   public String capacityBlog(@PathVariable("id") int id, Model model) {
-      Pager<BlogDTO> result = this.blogService.queryBlogByPageCata(id, 1, 5);
-      result.setCataId(id);
-      model.addAttribute("blogDTOS", result);
-      return "ordinary/article";
-   }
-
-   @RequestMapping({"/page/{page}"})
-   public String queryBypage(@PathVariable("page") int page, Model model) {
-      BlogWrapper.QueryPageDTO queryPageDTO = new BlogWrapper.QueryPageDTO(NormalConstant.TOP_SIZE, page, null);
-      Pager<BlogBaseVO> result = blogService.queryPageBlog(queryPageDTO);
-      model.addAttribute("blogDTOS", result);
-      return "ordinary/article";
-   }
-
-   @RequestMapping({"/page/{cataid}/{page}"})
-   public String queryByPageCata(@PathVariable("cataid") int cataid, @PathVariable("page") int page, Model model) {
-      Pager<BlogDTO> result = this.blogService.queryBlogByPageCata(cataid, 1, 5);
-      model.addAttribute("blogDTOS", result);
-      return "ordinary/article";
-   }
-
    @RequestMapping({"/comments/add"})
    public String addComments(int blogId, int uid, String editorContent, HttpServletRequest request) {
       this.commentsService.addComment(blogId, uid, editorContent);
@@ -111,17 +73,6 @@ public class OrdinaryController {
 
       String referer = request.getHeader("Referer");
       return "redirect:" + referer;
-   }
-
-   @RequestMapping(
-      value = {"/page/comments/{page}/{blogId}"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String commentsSmallPage(@PathVariable("page") int page, @PathVariable("blogId") int blogId, HttpServletRequest request) {
-      Pager<CommentShowDTO> commentShowDTOPager = this.commentsService.queryByBlogIdSmallPage(blogId, page);
-      StringBuffer requestURL = request.getRequestURL();
-      return JSON.toJSONString(commentShowDTOPager);
    }
 
    @RequestMapping(
@@ -161,15 +112,6 @@ public class OrdinaryController {
       return "ordinary/article";
    }
 
-   @RequestMapping(
-      value = {"/allca"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String getAllCa() {
-      List<Category> all = this.categoryService.getAllCategory();
-      return JSON.toJSONString(all);
-   }
 
    @RequestMapping({"/toapply"})
    public String toapply() {
@@ -193,9 +135,9 @@ public class OrdinaryController {
    public RegisterDTO userToLoginUser(User user) {
       RegisterDTO oldUserMsg = new RegisterDTO();
       oldUserMsg.setHeadPic(user.getHeadPic());
-      oldUserMsg.setUid(user.getUid());
-      oldUserMsg.setUsername(user.getUname());
-      oldUserMsg.setCapacity(user.getCapacity());
+//      oldUserMsg.setUid(user.getUid());
+      oldUserMsg.setUname(user.getUname());
+//      oldUserMsg.set(user.getCapacity());
       oldUserMsg.setPhone(user.getPhone());
       oldUserMsg.setSex(user.getSex());
       oldUserMsg.setEmail(user.getEmail());

@@ -1,6 +1,13 @@
 package com.chuyx.api;
 
+import com.chuyx.constant.NormalConstant;
+import com.chuyx.pojo.dto.LoginUserDTO;
+import com.chuyx.pojo.dto.Pager;
+import com.chuyx.pojo.dto.RegisterDTO;
+import com.chuyx.pojo.vo.BlogBaseVO;
+import com.chuyx.wrapper.BlogWrapper;
 import com.chuyx.wrapper.CommentWrapper;
+import com.chuyx.wrapper.UserWrapper;
 import io.swagger.annotations.Api;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 
 /**
  * @author yasir.chu
@@ -81,6 +89,16 @@ public interface ViewJumpApi {
     String login(HttpSession session, HttpServletRequest request);
 
     /**
+     * 登录
+     * @param loginUser 登录信息
+     * @param session session
+     * @param model model
+     * @return 结果
+     */
+    @RequestMapping(value = "/views/signIn")
+    String signIn(LoginUserDTO loginUser, HttpSession session, Model model);
+
+    /**
      * 去注册页
      *
      * @return 去注册页
@@ -95,6 +113,17 @@ public interface ViewJumpApi {
      * @param request 请求数据
      * @return 去注册页
      */
-    @RequestMapping(value = "/views/signUp")
+    @RequestMapping(value = "/views/saveComment")
     String saveComment(CommentWrapper.InsertDTO insertDTO, HttpServletRequest request);
+
+    /**
+     * 保存用户
+     *
+     * @param saveDTO 用户信息信息
+     * @param session session
+     * @param model 模型
+     * @return 博客首页
+     */
+    @RequestMapping({"/views/register"})
+    String register(UserWrapper.SaveDTO saveDTO, HttpSession session, Model model);
 }

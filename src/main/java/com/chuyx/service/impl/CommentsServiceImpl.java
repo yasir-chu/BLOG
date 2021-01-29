@@ -1,6 +1,7 @@
 package com.chuyx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.CommentsMapper;
@@ -20,7 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.chuyx.utils.DateUtils;
 import com.chuyx.utils.DozerUtil;
+import com.chuyx.utils.NormalUtils;
 import com.chuyx.wrapper.CommentWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -204,15 +207,20 @@ public class CommentsServiceImpl implements CommentsService {
    }
 
    @Override
-   public List<CommentShowVO> queryPage(int page, int blogId) {
+   public Pager<CommentShowVO> queryPage(int page, int blogId) {
       QueryWrapper<Comments> query = new QueryWrapper<>();
       Page<Comments> pageMessage = new Page<>(Long.parseLong(String.valueOf(page)), NormalConstant.COMMENT_PAGE_SIZE);
       query.eq("blog_id", blogId);
-      Page<Comments> comments = commentsMapper.selectPage(pageMessage, query);
+      query.eq("parent_id", NormalConstant.ZERO);
+      IPage<Comments> comments = commentsMapper.selectPage(pageMessage, query);
+      QueryWrapper<Comments> queryResult = new QueryWrapper<>();
+      queryResult.eq("blog_id", blogId);
+      List<Comments> commentResult = commentsMapper.selectList(queryResult);
       if (CollectionUtils.isEmpty(comments.getRecords())){
-         return Collections.emptyList();
+         return NormalConstant.COMMENT_NULL_PAGER;
       }
-      return toCommentVo(comments.getRecords());
+      List<CommentShowVO> rows = toCommentVo(commentResult);
+      return NormalUtils.pagerRows(comments, rows);
    }
 
    /**
@@ -222,38 +230,65 @@ public class CommentsServiceImpl implements CommentsService {
     */
    private List<CommentShowVO> toCommentVo(List<Comments> comments) {
       List<Integer> userIds = comments.stream().map(Comments::getUid).collect(Collectors.toList());
-      List<User> users = userService.queryUsers(userIds);
+      userIds.addAll(comments.stream().map(Comments::getUid).collect(Collectors.toList()));
+      List<User> users = userService.queryUsers(userIds.stream().distinct().filter((a) -> !a.equals(NormalConstant.ZERO)).collect(Collectors.toList()));
       if (CollectionUtils.isEmpty(userIds)){
          return Collections.emptyList();
       }
       Map<Integer, User> userMap = users.stream().collect(Collectors.toMap(User::getUid, user -> user, (nk, ok) -> nk));
       List<CommentShowVO> result = new ArrayList<>(comments.size());
-      comments.forEach((a) -> {
-         CommentShowVO oneShowVO = new CommentShowVO();
-         if (a.getParentId() == null || a.getParentId() == 0){
-            CommentBaseVO temp = poToBaseVo(a, userMap);
-         }
-
-         result.add(oneShowVO);
+      Map<Integer, List<CommentBaseVO>> commentMap = getCommentMap(comments, userMap);
+      List<CommentBaseVO> commentBaseVos = commentMap.get(0);
+      commentBaseVos.forEach((a) -> {
+         CommentShowVO temp = new CommentShowVO();
+         temp.setParent(a);
+         temp.setChildren(commentMap.get(a.getId()));
+         result.add(temp);
       });
       return result;
+   }
+
+   /**
+    * 将博客下所有评论以父评论id为key，以基础视图类为value，分好
+    * @param comments 所有评论
+    * @param userMap 用户信息
+    * @return 结果
+    */
+   private Map<Integer, List<CommentBaseVO>> getCommentMap(List<Comments> comments, Map<Integer, User> userMap) {
+      Map<Integer, Comments> collect = comments.stream().collect(Collectors.toMap(Comments::getId, (comment) -> comment, (ok, nk) -> nk));
+      return comments.stream().map((a) -> {
+         if (a.getParentId() != 0){
+            User parentUser = userMap.get(collect.get(a.getParentId()).getUid());
+            return poToBaseVo(a, userMap, parentUser);
+         }
+         return poToBaseVo(a, userMap, null);
+      }).collect(Collectors.groupingBy(CommentBaseVO::getParentId));
    }
 
    /**
     * 将po类转成基础展示类
     * @param comment po类
     * @param userMap 用户信息map集合
+    * @param parentUser 父评论的用户信息
     * @return 展示基础类
     */
-   private CommentBaseVO poToBaseVo(Comments comment, Map<Integer, User> userMap) {
+   private CommentBaseVO poToBaseVo(Comments comment, Map<Integer, User> userMap, User parentUser) {
       CommentBaseVO temp = DozerUtil.map(comment, CommentBaseVO.class);
       if (!userMap.containsKey(comment.getUid()) && !userMap.containsKey(comment.getParentId())){
          return temp;
       }
       User user = userMap.get(comment.getUid());
       temp.setAuthor(user.getUname());
-      temp.setOneHeadPic(user.getHeadPic());
-      // TODO 没写完
+      temp.setAuthorTwe(user.getUname());
+      temp.setTweHeadPic(user.getHeadPic());
+      temp.setReleaseDate(DateUtils.dateToString(comment.getCreateTime()));
+      if (comment.getParentId() == 0){
+         return temp;
+      }
+      if (parentUser == null){
+         return null;
+      }
+      temp.setOneHeadPic(parentUser.getHeadPic());
       return temp;
    }
 

@@ -1,6 +1,8 @@
 package com.chuyx.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.LogMapper;
 import com.chuyx.mapper.UserMapper;
 import com.chuyx.pojo.dto.LoginUserDTO;
@@ -11,18 +13,20 @@ import com.chuyx.pojo.model.User;
 import com.chuyx.service.UserService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
+import com.chuyx.utils.DateUtils;
 import com.chuyx.utils.DozerUtil;
+import com.chuyx.utils.NormalUtils;
+import com.chuyx.wrapper.UserWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
    @Autowired
    UserMapper userMapper;
@@ -32,7 +36,7 @@ public class UserServiceImpl implements UserService {
    @Override
    public int addUser(RegisterDTO registerDTO) throws ParseException {
       User user = new User();
-      user.setUname(registerDTO.getUsername());
+      user.setUname(registerDTO.getUname());
       BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
       user.setPassword(bCryptPasswordEncoder.encode(registerDTO.getPassword()));
       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,8 +136,53 @@ public class UserServiceImpl implements UserService {
    @Override
    public List<User> queryUsers(List<Integer> ids) {
       QueryWrapper<User> query = new QueryWrapper<>();
-      query.in("id", ids);
+      query.in("uid", ids);
       return userMapper.selectList(query);
+   }
+
+   @Override
+   public String checkUsername(String username) {
+      HashMap<String, Integer> map = new HashMap<>(1);
+      map.put("bo", 1);
+      QueryWrapper<User> query = new QueryWrapper<>();
+      query.eq("uname", username);
+      User user = userMapper.selectOne(query);
+      if (user == null){
+         map.put("bo", 0);
+      }
+      return JSON.toJSONString(map);
+   }
+
+   @Override
+   public User saveUser(UserWrapper.SaveDTO saveDTO) {
+      User user = DozerUtil.map(saveDTO, User.class);
+      user.setPassword(NormalUtils.encodePassword(saveDTO.getPassword()));
+      user.setBrith(DateUtils.stringToSqlDate(saveDTO.getBrithDay()));
+      if (saveDTO.getUid() == null){
+         user.setCapacity(NormalConstant.ZERO);
+         user.setHeadPic(NormalConstant.DEFAULT_HEAD_PIC);
+         int insertId = userMapper.insert(user);
+         if (insertId < 1){
+            log.error("新增用户信息失败-信息为-{}", saveDTO.toString());
+            return user;
+         }
+      }
+      userMapper.updateById(user);
+      return user;
+   }
+
+   @Override
+   public LoginUserDTO signIn(LoginUserDTO loginUser) {
+      QueryWrapper<User> query = new QueryWrapper<>();
+      query.eq("uname", loginUser.getUname());
+      User user = userMapper.selectOne(query);
+      if (user == null){
+         return null;
+      }
+      if (!NormalUtils.comparePassword(loginUser.getPassword(), user.getPassword())){
+         return null;
+      }
+      return DozerUtil.map(user, LoginUserDTO.class);
    }
 
    public List<LoginUserDTO> usersToLoginUsers(List<User> users) {

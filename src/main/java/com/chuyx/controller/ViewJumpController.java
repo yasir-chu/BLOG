@@ -4,7 +4,9 @@ import com.chuyx.api.ViewJumpApi;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.Pager;
+import com.chuyx.pojo.dto.RegisterDTO;
 import com.chuyx.pojo.model.Blog;
+import com.chuyx.pojo.model.User;
 import com.chuyx.pojo.vo.BlogBaseVO;
 import com.chuyx.service.BlogService;
 import com.chuyx.service.CommentsService;
@@ -13,6 +15,8 @@ import com.chuyx.utils.DozerUtil;
 import com.chuyx.service.UserService;
 import com.chuyx.wrapper.BlogWrapper;
 import com.chuyx.wrapper.CommentWrapper;
+import com.chuyx.wrapper.UserWrapper;
+import com.sun.mail.imap.protocol.ID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,6 +96,17 @@ public class ViewJumpController implements ViewJumpApi {
     }
 
     @Override
+    public String signIn(LoginUserDTO loginUser, HttpSession session, Model model) {
+        LoginUserDTO loginUserDTO = userService.signIn(loginUser);
+        if (loginUserDTO == null){
+            model.addAttribute("errMsg", "用户或密码错误！");
+            return "ordinary/signin";
+        }
+        session.setAttribute("userMsg", loginUserDTO);
+        return blogPage(model);
+    }
+
+    @Override
     public String signUp() {
         return "ordinary/signup";
     }
@@ -101,6 +116,14 @@ public class ViewJumpController implements ViewJumpApi {
         commentsService.saveComment(insertDTO);
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
+    }
+
+    @Override
+    public String register(UserWrapper.SaveDTO saveDTO, HttpSession session, Model model) {
+        User user = userService.saveUser(saveDTO);
+        LoginUserDTO result = DozerUtil.map(user, LoginUserDTO.class);
+        session.setAttribute("userMsg", result);
+        return blogPage(model);
     }
 
 

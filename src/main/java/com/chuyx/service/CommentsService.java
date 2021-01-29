@@ -1,5 +1,6 @@
 package com.chuyx.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.pojo.dto.CommentShowDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Comments;
@@ -44,5 +45,5 @@ public interface CommentsService {
     * @param blogId 博客id
     * @return 评论信息
     */
-   List<CommentShowVO> queryPage(int page, int blogId);
+   Pager<CommentShowVO> queryPage(int page, int blogId);
 }

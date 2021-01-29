@@ -22,6 +22,9 @@ public class CommentBaseVO {
     @ApiModelProperty(notes = "发表评论用户名")
     private String author;
 
+    @ApiModelProperty(notes = "父评论id 如果为最大父评论 该id为0")
+    private Integer parentId;
+
     /**
      * yyyy-MM-dd HH:mm:ss
      */
@@ -37,9 +40,9 @@ public class CommentBaseVO {
     @ApiModelProperty(notes = "该评论用户名")
     private String authorTwe;
 
-    @ApiModelProperty(notes = "该评论用户头像")
+    @ApiModelProperty(notes = "父评论用户头像")
     private String oneHeadPic;
 
-    @ApiModelProperty(notes = "父评论用户头像")
+    @ApiModelProperty(notes = "该评论用户头像")
     private String tweHeadPic;
 }

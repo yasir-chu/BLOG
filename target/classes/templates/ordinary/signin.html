@@ -48,7 +48,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<h2>登 录</h2>
 <!--		th:if="${errorMsg!=null}" th:text="${errorMsg}"-->
 		<h3 style="color: red; text-align: center;" th:text="${errMsg}"></h3>
-		<form th:action="@{/loginCheck}" method="post" onsubmit="return check()">
+		<form th:action="@{/views/signIn}" method="post" onsubmit="return check()">
 			<div class="username">
 				<span class="username">用户名:</span>
 				<input type="text" name="uname" id="username" class="name" placeholder="" required="">

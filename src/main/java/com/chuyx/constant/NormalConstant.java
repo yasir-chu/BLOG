@@ -1,7 +1,12 @@
 package com.chuyx.constant;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Blog;
+import com.chuyx.pojo.model.Comments;
+import com.chuyx.pojo.vo.CommentShowVO;
+
+import java.util.Collections;
 
 /**
  * 常量
@@ -35,6 +40,16 @@ public class NormalConstant {
    public static Integer ONE = 1;
 
    /**
+    * 常量0
+    */
+   public static Integer ZERO = 0;
+
+   /**
+    * 常量-1
+    */
+   public static Integer NEGATIVE_ONE = -1;
+
+   /**
     * 第一页， 10个
     */
    public static Page<Blog> RANKING_PAGE = new Page<>(NormalConstant.ONE,NormalConstant.TOP_SIZE);
@@ -43,4 +58,14 @@ public class NormalConstant {
     * long 5
     */
    public static long COMMENT_PAGE_SIZE = 5L;
+
+   /**
+    * 空页
+    */
+   public static Pager<CommentShowVO> COMMENT_NULL_PAGER = new Pager<>(0, 0, Collections.emptyList(), 0L, 0);
+
+   /**
+    * 默认头像
+    */
+   public static String DEFAULT_HEAD_PIC = "http://img.chuyx.top/FtijrH85AbdHe1rPpIuAxgA6u5wD";
 }

@@ -235,7 +235,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     function checkUser(){
         $.ajax({
             type: "get",
-            url: "/checkUser/"+$("#username").val(),
+            url: "/user/checkUser/"+$("#username").val(),
             success: function (data) {
                 if(data.bo === 0 || oldname === $("#username").val()){
                     $("#userMsg").attr("hidden","hidden");
