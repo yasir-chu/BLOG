@@ -31,4 +31,11 @@ public interface UserService {
    List<User> getAllUser(int page, int size);
 
    int delUser(int id);
+
+   /**
+    * 根据用户id评论查找用户信息
+    * @param ids 用户ids
+    * @return 用户信息
+    */
+   List<User> queryUsers(List<Integer> ids);
 }

@@ -1,5 +1,6 @@
 package com.chuyx.api;
 
+import com.chuyx.wrapper.CommentWrapper;
 import io.swagger.annotations.Api;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,4 +87,14 @@ public interface ViewJumpApi {
      */
     @RequestMapping(value = "/views/signUp")
     String signUp();
+
+    /**
+     * 新增最大父评论
+     *
+     * @param insertDTO 父评论信息
+     * @param request 请求数据
+     * @return 去注册页
+     */
+    @RequestMapping(value = "/views/signUp")
+    String saveComment(CommentWrapper.InsertDTO insertDTO, HttpServletRequest request);
 }

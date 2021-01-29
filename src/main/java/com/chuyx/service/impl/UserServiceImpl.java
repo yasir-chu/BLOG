@@ -129,6 +129,13 @@ public class UserServiceImpl implements UserService {
       return this.userMapper.delUser(id);
    }
 
+   @Override
+   public List<User> queryUsers(List<Integer> ids) {
+      QueryWrapper<User> query = new QueryWrapper<>();
+      query.in("id", ids);
+      return userMapper.selectList(query);
+   }
+
    public List<LoginUserDTO> usersToLoginUsers(List<User> users) {
       ArrayList<LoginUserDTO> loginUserDTOS = new ArrayList();
       Iterator var3 = users.iterator();

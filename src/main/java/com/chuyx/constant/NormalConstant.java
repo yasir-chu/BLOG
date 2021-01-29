@@ -38,4 +38,9 @@ public class NormalConstant {
     * 第一页， 10个
     */
    public static Page<Blog> RANKING_PAGE = new Page<>(NormalConstant.ONE,NormalConstant.TOP_SIZE);
+
+   /**
+    * long 5
+    */
+   public static long COMMENT_PAGE_SIZE = 5L;
 }

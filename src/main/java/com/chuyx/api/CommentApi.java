@@ -3,6 +3,8 @@ package com.chuyx.api;
 import com.chuyx.wrapper.BlogWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -14,5 +16,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ResponseBody
 public interface CommentApi {
 
-
+    /**
+     * 分页获取博客评论
+     *
+     * @param page 页面
+     * @param blogId 博客id
+     * @return 结果
+     */
+    @PostMapping(value = "/comments/queryPage/{page}/{blogId}",  produces = {"application/json;charset=utf-8"})
+    @ApiOperation("分页获取博客评论")
+    String queryPage(@PathVariable("page") int page, @PathVariable("blogId") int blogId);
 }

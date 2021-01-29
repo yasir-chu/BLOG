@@ -7,10 +7,12 @@ import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Blog;
 import com.chuyx.pojo.vo.BlogBaseVO;
 import com.chuyx.service.BlogService;
+import com.chuyx.service.CommentsService;
 import com.chuyx.service.ViewJumpService;
 import com.chuyx.utils.DozerUtil;
 import com.chuyx.service.UserService;
 import com.chuyx.wrapper.BlogWrapper;
+import com.chuyx.wrapper.CommentWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,9 @@ public class ViewJumpController implements ViewJumpApi {
 
     @Autowired
     private ViewJumpService viewJumpService;
+
+    @Autowired
+    private CommentsService commentsService;
 
     @Override
     public String index() {
@@ -89,6 +94,13 @@ public class ViewJumpController implements ViewJumpApi {
     @Override
     public String signUp() {
         return "ordinary/signup";
+    }
+
+    @Override
+    public String saveComment(CommentWrapper.InsertDTO insertDTO, HttpServletRequest request) {
+        commentsService.saveComment(insertDTO);
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
 
 
