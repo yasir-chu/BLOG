@@ -57,48 +57,6 @@ public class CommentsServiceImpl implements CommentsService {
    }
 
    @Override
-   public Pager<CommentShowDTO> queryByBlogId(int blogId) {
-      Pager<CommentShowDTO> result = new Pager();
-      List<Comments> comments = this.commentsMapper.queryByBlogId(blogId);
-      List<CommentShowDTO> commentShowDTOS = new ArrayList();
-      Iterator var5 = comments.iterator();
-
-      while(var5.hasNext()) {
-         Comments comment = (Comments)var5.next();
-         CommentShowDTO commentShowDTO = new CommentShowDTO();
-         CommentShowMsgDTO commentShowMsgDTO = this.toShow(comment);
-         commentShowDTO.setParent(commentShowMsgDTO);
-         List<Comments> childComments = this.commentsMapper.queryByComId(comment.getId(), blogId);
-         ArrayList<CommentShowMsgDTO> childCommentShowMsgDTOS = new ArrayList();
-         Iterator var11 = childComments.iterator();
-
-         while(var11.hasNext()) {
-            Comments childComment = (Comments)var11.next();
-            CommentShowMsgDTO childCommentShowMsgDTO = this.toShow(childComment);
-            childCommentShowMsgDTOS.add(childCommentShowMsgDTO);
-         }
-
-         commentShowDTO.setChilds(childCommentShowMsgDTOS);
-         commentShowDTOS.add(commentShowDTO);
-      }
-
-      int countSize = this.commentsMapper.countSize(blogId);
-      if (countSize < 5) {
-         result.setSize(1);
-      } else if (countSize / 5 > 0) {
-         result.setSize(countSize / 5 + 1);
-      } else {
-         result.setSize(countSize / 5);
-      }
-
-      result.setTotal((long)countSize);
-      result.setRows(commentShowDTOS);
-      result.setCataId(0);
-      result.setPage(1);
-      return result;
-   }
-
-   @Override
    public Pager<CommentShowDTO> queryByBlogIdSmallPage(int blogId, int nowPage) {
       Pager<CommentShowDTO> result = new Pager();
       int index = (nowPage - 1) * 5;
@@ -195,15 +153,26 @@ public class CommentsServiceImpl implements CommentsService {
    }
 
    @Override
-   public Integer saveComment(CommentWrapper.InsertDTO insertDTO) {
+   public CommentBaseVO saveComment(CommentWrapper.InsertDTO insertDTO) {
       Comments insert = DozerUtil.map(insertDTO, Comments.class);
-      insert.setParentId(0);
-      int id = commentsMapper.insert(insert);
-      if (id > 0){
-         log.info("保存最大父评论成功-id为-{}", id);
-         return id;
+      insert.setCreateTime(DateUtils.getSqlNowDate());
+      User parentUser = null;
+      User nowUser = userService.queryUserById(insertDTO.getUid());
+      int id = 0;
+      if (insertDTO.getParentId() == 0) {
+         id = commentsMapper.insert(insert);
       }
-      return 0;
+      if (insertDTO.getParentId() > 0) {
+         Comments comments = commentsMapper.selectById(insert.getParentId());
+         parentUser = userService.queryUserById(comments.getUid());
+         insert.setAuthorTwe(nowUser.getUname());
+         insert.setAuthorOne(parentUser.getUname());
+         id = commentsMapper.insert(insert);
+      }
+      if (id > 0) {
+         log.info("保存评论成功-保存数量为：{}", id);
+      }
+      return poToBaseVoAtAddComment(insert, nowUser, parentUser);
    }
 
    @Override
@@ -212,15 +181,38 @@ public class CommentsServiceImpl implements CommentsService {
       Page<Comments> pageMessage = new Page<>(Long.parseLong(String.valueOf(page)), NormalConstant.COMMENT_PAGE_SIZE);
       query.eq("blog_id", blogId);
       query.eq("parent_id", NormalConstant.ZERO);
+      query.orderByDesc("create_time");
       IPage<Comments> comments = commentsMapper.selectPage(pageMessage, query);
+      List<Integer> listIds = comments.getRecords().stream().map(Comments::getId).collect(Collectors.toList());
       QueryWrapper<Comments> queryResult = new QueryWrapper<>();
-      queryResult.eq("blog_id", blogId);
+      queryResult.in("parent_id", listIds);
       List<Comments> commentResult = commentsMapper.selectList(queryResult);
       if (CollectionUtils.isEmpty(comments.getRecords())){
          return NormalConstant.COMMENT_NULL_PAGER;
       }
+      commentResult.addAll(comments.getRecords());
       List<CommentShowVO> rows = toCommentVo(commentResult);
       return NormalUtils.pagerRows(comments, rows);
+   }
+
+   /**
+    * 将新增评论转换成展示数据
+    * @param comments 原始评论
+    * @param nowUser 该评论的用户信息
+    * @param parentUser 父评论的用户信息
+    * @return 转换后的展示数据
+    */
+   private CommentBaseVO poToBaseVoAtAddComment(Comments comments, User nowUser, User parentUser) {
+      CommentBaseVO result = DozerUtil.map(comments, CommentBaseVO.class);
+      result.setAuthorTwe(nowUser.getUname());
+      result.setAuthor(nowUser.getUname());
+      result.setTweHeadPic(nowUser.getHeadPic());
+      result.setReleaseDate(DateUtils.getDateNowString());
+      if (parentUser != null) {
+         result.setOneHeadPic(parentUser.getHeadPic());
+         result.setAuthorOne(nowUser.getUname());
+      }
+      return result;
    }
 
    /**

@@ -31,6 +31,10 @@ public class CommentWrapper {
         private Integer uid;
 
         @NotNull
+        @ApiModelProperty(notes = "父评论id")
+        private Integer parentId;
+
+        @NotNull
         @ApiModelProperty(notes = "评论内容")
         private String content;
     }

@@ -11,6 +11,8 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 /**
  * 七牛云oss工具类
  *
@@ -28,12 +30,12 @@ public class UploadUtil {
       Configuration cfg = new Configuration(Zone.zone2());
       UploadManager uploadManager = new UploadManager(cfg);
       String bucket = "chuyx";
-      String key = null;
-      Auth auth = Auth.create(NormalConstant.QI_NIU_ACCESS_KEY, NormalConstant.QI_NIU_ACCESS_KEY);
+      String key = UUID.randomUUID().toString();
+      Auth auth = Auth.create(NormalConstant.QI_NIU_ACCESS_KEY, NormalConstant.QI_NIE_SECRET_KEY);
       String upToken = auth.uploadToken(bucket);
 
       try {
-         Response response = uploadManager.put(file.getBytes(), (String)key, upToken);
+         Response response = uploadManager.put(file.getBytes(), key, upToken);
          DefaultPutRet putRet = (DefaultPutRet)(new Gson()).fromJson(response.bodyString(), DefaultPutRet.class);
          return putRet.key;
       } catch (QiniuException var13) {

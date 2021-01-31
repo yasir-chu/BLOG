@@ -107,6 +107,15 @@ public interface ViewJumpApi {
     String signUp();
 
     /**
+     * 去修改资料页
+     * @param uid 用户id
+     * @param model model
+     * @return  用户信息修改页
+     */
+    @RequestMapping(value = "/views/updateUser/{uid}")
+    String updateUser(@PathVariable("uid") Integer uid, Model model);
+
+    /**
      * 新增最大父评论
      *
      * @param insertDTO 父评论信息

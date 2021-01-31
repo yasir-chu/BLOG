@@ -36,6 +36,13 @@ public class DateUtils {
     }
 
     /**
+     * 得到当前时间
+     */
+    public static String getDateNowString(){
+        return dateToString(new java.util.Date());
+    }
+
+    /**
      * 通过String 得到SQL Date
      * @param date String 的date
      * @return SQL Date

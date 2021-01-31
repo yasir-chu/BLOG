@@ -103,12 +103,19 @@ public class ViewJumpController implements ViewJumpApi {
             return "ordinary/signin";
         }
         session.setAttribute("userMsg", loginUserDTO);
-        return blogPage(model);
+        return "redirect:" + session.getAttribute("beforeSignin");
     }
 
     @Override
     public String signUp() {
         return "ordinary/signup";
+    }
+
+    @Override
+    public String updateUser(Integer uid, Model model) {
+        UserWrapper.SaveDTO user = userService.querySaveUserById(uid);
+        model.addAttribute("oldUserMsg", user);
+        return "ordinary/updateUserMsg";
     }
 
     @Override

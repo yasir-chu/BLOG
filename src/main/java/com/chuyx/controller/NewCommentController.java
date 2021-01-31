@@ -7,6 +7,8 @@ import com.chuyx.wrapper.CommentWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author yasir.chu
  * @date 2021/1/29
@@ -20,5 +22,10 @@ public class NewCommentController implements CommentApi {
     @Override
     public String queryPage(int page, int blogId) {
         return JSON.toJSONString(commentsService.queryPage(page, blogId));
+    }
+
+    @Override
+    public String saveComment(CommentWrapper.InsertDTO insertDTO, HttpServletRequest request) {
+        return JSON.toJSONString(commentsService.saveComment(insertDTO));
     }
 }

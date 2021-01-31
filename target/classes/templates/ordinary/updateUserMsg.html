@@ -53,18 +53,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="sin-w3-agile">
             <h2>用户信息</h2>
 
-            <form th:action="@{/ordinary/updateuser}" method="post" onsubmit="return checkAll()">
+            <form th:action="@{/views/register}" method="post" onsubmit="return checkAll()">
                 <input name="uid" th:value="${oldUserMsg.getUid()}" type="hidden">
                 <div class="username">
                     <span class="username">上传头像:</span>
                     <input type="file" id="file" multiple="multiple"  class="name"  onchange="handleFile()">
-                    <input type="hidden" id="url" name="headPic">
+                    <input type="hidden" id="url" name="headPic" th:value="${oldUserMsg.getHeadPic()}">
                     <img th:src="${oldUserMsg.getHeadPic()}" id="show" width="200" style="width: 40px; height: 40px;" class="img-circle" >
                     <div class="clearfix"></div>
                 </div>
                 <div class="username">
                     <span class="username">用户名:</span>
-                    <input type="text" name="username" id="username" th:value="${oldUserMsg.getUsername()}" class="name" placeholder="" required="" onblur="checkUser()">
+                    <input type="text" name="uname" id="username" th:value="${oldUserMsg.getUname()}" class="name" placeholder="" required="" onblur="checkUser()">
                     <div class="msg" id="userMsg" style="color: red;" hidden>用户名重复！</div>
                     <div class="clearfix"></div>
                 </div>
@@ -76,7 +76,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
                 <div class="username">
                     <span class="username">出生年月日:</span>
-                    <input type="date" class="name" name="brith" style="height: 41px;" required="" th:value="${oldUserMsg.getBrith()}">
+                    <input type="date" class="name" name="brithDay" style="height: 41px;" required="" th:value="${oldUserMsg.getBrithDay()}">
     <!--                <input type="date" class="name" name="brith" id="brith" style="height: 41px;" required="" >-->
                     <div class="clearfix"></div>
                 </div>
@@ -234,7 +234,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     var oldname =$("#username").val();
     function checkUser(){
         $.ajax({
-            type: "get",
+            type: "post",
             url: "/user/checkUser/"+$("#username").val(),
             success: function (data) {
                 if(data.bo === 0 || oldname === $("#username").val()){
@@ -250,10 +250,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     function checkOldPwd() {
         var oldPassword = $("#oldPwd").val();
         $.ajax({
-            type: "get",
-            url: "/checkOldPwd/"+oldname+"/"+oldPassword,
+            type: "post",
+            url: "/user/checkOldPassword/"+oldname+"/"+oldPassword,
             success: function (data) {
-                if(data.bo === 0){
+                if(data.bo === 1){
                     $("#oldPwdMsg").attr("hidden","hidden");
                 }else{
                     $("#oldPwdMsg").removeAttr("hidden");

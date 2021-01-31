@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.pojo.dto.CommentShowDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Comments;
+import com.chuyx.pojo.vo.CommentBaseVO;
 import com.chuyx.pojo.vo.CommentShowVO;
 import com.chuyx.wrapper.CommentWrapper;
 
@@ -13,8 +14,6 @@ public interface CommentsService {
    int queryCountByBlogId(int id);
 
    boolean addComment(int blogId, int uid, String editorContent);
-
-   Pager<CommentShowDTO> queryByBlogId(int blogId);
 
    Pager<CommentShowDTO> queryByBlogIdSmallPage(int blogId, int nowPage);
 
@@ -36,7 +35,7 @@ public interface CommentsService {
     * @param insertDTO 评论信息
     * @return 结果，0为失败
     */
-   Integer saveComment(CommentWrapper.InsertDTO insertDTO);
+   CommentBaseVO saveComment(CommentWrapper.InsertDTO insertDTO);
 
    /**
     * 分页查询博客评论

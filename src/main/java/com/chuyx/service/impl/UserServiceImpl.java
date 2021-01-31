@@ -34,26 +34,6 @@ public class UserServiceImpl implements UserService {
    LogMapper logMapper;
 
    @Override
-   public int addUser(RegisterDTO registerDTO) throws ParseException {
-      User user = new User();
-      user.setUname(registerDTO.getUname());
-      BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-      user.setPassword(bCryptPasswordEncoder.encode(registerDTO.getPassword()));
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-      Date brith = simpleDateFormat.parse(registerDTO.getBrith());
-      user.setBrith(brith);
-      user.setEmail(registerDTO.getEmail());
-      user.setPhone(registerDTO.getPhone());
-      user.setSex(registerDTO.getSex());
-      return this.userMapper.addUser(user);
-   }
-
-   @Override
-   public User queryUserById(int id) {
-      return this.userMapper.queryUserById(id);
-   }
-
-   @Override
    public LoginUserDTO queryUserByUserName(String userName) {
       return this.userMapper.queryUserByUsername(userName);
    }
@@ -141,6 +121,17 @@ public class UserServiceImpl implements UserService {
    }
 
    @Override
+   public UserWrapper.SaveDTO querySaveUserById(Integer id) {
+      User user = userMapper.selectById(id);
+      return DozerUtil.map(user, UserWrapper.SaveDTO.class);
+   }
+
+   @Override
+   public User queryUserById(Integer id) {
+      return userMapper.selectById(id);
+   }
+
+   @Override
    public String checkUsername(String username) {
       HashMap<String, Integer> map = new HashMap<>(1);
       map.put("bo", 1);
@@ -183,6 +174,19 @@ public class UserServiceImpl implements UserService {
          return null;
       }
       return DozerUtil.map(user, LoginUserDTO.class);
+   }
+
+   @Override
+   public Map<String, Integer> checkOldPassword(String username, String oldPassword) {
+      HashMap<String, Integer> result = new HashMap<>(1);
+      QueryWrapper<User> query = new QueryWrapper<>();
+      query.eq("uname", username);
+      result.put("bo", 0);
+      User user = userMapper.selectOne(query);
+      if (user != null && NormalUtils.comparePassword(oldPassword, user.getPassword())){
+         result.put("bo", 1);
+      }
+      return result;
    }
 
    public List<LoginUserDTO> usersToLoginUsers(List<User> users) {

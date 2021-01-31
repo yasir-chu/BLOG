@@ -85,14 +85,6 @@ public class OrdinaryController {
       return JSON.toJSONString(blogDTOS);
    }
 
-   @RequestMapping({"/updateUserMsg/{uid}"})
-   public String toUpdateUserMsg(@PathVariable("uid") int uid, Model model) {
-      User user = this.userService.queryUserById(uid);
-      RegisterDTO oldUserMsg = this.userToLoginUser(user);
-      model.addAttribute("oldUserMsg", oldUserMsg);
-      return "ordinary/updateUserMsg";
-   }
-
    @RequestMapping({"/updateuser"})
    public String updateUser(UpdateUserDTO updateUserDTO, Model model, HttpSession session) {
       if (updateUserDTO.getHeadPic() == null || "".equals(updateUserDTO.getHeadPic())) {

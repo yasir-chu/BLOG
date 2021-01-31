@@ -22,7 +22,17 @@ public interface UserApi {
      * @return 检查结果
      */
     @PostMapping(value = "/user/checkUser/{username}", produces = {"application/json;charset=utf-8"})
-    String saveComment(@PathVariable("username") String username);
+    String checkUserName(@PathVariable("username") String username);
+
+    /**
+     * 修改用户信息时检查用户老密码是否正确
+     *
+     * @param username    用户名
+     * @param oldPassword 老密码
+     * @return 检查结果
+     */
+    @PostMapping(value = "/user/checkOldPassword/{username}/{oldPassword}", produces = {"application/json;charset=utf-8"})
+    String checkOldPassword(@PathVariable("username") String username, @PathVariable("oldPassword") String oldPassword);
 
 
 }

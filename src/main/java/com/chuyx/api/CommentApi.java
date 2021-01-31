@@ -1,12 +1,16 @@
 package com.chuyx.api;
 
 import com.chuyx.wrapper.BlogWrapper;
+import com.chuyx.wrapper.CommentWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author yasir.chu
@@ -26,4 +30,15 @@ public interface CommentApi {
     @PostMapping(value = "/comments/queryPage/{page}/{blogId}",  produces = {"application/json;charset=utf-8"})
     @ApiOperation("分页获取博客评论")
     String queryPage(@PathVariable("page") int page, @PathVariable("blogId") int blogId);
+
+    /**
+     * 新增一个评论
+     *
+     * @param insertDTO 新增评论信息
+     * @param request 请求信息
+     * @return 结果
+     */
+    @ApiOperation("新增评论")
+    @PostMapping(value = "/comments/addComment")
+    String saveComment(CommentWrapper.InsertDTO insertDTO, HttpServletRequest request);
 }

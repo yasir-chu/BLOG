@@ -8,9 +8,10 @@ import com.chuyx.wrapper.UserWrapper;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
-   User queryUserById(int id);
+//   User queryUserById(int id);
 
    LoginUserDTO queryUserByUserName(String userName);
 
@@ -33,12 +34,28 @@ public interface UserService {
    int delUser(int id);
 
    /**
-    * 根据用户id评论查找用户信息
+    * 根据用户ids查找用户信息
     *
     * @param ids 用户ids
     * @return 用户信息
     */
    List<User> queryUsers(List<Integer> ids);
+
+   /**
+    * 根据用户id查找用户信息
+    *
+    * @param id 用户id
+    * @return 用户信息
+    */
+   UserWrapper.SaveDTO querySaveUserById(Integer id);
+
+   /**
+    * 根据用户id查找用户信息
+    *
+    * @param id 用户id
+    * @return 用户信息
+    */
+   User queryUserById(Integer id);
 
    /**
     * 检查用户名
@@ -60,4 +77,12 @@ public interface UserService {
     * @return 返回结果
     */
    LoginUserDTO signIn(LoginUserDTO loginUser);
+
+   /**
+    * 修改用户时检查老密码是否正确
+    * @param username 用户名
+    * @param oldPassword 用户老密码
+    * @return 检查结果
+    */
+   Map<String, Integer> checkOldPassword(String username, String oldPassword);
 }

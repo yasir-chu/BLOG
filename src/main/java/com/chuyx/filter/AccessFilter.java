@@ -31,8 +31,8 @@ public class AccessFilter implements Filter {
                 servletRequest.getRequestDispatcher("/failed").forward(request, response);
             } else if (requestURI.contains("author") && userMsg.getCapacity() < 1) {
                 servletRequest.getRequestDispatcher("/failed").forward(request, response);
-            } else if (requestURI.contains("updateUserMsg")) {
-                if (userMsg.getUid() != Integer.parseInt(requestURI.substring(requestURI.indexOf("updateUserMsg") + 14))) {
+            } else if (requestURI.contains("updateUser")) {
+                if (userMsg.getUid() != Integer.parseInt(requestURI.substring(requestURI.indexOf("updateUser") + 11))) {
                     servletRequest.getRequestDispatcher("/failed").forward(request, response);
                 } else {
                     chain.doFilter(request, response);
@@ -40,9 +40,9 @@ public class AccessFilter implements Filter {
             } else {
                 chain.doFilter(request, response);
             }
-        } else if (!requestURI.contains("admin") && !requestURI.contains("author") && !requestURI.contains("updateUserMsg")) {
+        } else if (!requestURI.contains("admin") && !requestURI.contains("author") && !requestURI.contains("updateUser")) {
             chain.doFilter(request, response);
-        } else if (requestURI.contains("updateUserMsg")) {
+        } else if (requestURI.contains("updateUser")) {
             session.setAttribute("errMsg", "您还未登陆！！！");
             servletResponse.sendRedirect("/views/login");
         } else {
