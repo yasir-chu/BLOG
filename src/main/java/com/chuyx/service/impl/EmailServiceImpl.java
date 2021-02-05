@@ -10,6 +10,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author yasir.chu
+ */
 @Service
 public class EmailServiceImpl implements EmailService {
    @Autowired

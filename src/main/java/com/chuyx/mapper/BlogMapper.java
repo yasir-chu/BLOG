@@ -14,12 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BlogMapper extends BaseMapper<Blog> {
 
-   /**
-    * 查找所有博客列表
-    *
-    * @return 博客列表
-    */
-    List<Blog> queryAllBlog();
 
    /**
     * 统计博客总数量
@@ -27,29 +21,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
     * @return 博客总数量
     */
     int queryAllBlogSize();
-
-   /**
-    * 根据类别id找到对应博客
-    *
-    * @param categoryId 类别id
-    * @return 对应类别id的博客
-    */
-    List<Blog> queryBlogByCateId(int categoryId);
-
-
-   /**
-    * 查找最新的10篇博客
-    *
-    * @return 博客列表
-    */
-    List<Blog> queryNewBlog();
-
-   /**
-    * 根据博客id查找博客
-    *
-    * @return 博客对象
-    */
-    Blog queryBlogById(int id);
 
    /**
     * 更新博客访问量

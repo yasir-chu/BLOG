@@ -19,10 +19,8 @@ import com.chuyx.service.UserService;
 import com.chuyx.utils.BlogUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.chuyx.utils.DateUtils;
 import com.chuyx.utils.DozerUtil;
@@ -32,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -44,39 +43,16 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     UserService userService;
 
-    @Override
-    public List<Blog> queryAllBlog() {
-        return this.blogMapper.queryAllBlog();
-    }
 
     @Override
     public int queryAllBlogSize() {
         return this.blogMapper.queryAllBlogSize();
     }
 
-    @Override
-    public List<Blog> queryBlogByCateId(int categoryId) {
-        return this.blogMapper.queryBlogByCateId(categoryId);
-    }
-
-    @Override
-    public List<Blog> queryNewBlog() {
-        return this.blogMapper.queryNewBlog();
-    }
-
-//    @Override
-//    public Blog queryBlogById(int id) {
-//        return this.blogMapper.queryBlogById(id);
-//    }
 
     @Override
     public Integer updateBlogVisitCount(Integer visitCount, Integer id) {
         return blogMapper.updateBlogVisitCount(visitCount, id);
-    }
-
-    @Override
-    public List<Blog> queryCapacityBlog(int capaId) {
-        return this.blogMapper.queryCapacityBlog(capaId);
     }
 
     @Override
@@ -95,27 +71,6 @@ public class BlogServiceImpl implements BlogService {
             result.setSize(countSize / size + 1);
         } else {
             result.setSize(countSize / size);
-        }
-
-        return result;
-    }
-
-    @Override
-    public Pager<BlogDTO> queryBlogByPageCata(int cataId, int page, int size) {
-        int index = (page - 1) * 5;
-        List<Blog> blogs = this.blogMapper.queryBlogByPageCata(cataId, index, size);
-        Pager<BlogDTO> result = new Pager();
-        List<BlogDTO> blogDTOS = this.pageBlogUtil(blogs);
-        result.setRows(blogDTOS);
-        int countSize = this.blogMapper.countSizeCata(cataId);
-        result.setTotal((long) countSize);
-        result.setPage(page);
-        if (countSize < 5) {
-            result.setSize(1);
-        } else if (countSize / 5 > 0) {
-            result.setSize(countSize / 5 + 1);
-        } else {
-            result.setSize(countSize / 5);
         }
 
         return result;
@@ -273,6 +228,25 @@ public class BlogServiceImpl implements BlogService {
             return 0;
         }
         return blogMapper.deleteById(id);
+    }
+
+    @Override
+    public List<BlogBaseVO> searchBlogByComment(String comment) {
+        QueryWrapper<Blog> query = new QueryWrapper<>();
+        if (StringUtils.isEmpty(comment)){
+            return Collections.emptyList();
+        }
+        query.like("title", comment);
+        Page<Blog> result = blogMapper.selectPage(NormalConstant.RANKING_PAGE, query);
+        if (CollectionUtils.isEmpty(result.getRecords())){
+            return Collections.emptyList();
+        }
+        return result.getRecords().stream().map((b) -> {
+            BlogBaseVO blogBaseVO = blogToBlogVO(b);
+            // 高亮替换
+            blogBaseVO.setTitle(blogBaseVO.getTitle().replaceAll(comment, "<b style='color:#6bc30d'>" + comment + "</b>"));
+            return blogBaseVO;
+        }).collect(Collectors.toList());
     }
 
 

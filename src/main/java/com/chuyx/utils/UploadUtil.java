@@ -1,6 +1,7 @@
 package com.chuyx.utils;
 
 import com.chuyx.constant.NormalConstant;
+import com.google.common.base.Throwables;
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -9,8 +10,10 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -18,38 +21,33 @@ import java.util.UUID;
  *
  * @author yasir.chu
  */
+@Slf4j
 public class UploadUtil {
 
    /**
     * 上传
     *
     * @param file 上传文件
-    * @return 下载路径
+    * @return 文件名
     */
    public static String uploadQiniu(MultipartFile file) {
-      Configuration cfg = new Configuration(Zone.zone2());
-      UploadManager uploadManager = new UploadManager(cfg);
-      String bucket = "chuyx";
-      String key = UUID.randomUUID().toString();
-      Auth auth = Auth.create(NormalConstant.QI_NIU_ACCESS_KEY, NormalConstant.QI_NIE_SECRET_KEY);
-      String upToken = auth.uploadToken(bucket);
-
       try {
+         log.info("七牛云上传图片开始-文件名为-{}", file.getName());
+         Configuration cfg = new Configuration(Zone.zone2());
+         UploadManager uploadManager = new UploadManager(cfg);
+         String bucket = "chuyx";
+         String key = UUID.randomUUID().toString();
+         Auth auth = Auth.create(NormalConstant.QI_NIU_ACCESS_KEY, NormalConstant.QI_NIE_SECRET_KEY);
+         String upToken = auth.uploadToken(bucket);
+
          Response response = uploadManager.put(file.getBytes(), key, upToken);
-         DefaultPutRet putRet = (DefaultPutRet)(new Gson()).fromJson(response.bodyString(), DefaultPutRet.class);
+         DefaultPutRet putRet = (new Gson()).fromJson(response.bodyString(), DefaultPutRet.class);
          return putRet.key;
-      } catch (QiniuException var13) {
-         Response r = var13.response;
-         System.err.println(r.toString());
-
-         try {
-            System.err.println(r.bodyString());
-         } catch (QiniuException var12) {
-         }
-      } catch (Exception var14) {
-         var14.printStackTrace();
+      } catch (QiniuException e) {
+         log.error("七牛云上传文件出错-{}", Throwables.getStackTraceAsString(e));
+      } catch (IOException e) {
+         log.error("文件转字节出错-{}", Throwables.getStackTraceAsString(e));
       }
-
       return null;
    }
 }

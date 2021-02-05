@@ -221,11 +221,11 @@
                     }
                     commentsave +=" <div class=\"replycontainer layui-hide\">\n" +
                         "                                        <form class=\"layui-form blog-editor\" onsubmit=\"return comment()\" action='/ordinary/addChildComment' method='get'>\n" +
-                        "                                            <input type=\"hidden\" name='userParentName' value=\""+data.rows[i].parent.author+"\">\n" +
+                        "                                            <input type=\"hidden\" name='userParentName' value=\""+data.author+"\">\n" +
                         "                                            <input type=\"hidden\" name='userId' value=\""+userId+"\">\n" +
                         "                                            <input type=\"hidden\" name='targetUserName' class='targetGG' value=\"\">\n" +
                         "                                            <input type=\"hidden\" name='blogId' value=\""+blogId+"\">\n" +
-                        "                                            <input type=\"hidden\" name='parrentComId' value=\""+data.rows[i].parent.id+"\">\n" +
+                        "                                            <input type=\"hidden\" name='parrentComId' value=\""+data.id+"\">\n" +
                         "                                            <div class=\"layui-form-item\">\n" +
                         "                                                <textarea name=\"replyContent\" lay-verify=\"replyContent\" placeholder=\"回复xxx\" class=\"layui-textarea\" style=\"min-height:80px\"  onclick=\"comment()\"></textarea>\n" +
                         "                                            </div>\n" +

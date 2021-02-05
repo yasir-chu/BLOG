@@ -235,9 +235,11 @@
 			$("#searchRes").empty();
 			$("#searchRes").attr("style","display:block");
 			$.ajax({
-				type: "get",
-				url: "/ordinary/serach",
-				data: {name:$("#searchtxt").val()},
+				type: "post",
+				url: "/blog/searchBlogByComment",
+				data: {
+					comment: $("#searchtxt").val()
+				},
 				success: function (data) {
 					$("#searchRes").empty();
 					for (var i = 0; i < data.length; i++){

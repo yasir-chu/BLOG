@@ -30,6 +30,20 @@ import java.text.ParseException;
 public interface ViewJumpApi {
 
     /**
+     * 错误跳转
+     * @return 404页面
+     */
+    @GetMapping({"/error/404"})
+    String error404();
+
+    /**
+     * 错误跳转
+     * @return 500页面
+     */
+    @GetMapping({"/error/500"})
+    String error500();
+
+    /**
      * 去首页
      *
      * @return 首页

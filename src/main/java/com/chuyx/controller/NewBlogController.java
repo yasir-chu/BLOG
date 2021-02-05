@@ -47,4 +47,9 @@ public class NewBlogController implements BlogApi {
     public Integer softDelete(BlogWrapper.SoftDeleteDTO req) {
         return blogService.softDeleteBlog(req.getId());
     }
+
+    @Override
+    public String searchBlogByComment(BlogWrapper.SearchDTO req) {
+        return JSON.toJSONString(blogService.searchBlogByComment(req.getComment()));
+    }
 }

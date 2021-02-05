@@ -56,13 +56,6 @@ public class OrdinaryController {
       return "ordinary/signin";
    }
 
-   @RequestMapping({"/comments/add"})
-   public String addComments(int blogId, int uid, String editorContent, HttpServletRequest request) {
-      this.commentsService.addComment(blogId, uid, editorContent);
-      String referer = request.getHeader("Referer");
-      return "redirect:" + referer;
-   }
-
    @RequestMapping({"/addChildComment"})
    public String addChildComment(HttpServletRequest request, @Nullable String targetUserName, int userId, String userParentName, String replyContent, int blogId, int parrentComId) {
       if (!"".equals(targetUserName) && targetUserName != null) {
@@ -85,26 +78,6 @@ public class OrdinaryController {
       return JSON.toJSONString(blogDTOS);
    }
 
-   @RequestMapping({"/updateuser"})
-   public String updateUser(UpdateUserDTO updateUserDTO, Model model, HttpSession session) {
-      if (updateUserDTO.getHeadPic() == null || "".equals(updateUserDTO.getHeadPic())) {
-         updateUserDTO.setHeadPic("http://img.chuyx.top/4c48020657bd561a.jpg");
-      }
-
-      this.userService.updateUserMsg(updateUserDTO);
-      Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 5);
-      model.addAttribute("blogDTOS", result);
-      session.removeAttribute("userMsg");
-      LoginUserDTO loginUserDTO = new LoginUserDTO();
-      loginUserDTO.setHeadPic(updateUserDTO.getHeadPic());
-      loginUserDTO.setUname(updateUserDTO.getUsername());
-      loginUserDTO.setPassword(updateUserDTO.getPassword());
-      loginUserDTO.setUid(updateUserDTO.getUid());
-      session.setAttribute("userMsg", loginUserDTO);
-      return "ordinary/article";
-   }
-
-
    @RequestMapping({"/toapply"})
    public String toapply() {
       return "ordinary/apply";
@@ -122,20 +95,5 @@ public class OrdinaryController {
       session.removeAttribute("userMsg");
       session.setAttribute("userMsg", loginUserDTO);
       return "ordinary/suc";
-   }
-
-   public RegisterDTO userToLoginUser(User user) {
-      RegisterDTO oldUserMsg = new RegisterDTO();
-      oldUserMsg.setHeadPic(user.getHeadPic());
-//      oldUserMsg.setUid(user.getUid());
-      oldUserMsg.setUname(user.getUname());
-//      oldUserMsg.set(user.getCapacity());
-      oldUserMsg.setPhone(user.getPhone());
-      oldUserMsg.setSex(user.getSex());
-      oldUserMsg.setEmail(user.getEmail());
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-      String format = simpleDateFormat.format(user.getBrith());
-      oldUserMsg.setBrith(format);
-      return oldUserMsg;
    }
 }
