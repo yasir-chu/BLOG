@@ -142,13 +142,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		}
 		function checkUser(){
 			$.ajax({
-				type: "get",
+				type: "post",
 				url: "/user/checkUser/"+$("#username").val(),
 				success: function (data) {
-					if(data.bo === 0 ){
-						$("#userMsg").attr("hidden","hidden");
-					}else{
+					if(data.bo === 1){
 						$("#userMsg").removeAttr("hidden");
+					}else{
+						$("#userMsg").attr("hidden","hidden");
 					}
 				}
 			});

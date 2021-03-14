@@ -62,7 +62,7 @@ public interface UserService {
     * @param username 用户名
     * @return 检查结果
     */
-   String checkUsername(String username);
+   Map<String, Integer> checkUsername(String username);
 
    /**
     * 用户注册

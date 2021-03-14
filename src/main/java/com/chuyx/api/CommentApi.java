@@ -1,5 +1,6 @@
 package com.chuyx.api;
 
+import com.chuyx.pojo.vo.CommentBaseVO;
 import com.chuyx.wrapper.BlogWrapper;
 import com.chuyx.wrapper.CommentWrapper;
 import io.swagger.annotations.Api;
@@ -40,5 +41,5 @@ public interface CommentApi {
      */
     @ApiOperation("新增评论")
     @PostMapping(value = "/comments/addComment")
-    String saveComment(CommentWrapper.InsertDTO insertDTO, HttpServletRequest request);
+    CommentBaseVO saveComment(CommentWrapper.InsertDTO insertDTO, HttpServletRequest request);
 }

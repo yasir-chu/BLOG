@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
    }
 
    @Override
-   public String checkUsername(String username) {
+   public Map<String, Integer> checkUsername(String username) {
       HashMap<String, Integer> map = new HashMap<>(1);
       map.put("bo", 1);
       QueryWrapper<User> query = new QueryWrapper<>();
@@ -141,12 +141,17 @@ public class UserServiceImpl implements UserService {
       if (user == null){
          map.put("bo", 0);
       }
-      return JSON.toJSONString(map);
+      return map;
    }
 
    @Override
    public User saveUser(UserWrapper.SaveDTO saveDTO) {
       User user = DozerUtil.map(saveDTO, User.class);
+      if (saveDTO.getUid() != null){
+         user.setCapacity(userMapper.selectById(saveDTO.getUid()).getCapacity());
+      }else {
+         user.setCapacity(0);
+      }
       user.setPassword(NormalUtils.encodePassword(saveDTO.getPassword()));
       user.setBrith(DateUtils.stringToSqlDate(saveDTO.getBrithDay()));
       if (saveDTO.getUid() == null){
