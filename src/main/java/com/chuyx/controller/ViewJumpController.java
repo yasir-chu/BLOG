@@ -48,6 +48,16 @@ public class ViewJumpController implements ViewJumpApi {
     private CommentsService commentsService;
 
     @Override
+    public String error404() {
+        return "error/404";
+    }
+
+    @Override
+    public String error500() {
+        return "error/404";
+    }
+
+    @Override
     public String index() {
         return "index";
     }

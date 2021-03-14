@@ -87,4 +87,16 @@ public class BlogWrapper {
         private Integer id;
 
     }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(value = "BlogWrapper.SearchDTO")
+    public static class SearchDTO {
+
+        @NotNull
+        @ApiModelProperty(notes = "查询内容")
+        private String comment;
+    }
 }

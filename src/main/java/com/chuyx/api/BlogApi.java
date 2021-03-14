@@ -66,4 +66,15 @@ public interface BlogApi {
     @PostMapping(value = "/blog/softDelete",  produces = {"application/json;charset=utf-8"})
     @ApiOperation("保存博客")
     Integer softDelete(BlogWrapper.SoftDeleteDTO req);
+
+
+    /**
+     * 根据搜索内容模糊查询博客
+     * @param req 查询内容
+     * @return 查询结果 （只查询标题和id）
+     */
+    @PostMapping(value = "/blog/searchBlogByComment", produces = {"application/json;charset=utf-8"})
+    @ApiOperation("模糊搜索博客")
+    String searchBlogByComment(BlogWrapper.SearchDTO req);
+
 }

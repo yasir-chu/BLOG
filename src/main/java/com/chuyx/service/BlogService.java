@@ -13,15 +13,9 @@ import java.util.List;
  * @author yasir.chu
  */
 public interface BlogService {
-   List<Blog> queryAllBlog();
 
    int queryAllBlogSize();
 
-   List<Blog> queryBlogByCateId(int categoryId);
-
-   List<Blog> queryNewBlog();
-
-  // Blog queryBlogById(int id);
 
    /**
     * 更新博客访问量
@@ -29,11 +23,8 @@ public interface BlogService {
     */
    Integer updateBlogVisitCount(Integer visitCount, Integer id);
 
-   List<Blog> queryCapacityBlog(int capaId);
-
    Pager<BlogDTO> queryBlogByPage(int index, int size);
 
-   Pager<BlogDTO> queryBlogByPageCata(int cataId, int page, int size);
 
    List<BlogDTO> queryBlogSearch(String name);
 
@@ -91,4 +82,11 @@ public interface BlogService {
     * @return 删除数量  为0就是失败
     */
    Integer softDeleteBlog(Integer id);
+
+   /**
+    * 根据内容搜索博客
+    * @param comment 搜索内容
+    * @return 博客列表 只查10个防止bug
+    */
+   List<BlogBaseVO> searchBlogByComment(String comment);
 }
