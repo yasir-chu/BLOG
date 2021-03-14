@@ -16,6 +16,12 @@ public class EmailUtils {
     @Autowired
     private JavaMailSenderImpl mailSender;
 
+    /**
+     * 邮件发送
+     *
+     * @param comment 发送内容
+     * @param targetMail 目标邮件
+     */
     public void sentMail(String comment, String targetMail){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject("博主申请通知");

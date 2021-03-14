@@ -113,6 +113,10 @@ public class ViewJumpController implements ViewJumpApi {
             return "ordinary/signin";
         }
         session.setAttribute("userMsg", loginUserDTO);
+        session.getAttribute("beforeSignin");
+        if (session.getAttribute("beforeSignin").toString().contains("bye")){
+            return "ordinary/article";
+        }
         return "redirect:" + session.getAttribute("beforeSignin");
     }
 
