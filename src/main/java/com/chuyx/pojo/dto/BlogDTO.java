@@ -1,35 +1,52 @@
 package com.chuyx.pojo.dto;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author cyx
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BlogDTO {
 
-   private int id;
+   @ApiModelProperty(notes = "博客id")
+   private Integer id;
 
-   private int uid;
+   @ApiModelProperty(notes = "作者id")
+   private Integer uid;
 
+   @ApiModelProperty(notes = "作者名")
    private String author;
 
+   @ApiModelProperty(notes = "年")
    private String year;
 
+   @ApiModelProperty(notes = "月")
    private String month;
 
+   @ApiModelProperty(notes = "日")
    private String day;
 
+   @ApiModelProperty(notes = "内容")
    private String content;
 
+   @ApiModelProperty(notes = "标题")
    private String title;
 
+   @ApiModelProperty(notes = "副标题")
    private String smallTitle;
 
-   private int visitCount;
+   @ApiModelProperty(notes = "访问量")
+   private Integer visitCount;
 
+   @ApiModelProperty(notes = "类别")
    private String catecoty;
 
-   private int count;
+   @ApiModelProperty(notes = "评论数")
+   private Integer count;
 }

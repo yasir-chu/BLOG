@@ -2,10 +2,14 @@ package com.chuyx.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.chuyx.api.BlogApi;
+import com.chuyx.constant.NormalConstant;
+import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.service.BlogService;
 import com.chuyx.wrapper.BlogWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author chuyx
@@ -39,8 +43,13 @@ public class NewBlogController implements BlogApi {
     }
 
     @Override
-    public Integer save(BlogWrapper.SaveBlogDTO req) {
-        return blogService.save(req);
+    public Integer save(BlogWrapper.SaveBlogDTO req, HttpSession session) {
+        LoginUserDTO userMsg = (LoginUserDTO)session.getAttribute("userMsg");
+        if (userMsg == null){
+            return NormalConstant.DOWN_ONE;
+        }
+        int uid = userMsg.getUid();
+        return blogService.save(req, uid);
     }
 
     @Override

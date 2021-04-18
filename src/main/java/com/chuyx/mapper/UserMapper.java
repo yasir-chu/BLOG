@@ -7,32 +7,19 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author cyx
+ */
 @Mapper
 @Repository
 public interface UserMapper extends BaseMapper<User> {
-   List<User> queryAll();
 
+   /**
+    * 根据用户名获取检验对象
+    * @param username 用户名
+    * @return 检验对象
+    */
    LoginUserDTO queryUserByUsername(String username);
 
-   int addUser(User user);
 
-   User queryUserById(int id);
-
-   int updateUserMsg(User user);
-
-   int applyBlogUpdate(int uid);
-
-   int getUsersSize();
-
-   int getAuthorSize();
-
-   List<User> getWaitAuthor(int index, int size);
-
-   int getCountWaitAuthor();
-
-   int passAuthor(int uid);
-
-   List<User> getAllUser(int index, int size);
-
-   int delUser(int id);
 }

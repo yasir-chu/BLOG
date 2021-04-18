@@ -1,8 +1,6 @@
 package com.chuyx.service;
 
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.RegisterDTO;
-import com.chuyx.pojo.dto.UpdateUserDTO;
+import com.chuyx.pojo.dto.*;
 import com.chuyx.pojo.model.User;
 import com.chuyx.wrapper.UserWrapper;
 
@@ -10,28 +8,59 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author cyx
+ */
 public interface UserService {
-//   User queryUserById(int id);
 
-   LoginUserDTO queryUserByUserName(String userName);
+   /**
+    * 博主申请
+    * @param uid 用户id
+    * @param logged 申请宣言
+    */
+   void applyBlogUpdate(Integer uid, String logged);
 
-   int updateUserMsg(UpdateUserDTO updateUserDTO);
+   /**
+    * 获取用户总数
+    * @return 用户总数
+    */
+   Integer getCountUserSize();
 
-   int applyBlogUpdate(int uid);
+   /**
+    * 获取所有博主总数
+    * @return 博主总数
+    */
+   Integer getCountAuthorSize();
 
-   int getCountUserSize();
+   /**
+    * 获取正在等待审批成博主的用户
+    * @param page 当前页
+    * @param size 页面大小
+    * @return 数据集
+    */
+   Pager<LoginUserDTO> getWaitAuthorPage(int page, int size);
 
-   int getCountAuthorSize();
+   /**
+    * 通过审核博主申请
+    * @param uid 用户id
+    * @return 更新数量
+    */
+   Integer passAuthor(int uid);
 
-   List<LoginUserDTO> getWaitAuthorPage(int page, int size);
+   /**
+    * 分页获取用户
+    * @param page 当前页
+    * @param size 页面大小
+    * @return 数据
+    */
+   Pager<AdminUser> getPageUser(int page, int size);
 
-   int getCountWaitAuthor();
-
-   int passAuthor(int uid);
-
-   List<User> getAllUser(int page, int size);
-
-   int delUser(int id);
+   /**
+    * 删除用户
+    * @param id 用户id
+    * @return 删除数量
+    */
+   Integer delUser(Integer id);
 
    /**
     * 根据用户ids查找用户信息
@@ -85,4 +114,11 @@ public interface UserService {
     * @return 检查结果
     */
    Map<String, Integer> checkOldPassword(String username, String oldPassword);
+
+   /**
+    * 根据用户id集合获取
+    * @param userIdList 用户id集合
+    * @return uid uname
+    */
+   Map<Integer, String> getUidNameMap(List<Integer> userIdList);
 }

@@ -12,9 +12,6 @@
             readOnly="true"/>
 
 
-    <insert id="inserntLog" parameterType="log">
-        insert into log(uid, event, connent,create_time) values (#{uid},#{event},#{connent},now());
-    </insert>
 
 
 </mapper>

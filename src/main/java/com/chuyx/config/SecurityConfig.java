@@ -1,6 +1,8 @@
 package com.chuyx.config;
 
+import com.chuyx.pojo.model.User;
 import com.chuyx.service.LoginUserService;
+import com.chuyx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

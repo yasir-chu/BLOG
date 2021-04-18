@@ -62,10 +62,11 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li><a th:href="@{/views/updateUser/{uid}(uid = ${session.userMsg.getUid()})}">资料</a></li>
-							<li><a th:href="@{/ordinary/toapply}" th:if="${session.userMsg.getCapacity() eq 0}">博主申请</a></li>
+							<li><a th:href="@{/views/toApply}" th:if="${session.userMsg.getCapacity() eq 0}">博主申请</a></li>
 							<li><a style="color: #0F9E5E" href="#" th:if="${session.userMsg.getCapacity() eq -1}">博主申请中</a></li>
-							<li><a th:href="@{/author/blogManger}" th:if="${session.userMsg.getCapacity() gt 0}">作品管理</a></li>
-							<li><a th:href="@{/author/toPublishBlog}" th:if="${session.userMsg.getCapacity() gt 0}">写博客</a></li>
+							<li><a th:href="@{/views/toUserBlogMange/1}" th:if="${session.userMsg.getCapacity() gt 0}">作品管理</a></li>
+							<li><a th:href="@{/views/toPublishBlog}" th:if="${session.userMsg.getCapacity() gt 0}">写博客</a></li>
+							<li><a th:href="@{/views/admin}" th:if="${session.userMsg.getCapacity() gt 1}">后台</a></li>
 							<li><a th:href="@{/views/signOut/bye}">注销</a></li>
 						</ul>
 					</li>
@@ -257,6 +258,9 @@
 		var size = $("#pageSize").val();
 		var nowPage = $("#nowPage").val();
 		var cataId = $("#cata").val();
+		if (cataId == null || cataId <= 0){
+			cataId = "0";
+		}
 
 		var beforNum = parseInt(nowPage)-1;
 		if(beforNum <= 0){

@@ -12,72 +12,11 @@
             readOnly="true"/>
 
 
-<!--    博客总数-->
-    <select id="queryAllBlogSize" resultType="int">
-        select count(*) from blog
-    </select>
 
 <!--    更新访问次数-->
     <update id="updateBlogVisitCount" parameterType="java.lang.Integer">
         UPDATE blog set visit_count = #{visitCount} where id = #{id};
     </update>
 
-<!--    根据类别id找类别博客-->
-    <select id="queryCapacityBlog" resultType="blog" parameterType="int">
-        select * from blog where category_id = #{capaId}
-    </select>
-    
-<!--    分页查询-->
-    <select id="queryBlogByPage" resultType="blog" parameterType="int">
-        select * from blog limit #{index},#{size}
-    </select>
-    
-    <select id="countSize" resultType="int">
-        select count(*) from blog
-    </select>
-
-    <select id="queryBlogByPageCata" resultType="blog" parameterType="int">
-        select * from blog where category_id = #{cataId} limit #{index},#{size}
-    </select>
-
-    <select id="countSizeCata" resultType="int" parameterType="int">
-        select count(*) from blog where category_id = #{id}
-    </select>
-
-    <select id="queryBlogSearch" parameterType="string" resultType="blog">
-        select * from blog where title like #{name} order by release_date limit 0,5
-    </select>
-
-    <insert id="addBlog" parameterType="newBlogDTO">
-        insert into blog(uid, release_date, title, small_title, category_id, visit_count, content)
-         values (#{uid},now(),#{title},#{smallTitle},#{catecoty},0,#{content})
-    </insert>
-
-    <select id="queryBlogByAuthorId" resultType="blog" parameterType="int">
-        select * from blog where uid = #{uid} limit 0,10
-    </select>
-
-    <select id="queryBlogByAuthorIdCount" resultType="int" parameterType="int">
-        select count(*) from blog where uid = #{uid}
-    </select>
-
-    <select id="queryBlogByAuthorIdPage" resultType="blog" parameterType="int">
-        select * from blog where uid = #{uid} limit #{index},#{pageSize}
-    </select>
-
-    <delete id="delBlog" parameterType="int">
-        delete from blog where id = #{id}
-    </delete>
-
-    <update id="updateBlog" parameterType="newBlogDTO">
-        update blog
-         set release_date = #{repleseaDate},title = #{title}, small_title = #{smallTitle},
-             content = #{content}, category_id = #{catecoty}
-         where id = #{id}
-    </update>
-
-    <select id="getAllCommentsSize" resultType="int">
-        select count(*) from comments
-    </select>
 
 </mapper>

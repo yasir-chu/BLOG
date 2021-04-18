@@ -53,7 +53,7 @@ public class MyWebConfig implements WebMvcConfigurer {
               // 版本
               "v1.0",
               // 组织链接
-              "无",
+              "湖南工业大学",
               // 联系人信息
               contact,
               // 许可

@@ -1,12 +1,9 @@
 package com.chuyx.api;
 
-import com.chuyx.wrapper.CommentWrapper;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author yasir.chu

@@ -1,30 +1,36 @@
 package com.chuyx.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.LogMapper;
 import com.chuyx.mapper.UserMapper;
+import com.chuyx.pojo.dto.AdminUser;
 import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.RegisterDTO;
+import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.dto.UpdateUserDTO;
 import com.chuyx.pojo.model.Log;
 import com.chuyx.pojo.model.User;
 import com.chuyx.service.UserService;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import com.chuyx.utils.DateUtils;
 import com.chuyx.utils.DozerUtil;
 import com.chuyx.utils.NormalUtils;
 import com.chuyx.wrapper.UserWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * @author cyx
+ */
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
@@ -34,83 +40,92 @@ public class UserServiceImpl implements UserService {
    LogMapper logMapper;
 
    @Override
-   public LoginUserDTO queryUserByUserName(String userName) {
-      return this.userMapper.queryUserByUsername(userName);
-   }
-
-   @Override
-   public int updateUserMsg(UpdateUserDTO updateUserDTO) {
-      User user = new User();
-      user.setHeadPic(updateUserDTO.getHeadPic());
-      user.setUname(updateUserDTO.getUsername());
-      user.setPhone(updateUserDTO.getPhone());
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-      Date parse = null;
-
-      try {
-         parse = simpleDateFormat.parse(updateUserDTO.getBrith());
-      } catch (ParseException var7) {
-         var7.printStackTrace();
-      }
-
-      user.setBrith(parse);
-      user.setEmail(updateUserDTO.getEmail());
-      user.setSex(updateUserDTO.getSex());
-      user.setUid(updateUserDTO.getUid());
-      BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-      String encode = bCryptPasswordEncoder.encode(updateUserDTO.getPassword());
-      user.setPassword(encode);
-      this.userMapper.updateUserMsg(user);
-      return 0;
-   }
-
-   @Override
-   public int applyBlogUpdate(int uid) {
-      this.userMapper.applyBlogUpdate(uid);
+   public void applyBlogUpdate(Integer uid, String logged) {
+      UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+      updateWrapper.eq("uid",uid).set("logged", logged).set("capacity", NormalConstant.DOWN_ONE);
+      userMapper.update(null, updateWrapper);
       Log log = new Log();
       log.setConnent("用户" + uid + "申请博主资格");
       log.setUid(uid);
       log.setEvent("博主申请");
-      this.logMapper.inserntLog(log);
-      return 0;
+      logMapper.insert(log);
    }
 
    @Override
-   public int getCountUserSize() {
-      return this.userMapper.getUsersSize();
+   public Integer getCountUserSize() {
+      return userMapper.selectCount(new QueryWrapper<>());
    }
 
    @Override
-   public int getCountAuthorSize() {
-      return this.userMapper.getAuthorSize();
+   public Integer getCountAuthorSize() {
+      QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+      queryWrapper.eq("capacity", NormalConstant.ONE);
+      return this.userMapper.selectCount(queryWrapper);
    }
 
    @Override
-   public List<LoginUserDTO> getWaitAuthorPage(int page, int size) {
-      int index = (page - 1) * size;
-      List<User> users = this.userMapper.getWaitAuthor(index, size);
-      return this.usersToLoginUsers(users);
+   public Pager<LoginUserDTO> getWaitAuthorPage(int page, int size) {
+      Page<User> pager = new Page<>(page, size);
+      QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+      userQueryWrapper.eq("capacity", NormalConstant.ONE);
+      Page<User> userPage = userMapper.selectPage(pager, userQueryWrapper);
+      Pager<LoginUserDTO> result = new Pager<>();
+      result.setTotal(userPage.getTotal());
+      result.setPage(page);
+      result.setRows(DozerUtil.mapList(userPage.getRecords(), LoginUserDTO.class));
+      int allPageSize = Integer.parseInt(String.valueOf(userPage.getTotal()))/size;
+      if (userPage.getTotal()%size > 0){
+         allPageSize += 1;
+      }
+      result.setSize(allPageSize);
+      return result;
    }
 
    @Override
-   public int getCountWaitAuthor() {
-      return this.userMapper.getCountWaitAuthor();
+   public Integer passAuthor(int uid) {
+      User user = new User();
+      user.setUid(uid);
+      user.setCapacity(NormalConstant.ONE);
+      return userMapper.updateById(user);
    }
 
    @Override
-   public int passAuthor(int uid) {
-      return this.userMapper.passAuthor(uid);
+   public Pager<AdminUser> getPageUser(int page, int size) {
+      Page<User> userPage = new Page<>(page, size);
+      QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+      userQueryWrapper.eq("del", NormalConstant.ZERO);
+      Page<User> userPager = userMapper.selectPage(userPage, userQueryWrapper);
+      if (CollectionUtils.isEmpty(userPager.getRecords())){
+         return  NormalUtils.pagerRows(userPager, null);
+      }
+      return NormalUtils.pagerRows(userPager, mapListAdminUser(userPager.getRecords()));
+   }
+
+   /**
+    * 数据转换
+    * @param records 待转换数据
+    * @return 转换后数据
+    */
+   private List<AdminUser> mapListAdminUser(List<User> records) {
+      return records.stream().map(a -> {
+         AdminUser item = new AdminUser();
+         item.setUname(a.getUname());
+         item.setEmail(a.getEmail());
+         item.setBrith(DateUtils.dateToString(a.getBrith()));
+         item.setCapacity(a.getCapacity());
+         item.setUid(a.getUid());
+         return item;
+      }).collect(Collectors.toList());
    }
 
    @Override
-   public List<User> getAllUser(int page, int size) {
-      int index = (page - 1) * size;
-      return this.userMapper.getAllUser(index, size);
-   }
-
-   @Override
-   public int delUser(int id) {
-      return this.userMapper.delUser(id);
+   public Integer delUser(Integer id) {
+      QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+      queryWrapper.eq("uid", id);
+      User user = new User();
+      user.setUid(id);
+      user.setDel(NormalConstant.DOWN_ONE);
+      return userMapper.update(user, queryWrapper);
    }
 
    @Override
@@ -194,19 +209,17 @@ public class UserServiceImpl implements UserService {
       return result;
    }
 
-   public List<LoginUserDTO> usersToLoginUsers(List<User> users) {
-      ArrayList<LoginUserDTO> loginUserDTOS = new ArrayList();
-      Iterator var3 = users.iterator();
-
-      while(var3.hasNext()) {
-         User user = (User)var3.next();
-         LoginUserDTO loginUserDTO = new LoginUserDTO();
-         loginUserDTO.setUid(user.getUid());
-         loginUserDTO.setUname(user.getUname());
-         loginUserDTO.setCapacity(user.getCapacity());
-         loginUserDTOS.add(loginUserDTO);
+   @Override
+   public Map<Integer, String> getUidNameMap(List<Integer> userIdList) {
+      if (CollectionUtils.isEmpty(userIdList)){
+         return Collections.emptyMap();
       }
-
-      return loginUserDTOS;
+      QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+      userQueryWrapper.in("uid", userIdList);
+      List<User> users = userMapper.selectList(userQueryWrapper);
+      if (CollectionUtils.isEmpty(users)){
+         return Collections.emptyMap();
+      }
+      return users.stream().collect(Collectors.toMap(User::getUid, User::getUname, (ok, nk) -> ok));
    }
 }

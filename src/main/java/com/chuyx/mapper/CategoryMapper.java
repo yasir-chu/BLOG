@@ -5,8 +5,11 @@ import com.chuyx.pojo.model.Category;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author cyx
+ */
 @Mapper
 @Repository
 public interface CategoryMapper extends BaseMapper<Category> {
-   Category getCategoryById(int id);
+
 }

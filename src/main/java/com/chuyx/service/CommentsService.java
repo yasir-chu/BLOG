@@ -1,6 +1,7 @@
 package com.chuyx.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chuyx.pojo.dto.AdminComments;
 import com.chuyx.pojo.dto.CommentShowDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Comments;
@@ -9,25 +10,53 @@ import com.chuyx.pojo.vo.CommentShowVO;
 import com.chuyx.wrapper.CommentWrapper;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CommentsService {
    int queryCountByBlogId(int id);
 
-   boolean addComment(int blogId, int uid, String editorContent);
+   /*
+   TODO del
+    */
+   int addChildComment(String targetUserName, int userId, String userParentName, String replyContent, int blogId, int parentComId);
 
-   Pager<CommentShowDTO> queryByBlogIdSmallPage(int blogId, int nowPage);
-
-   int addChildComment(String targetUserName, int userId, String userParentName, String replyContent, int blogId, int parrentComId);
-
+   /**
+    * 删除评论
+    * @param id 评论id
+    * @return 删除数量
+    */
    int delComment(int id);
 
-   int addChildComment(int userId, String userParentName, String replyContent, int blogId, int parrentComId);
+   /**
+    * 新增子评论
+    * @param userId 用户id
+    * @param userParentName 父评论用户名
+    * @param replyContent 评论内容
+    * @param blogId 博客id
+    * @param parentComId 父评论id
+    */
+   void addChildComment(int userId, String userParentName, String replyContent, int blogId, int parentComId);
 
-   int getAllCommentsSize();
+   /**
+    * 获取所有评论总数
+    * @return 评论总数
+    */
+   Integer getAllCommentsSize();
 
-   List<Comments> getPageCommentsSize(int page, int size);
+   /**
+    * 评论管理 分页获取评论
+    * @param page 当前页
+    * @param size 页面大小
+    * @return 数据集
+    */
+   Pager<AdminComments> getPageCommentsSize(Integer page, Integer size);
 
-   int delCommentByBlogId(int id);
+   /**
+    * 删除博客下的所有评论
+    * @param blogId 博客id
+    * @return 删除数量
+    */
+   Integer delCommentByBlogId(Integer blogId);
 
    /**
     * 新增最高级评论
@@ -45,4 +74,11 @@ public interface CommentsService {
     * @return 评论信息
     */
    Pager<CommentShowVO> queryPage(int page, int blogId);
+
+   /**
+    * 根据博客id集合获取评论总数
+    * @param blogIdList 博客id集合
+    * @return 博客id 评论总数
+    */
+    Map<Integer, Long> getBlogIdCommentsMap(List<Integer> blogIdList);
 }

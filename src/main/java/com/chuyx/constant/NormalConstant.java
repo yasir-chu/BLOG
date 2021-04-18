@@ -35,6 +35,17 @@ public class NormalConstant {
    public static Integer TOP_SIZE = 10;
 
    /**
+    * 页面大小
+    */
+   public static Integer PAGE_SIZE = 5;
+
+   /**
+    * 常量2
+    */
+   public static Integer TWE = 2;
+
+
+   /**
     * 常量1
     */
    public static Integer ONE = 1;
@@ -68,4 +79,9 @@ public class NormalConstant {
     * 默认头像
     */
    public static String DEFAULT_HEAD_PIC = "http://img.chuyx.top/FtijrH85AbdHe1rPpIuAxgA6u5wD";
+
+   /**
+    * 负一
+    */
+   public static Integer DOWN_ONE = -1;
 }

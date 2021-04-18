@@ -1,174 +1,71 @@
 package com.chuyx.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.chuyx.pojo.dto.AdminComments;
-import com.chuyx.pojo.dto.AdminIndexMsgDTO;
-import com.chuyx.pojo.dto.AdminUser;
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.Pager;
-import com.chuyx.service.AdminService;
-import io.swagger.annotations.ApiOperation;
+import com.chuyx.api.AdminApi;
+import com.chuyx.constant.NormalConstant;
+import com.chuyx.service.BlogService;
+import com.chuyx.service.CommentsService;
+import com.chuyx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * @author cyx
+ */
 @Controller
-@RequestMapping({"/admin"})
-public class AdminController {
+public class AdminController implements AdminApi {
+
+
    @Autowired
-   AdminService adminService;
+   private BlogService blogService;
 
-   @RequestMapping({"/"})
-   public String toAdmin(Model model) {
-      AdminIndexMsgDTO result = this.adminService.toAdmin();
-      model.addAttribute("adminMsg", result);
-      return "admin/admin";
+   @Autowired
+   private UserService userService;
+
+   @Autowired
+   private CommentsService commentsService;
+
+   @Override
+   public String queryPageWaitPassAuthor(Integer page) {
+      return JSON.toJSONString(userService.getWaitAuthorPage(page, NormalConstant.TOP_SIZE));
    }
 
-   @RequestMapping({"/toblog"})
-   public String toblog() {
-      return "admin/blogAdmin";
+   @Override
+   public String passAuthor(Integer uid) {
+      userService.passAuthor(uid);
+      return queryPageWaitPassAuthor(NormalConstant.ONE);
    }
 
-   @ApiOperation(value = "分页获取博客")
-   @PostMapping(value = {"/blog"}, produces = {"application/json;charset=utf-8"})
-   @ResponseBody
-   public String blog(Model model) {
-      Pager<BlogDTO> blog = adminService.blog();
-      return JSON.toJSONString(blog);
+   @Override
+   public String queryPageComments(Integer page) {
+      return JSON.toJSONString(commentsService.getPageCommentsSize(page, NormalConstant.TOP_SIZE));
    }
 
-   @RequestMapping(
-      value = {"/delBlog"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String delBlog(int id, Model model) {
-      this.adminService.delBlog(id);
-      Pager<BlogDTO> blog = this.adminService.blog();
-      return JSON.toJSONString(blog);
+   @Override
+   public String delComments(Integer id) {
+      commentsService.delComment(id);
+      return queryPageComments(NormalConstant.ONE);
    }
 
-   @RequestMapping(
-      value = {"/page/{page}"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String blogPage(@PathVariable("page") int page, Model model) {
-      Pager<BlogDTO> blogDTOPager = this.adminService.adminBlogPage(page);
-      return JSON.toJSONString(blogDTOPager);
+   @Override
+   public String queryPageBlog(Integer page) {
+      return JSON.toJSONString(blogService.queryBlogByPage(page, NormalConstant.TOP_SIZE));
    }
 
-   @RequestMapping({"/tocheckAuthor"})
-   public String toCheckAuthor() {
-      return "admin/checkAdmin";
+   @Override
+   public String delBlog(Integer id) {
+      blogService.deleteBlog(id);
+      return queryPageBlog(NormalConstant.ONE);
    }
 
-   @RequestMapping(
-      value = {"/allWaitPassAuthor"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String passAuthor() {
-      Pager<LoginUserDTO> pager = this.adminService.allWaitPassAuthor(1, 10);
-      return JSON.toJSONString(pager);
+   @Override
+   public String queryPageUser(Integer page) {
+      return JSON.toJSONString(userService.getPageUser(page, NormalConstant.TOP_SIZE));
    }
 
-   @RequestMapping(
-      value = {"/allWaitPassAuthor/{page}"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String passAuthor(@PathVariable("page") int page) {
-      Pager<LoginUserDTO> pager = this.adminService.allWaitPassAuthor(page, 10);
-      return JSON.toJSONString(pager);
-   }
-
-   @RequestMapping(
-      value = {"/passAuthor"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String passAuthor(Model model, int id) {
-      this.adminService.passAuthor(id);
-      Pager<LoginUserDTO> pager = this.adminService.allWaitPassAuthor(1, 10);
-      return JSON.toJSONString(pager);
-   }
-
-   @RequestMapping({"/tocommentAdmin"})
-   public String toCoommentAdmin() {
-      return "admin/commentAdmin";
-   }
-
-   @RequestMapping(
-      value = {"/allComments"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String allComments() {
-      Pager<AdminComments> allCommentsPage = this.adminService.getAllCommentsPage(1, 10);
-      return JSON.toJSONString(allCommentsPage);
-   }
-
-   @RequestMapping(
-      value = {"/allComments/{page}"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String allComments(@PathVariable("page") int page) {
-      Pager<AdminComments> allCommentsPage = this.adminService.getAllCommentsPage(page, 10);
-      return JSON.toJSONString(allCommentsPage);
-   }
-
-   @RequestMapping(
-      value = {"/delComments"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String delComments(int id) {
-      this.adminService.delComment(id);
-      Pager<AdminComments> allCommentsPage = this.adminService.getAllCommentsPage(1, 10);
-      return JSON.toJSONString(allCommentsPage);
-   }
-
-   @RequestMapping({"/toUserAdmin"})
-   public String toUserAdmin() {
-      return "admin/userAdmin";
-   }
-
-   @RequestMapping(
-      value = {"/allUser"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String allUser() {
-      Pager<AdminUser> allCommentsPage = this.adminService.getAllUserPage(1, 10);
-      return JSON.toJSONString(allCommentsPage);
-   }
-
-   @RequestMapping(
-      value = {"/allUser/{page}"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String allUserPage(@PathVariable("page") int page) {
-      Pager<AdminUser> allCommentsPage = this.adminService.getAllUserPage(page, 10);
-      return JSON.toJSONString(allCommentsPage);
-   }
-
-   @RequestMapping(
-      value = {"/delUser"},
-      produces = {"application/json;charset=utf-8"}
-   )
-   @ResponseBody
-   public String delUser(int id) {
-      this.adminService.delUser(id);
-      Pager<AdminUser> allCommentsPage = this.adminService.getAllUserPage(1, 10);
-      return JSON.toJSONString(allCommentsPage);
+   @Override
+   public String delUser(Integer id) {
+      userService.delUser(id);
+      return queryPageUser(NormalConstant.ONE);
    }
 }

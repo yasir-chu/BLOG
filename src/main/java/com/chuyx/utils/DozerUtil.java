@@ -32,14 +32,14 @@ public class DozerUtil {
     }
 
     /**
-     * 单个数据对象转化
+     * 集合数据对象转化
      *
      * @param sources     数据源对象列表
      * @param targetClass 数据目标对象字节码
      * @param <T>         数据传输对下个的类的字节码
      * @return 转化好了之后的对象列表
      */
-    public <T> List<T> mapList(List<?> sources, Class<T> targetClass) {
+    public static <T> List<T> mapList(List<?> sources, Class<T> targetClass) {
         if (!CollectionUtils.isEmpty(sources)) {
             return sources.stream().map(source -> mapper.map(source, targetClass)).collect(Collectors.toList());
         }

@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author chuyx
  * @data 2020-12-20
@@ -52,11 +54,12 @@ public interface BlogApi {
     /**
      * 保存或修改博客
      * @param req 保存博客的信息
+     * @param session session
      * @return 保存博客id或修改size 为0为失败
      */
     @PostMapping(value = "/blog/save",  produces = {"application/json;charset=utf-8"})
     @ApiOperation("保存博客")
-    Integer save(BlogWrapper.SaveBlogDTO req);
+    Integer save(BlogWrapper.SaveBlogDTO req, HttpSession session);
 
     /**
      * 删除博客

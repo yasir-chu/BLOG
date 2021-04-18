@@ -1,5 +1,7 @@
 package com.chuyx.pojo.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,14 +16,19 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AdminUser implements Serializable {
 
-   private int uid;
+   @ApiModelProperty(notes = "用户id")
+   private Integer uid;
 
+   @ApiModelProperty(notes = "用户名")
    private String uname;
 
-   private int capacity;
+   @ApiModelProperty(notes = "级别")
+   private Integer capacity;
 
+   @ApiModelProperty(notes = "邮箱")
    private String email;
 
+   @ApiModelProperty(notes = "生日")
    private String brith;
 
 

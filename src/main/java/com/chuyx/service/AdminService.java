@@ -11,23 +11,11 @@ import com.chuyx.pojo.dto.Pager;
  * @author yasir.chu
  */
 public interface AdminService {
+
+   /**
+    * 获取博客整体情况
+    * @return 个内容数据
+    */
    AdminIndexMsgDTO toAdmin();
 
-   Pager<BlogDTO> blog();
-
-   int delBlog(int id);
-
-   Pager<BlogDTO> adminBlogPage(int page);
-
-   Pager<LoginUserDTO> allWaitPassAuthor(int page, int size);
-
-   int passAuthor(int uid);
-
-   Pager<AdminComments> getAllCommentsPage(int page, int size);
-
-   int delComment(int id);
-
-   Pager<AdminUser> getAllUserPage(int page, int size);
-
-   int delUser(int id);
 }

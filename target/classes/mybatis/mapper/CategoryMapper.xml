@@ -11,9 +11,6 @@
             size="512"
             readOnly="true"/>
 
-    <select id="getCategoryById" parameterType="int" resultType="category">
-        select * from category where id = #{id}
-    </select>
 
 
 </mapper>

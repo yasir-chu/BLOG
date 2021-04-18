@@ -1,5 +1,6 @@
 package com.chuyx.pojo.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AdminIndexMsgDTO implements Serializable {
 
-   private int userSize;
+   @ApiModelProperty(notes = "用户总数")
+   private Integer userSize;
 
-   private int authorSize;
+   @ApiModelProperty(notes = "博主总数")
+   private Integer authorSize;
 
-   private int blogSize;
+   @ApiModelProperty(notes = "博客总数")
+   private Integer blogSize;
 
-   private int commentsSize;
+   @ApiModelProperty(notes = "评论总数")
+   private Integer commentsSize;
 }

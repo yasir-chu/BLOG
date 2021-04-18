@@ -64,10 +64,11 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/views/updateUser/{uid}(uid = ${session.userMsg.getUid()})}">资料</a></li>
-                            <li><a th:href="@{/ordinary/toapply}" th:if="${session.userMsg.getCapacity() eq 0}">博主申请</a></li>
+                            <li><a th:href="@{/views/toApply}" th:if="${session.userMsg.getCapacity() eq 0}">博主申请</a></li>
                             <li><a style="color: #0F9E5E" href="#" th:if="${session.userMsg.getCapacity() eq -1}">博主申请中</a></li>
-                            <li><a th:href="@{/author/blogManger}" th:if="${session.userMsg.getCapacity() gt 0}">作品管理</a></li>
-                            <li><a th:href="@{/author/toPublishBlog}" th:if="${session.userMsg.getCapacity() gt 0}">写博客</a></li>
+                            <li><a th:href="@{/views/toUserBlogMange/1}" th:if="${session.userMsg.getCapacity() gt 0}">作品管理</a></li>
+                            <li><a th:href="@{/views/toPublishBlog}" th:if="${session.userMsg.getCapacity() gt 0}">写博客</a></li>
+                            <li><a th:href="@{/views/admin}" th:if="${session.userMsg.getCapacity() gt 1}">后台</a></li>
                             <li><a th:href="@{/views/signOut/bye}">注销</a></li>
                         </ul>
                     </li>
@@ -80,7 +81,7 @@
 </header>
 <div style="height: 90px;"></div>
 <div>
-    <form th:action="@{/author/publishBlog}" method="post" onkeydown="if(event.keyCode==13){return false;}" onsubmit="return checkSubmit()">
+    <form th:action="@{/views/publishBlog}" method="post" onkeydown="if(event.keyCode==13){return false;}" onsubmit="return checkSubmit()">
         <!--    <input type="hidden" name="${_csrf.parameterName}" value="_csrf.token">-->
         <div id="layout">
             <div class="layui-input-block">

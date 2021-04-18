@@ -1,223 +1,49 @@
 package com.chuyx.service.impl;
 
-import com.chuyx.pojo.dto.AdminComments;
+import com.alibaba.fastjson.JSON;
 import com.chuyx.pojo.dto.AdminIndexMsgDTO;
-import com.chuyx.pojo.dto.AdminUser;
-import com.chuyx.pojo.dto.BlogDTO;
-import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.model.Blog;
-import com.chuyx.pojo.model.Category;
-import com.chuyx.pojo.model.Comments;
-import com.chuyx.pojo.model.User;
-import com.chuyx.service.AdminService;
-import com.chuyx.service.BlogService;
-import com.chuyx.service.CategoryService;
-import com.chuyx.service.CommentsService;
-import com.chuyx.service.EmailService;
-import com.chuyx.service.UserService;
-import com.chuyx.utils.BlogUtils;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.springframework.beans.BeanUtils;
+import com.chuyx.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 @Service
 public class AdminServiceImpl implements AdminService {
-   @Autowired
-   UserService userService;
-   @Autowired
-   CommentsService commentsService;
-   @Autowired
-   BlogService blogService;
-   @Autowired
-   CategoryService categoryService;
-   @Autowired
-   EmailService emailService;
+    @Autowired
+    private UserService userService;
 
-   @Override
-   public AdminIndexMsgDTO toAdmin() {
-      int countUserSize = this.userService.getCountUserSize();
-      int allBlogSize = this.blogService.getAllBlogSize();
-      int allCommentsSize = this.commentsService.getAllCommentsSize();
-      int countAuthorSize = this.userService.getCountAuthorSize();
-      AdminIndexMsgDTO result = new AdminIndexMsgDTO();
-      result.setUserSize(countUserSize);
-      result.setBlogSize(allBlogSize);
-      result.setCommentsSize(allCommentsSize);
-      result.setAuthorSize(countAuthorSize);
-      return result;
-   }
+    @Autowired
+    private CommentsService commentsService;
 
-   @Override
-   public Pager<BlogDTO> blog() {
-      Pager<BlogDTO> result = this.blogService.queryBlogByPage(1, 10);
-      return this.toTenPager(result);
-   }
+    @Autowired
+    private BlogService blogService;
 
-   @Override
-   public int delBlog(int id) {
-      return this.blogService.deleteBlog(id);
-   }
+    @Autowired
+    private EmailService emailService;
 
-   @Override
-   public Pager<BlogDTO> adminBlogPage(int page) {
-      Pager<BlogDTO> result = this.blogService.queryBlogByPage(page, 10);
-      return this.toTenPager(result);
-   }
+    @Autowired
+    private Jedis jedis;
 
-   @Override
-   public Pager<LoginUserDTO> allWaitPassAuthor(int page, int size) {
-      List<LoginUserDTO> waitAuthorPage = this.userService.getWaitAuthorPage(page, size);
-      Pager<LoginUserDTO> pager = new Pager();
-      pager.setRows(waitAuthorPage);
-      pager.setPage(page);
-      int total = this.userService.getCountWaitAuthor();
-      pager.setTotal((long)total);
-      if (total <= size) {
-         pager.setSize(1);
-      } else if (total % size > 0) {
-         pager.setSize(total / size + 1);
-      } else {
-         pager.setSize(total / size);
-      }
+    /**
+     * redis key 一小时内有效的博客详情
+     */
+    private String ALL_SIZE_ABOUT_MY_BLOG = "redis.my.blog.all.size";
 
-      return pager;
-   }
+    /**
+     * 一小时的秒
+     */
+    private Integer ONE_HOUR_SECOND = 60 * 60;
 
-   @Override
-   public int passAuthor(int uid) {
-      this.userService.passAuthor(uid);
-      this.emailService.sentToUser(uid);
-      return 0;
-   }
-
-   @Override
-   public Pager<AdminComments> getAllCommentsPage(int page, int size) {
-      Pager<AdminComments> result = new Pager();
-      List<Comments> pageCommentsSize = this.commentsService.getPageCommentsSize(page, 10);
-      List<AdminComments> adminComments = this.listCommenttoPager(pageCommentsSize);
-      result.setRows(adminComments);
-      result.setPage(page);
-      int count = this.commentsService.getAllCommentsSize();
-      result.setTotal((long)count);
-      if (count <= size) {
-         result.setSize(1);
-      } else if (count % size > 0) {
-         result.setSize(count / size + 1);
-      } else {
-         result.setSize(count / size);
-      }
-
-      return result;
-   }
-
-   @Override
-   public int delComment(int id) {
-      return this.commentsService.delComment(id);
-   }
-
-   @Override
-   public Pager<AdminUser> getAllUserPage(int page, int size) {
-      Pager<AdminUser> pager = new Pager();
-      List<User> allUser = this.userService.getAllUser(page, size);
-      List<AdminUser> adminUsers = this.userToAdminUser(allUser);
-      pager.setRows(adminUsers);
-      pager.setPage(page);
-      int count = this.userService.getCountUserSize();
-      pager.setTotal((long)count);
-      if (count <= size) {
-         pager.setSize(1);
-      } else if (count % size > 0) {
-         pager.setSize(count / size + 1);
-      } else {
-         pager.setSize(count / size);
-      }
-
-      return pager;
-   }
-
-   @Override
-   public int delUser(int id) {
-      return this.userService.delUser(id);
-   }
-
-   public List<AdminUser> userToAdminUser(List<User> users) {
-      ArrayList<AdminUser> adminUsers = new ArrayList();
-      Iterator var3 = users.iterator();
-
-      while(var3.hasNext()) {
-         User user = (User)var3.next();
-         AdminUser adminUser = new AdminUser();
-         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-         adminUser.setBrith(format.format(user.getBrith()));
-         adminUser.setUid(user.getUid());
-         adminUser.setCapacity(user.getCapacity());
-         adminUser.setEmail(user.getEmail());
-         adminUser.setUname(user.getUname());
-         adminUsers.add(adminUser);
-      }
-
-      return adminUsers;
-   }
-
-   public List<AdminComments> listCommenttoPager(List<Comments> list) {
-      List<AdminComments> adminComments = new ArrayList();
-      Iterator var3 = list.iterator();
-
-      while(var3.hasNext()) {
-         Comments comments = (Comments)var3.next();
-         AdminComments adminComments1 = new AdminComments();
-         adminComments1.setId(comments.getId());
-         adminComments1.setAuthor(this.userService.queryUserById(comments.getUid()).getUname());
-         adminComments1.setBlogName(this.blogService.queryBlogById(comments.getBlogId()).getTitle());
-         adminComments1.setConment(comments.getContent());
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         adminComments1.setTime(dateFormat.format(comments.getCreateTime()));
-         adminComments.add(adminComments1);
-      }
-
-      return adminComments;
-   }
-
-   public List<BlogDTO> pageBlogUtil(List<Blog> blogs) {
-      List<BlogDTO> blogDTOS = new ArrayList();
-      Iterator var3 = blogs.iterator();
-
-      while(var3.hasNext()) {
-         Blog blog = (Blog)var3.next();
-         BlogDTO blogDTO = new BlogDTO();
-         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-         simpleDateFormat.format(blog.getReleaseDate());
-         blogDTO = BlogUtils.BolgDateToYMD(blog, blogDTO);
-         BeanUtils.copyProperties(blog, blogDTO);
-         Category category = this.categoryService.getCategoryById(blog.getCategoryId());
-         blogDTO.setCatecoty(category.getName());
-         int count = this.commentsService.queryCountByBlogId(blog.getId());
-         blogDTO.setCount(count);
-         User user = this.userService.queryUserById(blog.getUid());
-         blogDTO.setAuthor(user.getUname());
-         blogDTOS.add(blogDTO);
-      }
-
-      return blogDTOS;
-   }
-
-   public Pager<BlogDTO> toTenPager(Pager<BlogDTO> page) {
-      int count = this.blogService.queryAllBlogSize();
-      page.setTotal((long)count);
-      page.setPage(page.getPage());
-      if (count <= 10) {
-         page.setSize(1);
-      } else if (count % 10 > 0) {
-         page.setSize(count / 10 + 1);
-      } else {
-         page.setSize(count / 10);
-      }
-
-      return page;
-   }
+    @Override
+    public AdminIndexMsgDTO toAdmin() {
+        if (!jedis.exists(ALL_SIZE_ABOUT_MY_BLOG)) {
+            Integer countUserSize = userService.getCountUserSize();
+            Integer allBlogSize = blogService.getAllBlogSize();
+            Integer allCommentsSize = commentsService.getAllCommentsSize();
+            Integer countAuthorSize = userService.getCountAuthorSize();
+            AdminIndexMsgDTO result = new AdminIndexMsgDTO(countUserSize, countAuthorSize, allBlogSize, allCommentsSize);
+            jedis.setex(ALL_SIZE_ABOUT_MY_BLOG, ONE_HOUR_SECOND, JSON.toJSONString(result));
+        }
+        return JSON.parseObject(jedis.get(ALL_SIZE_ABOUT_MY_BLOG), AdminIndexMsgDTO.class);
+    }
 }

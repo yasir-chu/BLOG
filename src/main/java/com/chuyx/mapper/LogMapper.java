@@ -5,8 +5,11 @@ import com.chuyx.pojo.model.Log;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author cyx
+ */
 @Mapper
 @Repository
 public interface LogMapper extends BaseMapper<Log> {
-   int inserntLog(Log log);
+
 }

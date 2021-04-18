@@ -1,13 +1,13 @@
 package com.chuyx.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.BlogMapper;
-import com.chuyx.pojo.dto.*;
+import com.chuyx.pojo.dto.BlogDTO;
+import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Blog;
 import com.chuyx.pojo.model.Category;
 import com.chuyx.pojo.model.User;
@@ -17,20 +17,21 @@ import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;
 import com.chuyx.service.UserService;
 import com.chuyx.utils.BlogUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import com.chuyx.utils.DateUtils;
 import com.chuyx.utils.DozerUtil;
 import com.chuyx.utils.NormalUtils;
 import com.chuyx.wrapper.BlogWrapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -45,132 +46,69 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    public int queryAllBlogSize() {
-        return this.blogMapper.queryAllBlogSize();
-    }
-
-
-    @Override
     public Integer updateBlogVisitCount(Integer visitCount, Integer id) {
         return blogMapper.updateBlogVisitCount(visitCount, id);
     }
 
     @Override
     public Pager<BlogDTO> queryBlogByPage(int page, int size) {
-        int index = (page - 1) * size;
-        List<Blog> blogs = blogMapper.queryBlogByPage(index, size);
-        Pager<BlogDTO> result = new Pager();
-        List<BlogDTO> blogDTOS = pageBlogUtil(blogs);
-        result.setRows(blogDTOS);
-        int countSize = blogMapper.countSize();
-        result.setTotal((long) countSize);
+        Page<Blog> pager = new Page<>(page,size);
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        Page<Blog> blogPage = blogMapper.selectPage(pager, wrapper);
+        Pager<BlogDTO> result = new Pager<>();
+        result.setRows(pageBlogUtil(blogPage.getRecords()));
         result.setPage(page);
-        if (countSize < size) {
-            result.setSize(1);
-        } else if (countSize % size > 0) {
-            result.setSize(countSize / size + 1);
-        } else {
-            result.setSize(countSize / size);
+        result.setTotal(blogPage.getTotal());
+        int allPageSize = Integer.parseInt(String.valueOf(blogPage.getTotal()))/size;
+        if (blogPage.getTotal()%size > 0){
+            allPageSize += 1;
         }
-
+        result.setSize(allPageSize);
         return result;
     }
 
     @Override
     public List<BlogDTO> queryBlogSearch(String name) {
-        char[] chars = name.toCharArray();
-        String name2 = "%" + name + "%";
-        List<Blog> blogs = this.blogMapper.queryBlogSearch(name2);
-        List<BlogDTO> blogDTOS = this.pageBlogUtil(blogs);
-        Iterator var6 = blogDTOS.iterator();
-
-        while (var6.hasNext()) {
-            BlogDTO blogDTO = (BlogDTO) var6.next();
-            blogDTO.setTitle(blogDTO.getTitle().replaceAll(name, "<b style='color:#6bc30d'>" + name + "</b>"));
-        }
-
-        return blogDTOS;
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("title", name);
+        List<Blog> blogList = blogMapper.selectList(queryWrapper);
+        List<BlogDTO> blogDTOList = pageBlogUtil(blogList);
+        blogDTOList.forEach(a ->{
+            a.setTitle(a.getTitle().replaceAll(name, "<b style='color:#6bc30d'>" + name + "</b>"));
+        });
+        return blogDTOList;
     }
 
     @Override
-    public int addBlog(PublishBlogDTO publishBlogDTO, int uid) {
-        NewBlogDTO newBlogDTO = new NewBlogDTO();
-        newBlogDTO.setTitle(publishBlogDTO.getTitle());
-        newBlogDTO.setSmallTitle(publishBlogDTO.getSmallTitle());
-        newBlogDTO.setCatecoty(publishBlogDTO.getCapacity());
-        newBlogDTO.setContent(publishBlogDTO.getContent());
-        newBlogDTO.setUid(uid);
-        newBlogDTO.setAuthor(this.userService.queryUserById(uid).getUname());
-        newBlogDTO.setRepleseaDate(new Date());
-        this.blogMapper.addBlog(newBlogDTO);
+    public Pager<BlogDTO> queryBlogByPageAuthor(Integer uid,Integer page) {
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uid", uid);
+        Page<Blog> blogPage = new Page<>(page, NormalConstant.TOP_SIZE);
+        Page<Blog> blogPageResult = blogMapper.selectPage(blogPage, queryWrapper);
+        if (CollectionUtils.isEmpty(blogPageResult.getRecords())){
+            return NormalUtils.pagerRows(blogPageResult, Collections.emptyList());
+        }
+        return NormalUtils.pagerRows(blogPageResult, pageBlogUtil(blogPageResult.getRecords()));
+    }
+
+    @Override
+    public Integer deleteBlog(Integer id) {
+        blogMapper.deleteById(id);
+        commentsService.delCommentByBlogId(id);
         return 0;
     }
 
     @Override
-    public int updateBlog(PublishBlogDTO publishBlogDTO, int uid) {
-        NewBlogDTO newBlogDTO = new NewBlogDTO();
-        newBlogDTO.setTitle(publishBlogDTO.getTitle());
-        newBlogDTO.setSmallTitle(publishBlogDTO.getSmallTitle());
-        newBlogDTO.setCatecoty(publishBlogDTO.getCapacity());
-        newBlogDTO.setContent(publishBlogDTO.getContent());
-        newBlogDTO.setUid(uid);
-        newBlogDTO.setAuthor(this.userService.queryUserById(uid).getUname());
-        newBlogDTO.setId(publishBlogDTO.getId());
-        this.blogMapper.updateBlog(newBlogDTO);
-        return 0;
+    public Integer deleteBlog(Integer id, Integer uid) {
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        queryWrapper.eq("uid", uid);
+        return blogMapper.delete(queryWrapper);
     }
 
     @Override
-    public Pager<BlogDTO> queryBlogByPageAuthord(int uid) {
-        Pager<BlogDTO> result = new Pager();
-        List<Blog> blogs = this.blogMapper.queryBlogByAuthorId(uid);
-        List<BlogDTO> blogDTOS = this.pageBlogUtil(blogs);
-        result.setRows(blogDTOS);
-        int count = this.blogMapper.queryBlogByAuthorIdCount(uid);
-        result.setTotal((long) count);
-        result.setPage(1);
-        if (count <= 10) {
-            result.setSize(1);
-        } else if (count % 10 > 0) {
-            result.setSize(count / 10 + 1);
-        } else {
-            result.setSize(count / 10);
-        }
-
-        return result;
-    }
-
-    @Override
-    public Pager<BlogDTO> queryBlogByPageAuthordPage(int uid, int page) {
-        Pager<BlogDTO> result = new Pager();
-        int index = (page - 1) * 10;
-        List<Blog> blogs = this.blogMapper.queryBlogByAuthorIdPage(uid, index, 10);
-        List<BlogDTO> blogDTOS = this.pageBlogUtil(blogs);
-        result.setRows(blogDTOS);
-        int count = this.blogMapper.queryBlogByAuthorIdCount(uid);
-        result.setTotal((long) count);
-        result.setPage(page);
-        if (count <= 10) {
-            result.setSize(1);
-        } else if (count % 10 > 0) {
-            result.setSize(count / 10 + 1);
-        } else {
-            result.setSize(count / 10);
-        }
-
-        return result;
-    }
-
-    @Override
-    public int deleteBlog(int id) {
-        this.blogMapper.delBlog(id);
-        this.commentsService.delCommentByBlogId(id);
-        return 0;
-    }
-
-    @Override
-    public int getAllBlogSize() {
-        return this.blogMapper.countSize();
+    public Integer getAllBlogSize() {
+        return blogMapper.selectCount(new QueryWrapper<>());
     }
 
     @Override
@@ -207,17 +145,21 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public BlogBaseVO queryBlogById(Integer id) {
         Blog blog = blogMapper.selectById(id);
-
         return blogToBlogVO(blog);
     }
 
     @Override
-    public Integer save(BlogWrapper.SaveBlogDTO req) {
+    public Integer save(BlogWrapper.SaveBlogDTO req, Integer uid) {
         Blog blog = DozerUtil.map(req, Blog.class);
         blog.setReleaseDate(DateUtils.getSqlNowDate());
-        // todo 获取uid 并set session
+        blog.setUid(uid);
+        blog.setCategoryId(req.getCapacity());
+        blog.setVisitCount(NormalConstant.ZERO);
         if (blog.getId() != null){
-            return blogMapper.updateById(blog);
+            UpdateWrapper<Blog> blogUpdateWrapper = new UpdateWrapper<>();
+            blogUpdateWrapper.eq("uid", uid);
+            blogUpdateWrapper.eq("id", req.getId());
+            return blogMapper.update(blog, blogUpdateWrapper);
         }
         return blogMapper.insert(blog);
     }
@@ -247,6 +189,20 @@ public class BlogServiceImpl implements BlogService {
             blogBaseVO.setTitle(blogBaseVO.getTitle().replaceAll(comment, "<b style='color:#6bc30d'>" + comment + "</b>"));
             return blogBaseVO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Integer, String> getBlogIdNameMap(List<Integer> blogIdList) {
+        if (CollectionUtils.isEmpty(blogIdList)){
+            return Collections.emptyMap();
+        }
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("id", blogIdList);
+        List<Blog> blogs = blogMapper.selectList(queryWrapper);
+        if (CollectionUtils.isEmpty(blogs)){
+            return Collections.emptyMap();
+        }
+        return blogs.stream().collect(Collectors.toMap(Blog::getId, Blog::getTitle, (ok, nk) -> ok));
     }
 
 
@@ -287,26 +243,34 @@ public class BlogServiceImpl implements BlogService {
         blogVo.setDay(day);
     }
 
+    /**
+     * 数据转换
+     * @param blogs 转换前
+     * @return 转换完毕
+     */
     public List<BlogDTO> pageBlogUtil(List<Blog> blogs) {
-        List<BlogDTO> blogDTOS = new ArrayList();
-        Iterator var3 = blogs.iterator();
-
-        while (var3.hasNext()) {
-            Blog blog = (Blog) var3.next();
-            BlogDTO blogDTO = new BlogDTO();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            simpleDateFormat.format(blog.getReleaseDate());
-            blogDTO = BlogUtils.BolgDateToYMD(blog, blogDTO);
-            BeanUtils.copyProperties(blog, blogDTO);
-            Category category = this.categoryService.getCategoryById(blog.getCategoryId());
-            blogDTO.setCatecoty(category.getName());
-            int count = this.commentsService.queryCountByBlogId(blog.getId());
-            blogDTO.setCount(count);
-            User user = this.userService.queryUserById(blog.getUid());
-            blogDTO.setAuthor(user.getUname());
-            blogDTOS.add(blogDTO);
+        if (CollectionUtils.isEmpty(blogs)){
+            return Collections.emptyList();
         }
-
-        return blogDTOS;
+        Map<Integer, String> uidNameMap = userService.getUidNameMap(blogs.stream().map(Blog::getUid).distinct().collect(Collectors.toList()));
+        Map<Integer, String> categoryIdNameMap = categoryService.getCategoryIdNameMap(blogs.stream().map(Blog::getCategoryId).distinct().collect(Collectors.toList()));
+        // 评论量
+        Map<Integer, Long> blogIdCommentsMap = commentsService.getBlogIdCommentsMap(blogs.stream().map(Blog::getId).distinct().collect(Collectors.toList()));
+        return blogs.stream().map(a -> {
+            BlogDTO item = DozerUtil.map(a, BlogDTO.class);
+            if (categoryIdNameMap.containsKey(a.getCategoryId())){
+                item.setCatecoty(categoryIdNameMap.get(a.getCategoryId()));
+            }
+            if (uidNameMap.containsKey(a.getUid())){
+                item.setAuthor(uidNameMap.get(a.getUid()));
+            }
+            if (blogIdCommentsMap.containsKey(a.getId())){
+                item.setCount(Integer.parseInt(String.valueOf(blogIdCommentsMap.get(a.getId()))));
+            }else{
+                item.setCount(NormalConstant.ZERO);
+            }
+            BlogUtils.BlogDateToYMD(a, item);
+            return item;
+        }).collect(Collectors.toList());
     }
 }

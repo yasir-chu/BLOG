@@ -84,6 +84,6 @@ public class User implements Serializable {
     * 逻辑删除位 默认0
     */
    @TableField("del")
-   private String del;
+   private Integer del;
 }
 

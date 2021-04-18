@@ -1,26 +1,19 @@
 package com.chuyx.api;
 
-import com.chuyx.constant.NormalConstant;
+import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.dto.RegisterDTO;
-import com.chuyx.pojo.vo.BlogBaseVO;
-import com.chuyx.wrapper.BlogWrapper;
+import com.chuyx.pojo.dto.PublishBlogDTO;
 import com.chuyx.wrapper.CommentWrapper;
 import com.chuyx.wrapper.UserWrapper;
 import io.swagger.annotations.Api;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import javax.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.ParseException;
 
 /**
  * @author yasir.chu
@@ -149,4 +142,115 @@ public interface ViewJumpApi {
      */
     @RequestMapping({"/views/register"})
     String register(UserWrapper.SaveDTO saveDTO, HttpSession session, Model model);
+
+    /**
+     * 后台管理页
+     *
+     * @param model 模型
+     * @return 后台管理首页
+     */
+    @RequestMapping({"/views/admin"})
+    String toAdmin(Model model);
+
+    /**
+     * 去审核博主页面
+     * @return 审核博主页面
+     */
+    @RequestMapping({"/views/toPassAuthor"})
+    String toPassAuthor();
+
+    /**
+     * 去博客管理页面
+     * @return 客管理页面
+     */
+    @RequestMapping({"/views/toBlogAdmin"})
+    String toBlogAdmin();
+
+    /**
+     * 去评论管理页面
+     * @return 评论管理页面
+     */
+    @RequestMapping({"/views/toCommentsAdmin"})
+    String toCommentsAdmin();
+
+    /**
+     * 去用户管理页面
+     * @return 用户管理页面
+     */
+    @RequestMapping({"/views/toUserAdmin"})
+    String toUserAdmin();
+
+    /**
+     * 去用户管理博客页面
+     * @param model 模型
+     * @param session session
+     * @param page 当前页
+     * @return 用户管理博客页面
+     */
+    @RequestMapping({"/views/toUserBlogMange/{page}"})
+    String toUserBlogManger(Model model, HttpSession session, @PathVariable("page")Integer page);
+
+    /**
+     * 去发布博客页面
+     * @return 发布博客页面
+     */
+    @RequestMapping({"/views/toPublishBlog"})
+    String toPublishBlog();
+
+    /**
+     * 去发布修改页面
+     * @param model 模型
+     * @param id 博客id
+     * @return 发布修改页面
+     */
+    @RequestMapping({"/views/toUpdateBlog/{id}"})
+    String toUpdateBlog(Model model, @PathVariable("id") Integer id);
+
+    /**
+     * 发布博客
+     * @param publishBlogDTO 发布博客对象信息
+     * @param session session
+     * @param model 模型
+     * @return 管理页面
+     */
+    @RequestMapping({"/views/publishBlog"})
+    String publishBlog(PublishBlogDTO publishBlogDTO, HttpSession session, Model model);
+
+    /**
+     * 删除用户博客
+     * @param blogId 博客id
+     * @param session session
+     * @param model 模型
+     * @return 管理页面
+     */
+    @RequestMapping({"/views/delBlogUser/{blogId}"})
+    String publishBlog(HttpSession session, Model model, @PathVariable("blogId") Integer blogId);
+
+    /**
+     * 修改博客
+     * @param blogId 博客id
+     * @param session session
+     * @param model 模型
+     * @param publishBlogDTO 发表信息
+     * @return 管理页面
+     */
+    @RequestMapping({"/views/updateBlog/{blogId}"})
+    String updateBlog(HttpSession session, Model model, PublishBlogDTO publishBlogDTO,  @PathVariable("blogId") Integer blogId);
+
+    /**
+     * 去申请页面
+     * @return 申请页面
+     */
+    @RequestMapping({"/views/toApply"})
+    String toApply();
+
+    /**
+     * 申请博主
+     * @param session session
+     * @param editorContent 申请文本
+     * @return 成功页面
+     */
+    @RequestMapping({"/views/apply"})
+    String apply(HttpSession session, String editorContent);
+
 }

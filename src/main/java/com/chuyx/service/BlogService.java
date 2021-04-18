@@ -6,39 +6,68 @@ import com.chuyx.pojo.dto.PublishBlogDTO;
 import com.chuyx.pojo.model.Blog;
 import com.chuyx.pojo.vo.BlogBaseVO;
 import com.chuyx.wrapper.BlogWrapper;
+import io.swagger.models.auth.In;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yasir.chu
  */
 public interface BlogService {
 
-   int queryAllBlogSize();
-
-
    /**
     * 更新博客访问量
     * @param visitCount 更新值
+    * @param id 博客id
+    * @return 更新数量
     */
    Integer updateBlogVisitCount(Integer visitCount, Integer id);
 
+   /**
+    * 后台管理用
+    * @param index 当前页
+    * @param size 页面大小
+    * @return 数据集
+    */
    Pager<BlogDTO> queryBlogByPage(int index, int size);
 
-
+   /**
+    * 根据名称模糊搜索
+    * @param name 博客名
+    * @return 查询结果
+    */
    List<BlogDTO> queryBlogSearch(String name);
 
-   int addBlog(PublishBlogDTO publishBlogDTO, int uid);
 
-   int updateBlog(PublishBlogDTO publishBlogDTO, int uid);
+   /**
+    * 根据作者分页查询博客
+    * @param uid 作者id
+    * @param page 当前页
+    * @return 查询结果
+    */
+   Pager<BlogDTO> queryBlogByPageAuthor(Integer uid,Integer page);
 
-   Pager<BlogDTO> queryBlogByPageAuthord(int uid);
+   /**
+    * 删除博客
+    * @param id 博客id
+    * @return 删除数量
+    */
+   Integer deleteBlog(Integer id);
 
-   Pager<BlogDTO> queryBlogByPageAuthordPage(int uid, int page);
+   /**
+    * 删除博客
+    * @param id 博客id
+    * @param uid 用户id
+    * @return 删除数量
+    */
+   Integer deleteBlog(Integer id, Integer uid);
 
-   int deleteBlog(int id);
-
-   int getAllBlogSize();
+   /**
+    * 查询所有博客总数
+    * @return 博客总数
+    */
+   Integer getAllBlogSize();
 
    /**
     * 获取访问量最多的10篇博客
@@ -72,9 +101,10 @@ public interface BlogService {
    /**
     * 保存博客
     * @param req 博客信息
+    * @param uid 用户id
     * @return 0为失败，其他为成功
     */
-   Integer save(BlogWrapper.SaveBlogDTO req);
+   Integer save(BlogWrapper.SaveBlogDTO req, Integer uid);
 
    /**
     * 删除博客  软删除
@@ -89,4 +119,11 @@ public interface BlogService {
     * @return 博客列表 只查10个防止bug
     */
    List<BlogBaseVO> searchBlogByComment(String comment);
+
+   /**
+    * 根据博客id集合获取博客
+    * @param blogIdList 博客id集合
+    * @return 博客id 博客名
+    */
+   Map<Integer, String> getBlogIdNameMap(List<Integer> blogIdList);
 }

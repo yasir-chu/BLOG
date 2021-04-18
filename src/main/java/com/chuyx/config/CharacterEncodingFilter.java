@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 )
 public class CharacterEncodingFilter implements Filter {
    @Override
-   public void init(FilterConfig filterConfig) throws ServletException {
+   public void init(FilterConfig filterConfig){
    }
 
    @Override
