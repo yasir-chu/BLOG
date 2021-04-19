@@ -84,4 +84,9 @@ public class NormalConstant {
     * 负一
     */
    public static Integer DOWN_ONE = -1;
+
+   /**
+    * 错误码
+    */
+   public static Integer ERROR_CODE = 500;
 }

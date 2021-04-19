@@ -325,7 +325,7 @@
 				for (var i = 0; i < data.length; i++) {
 					$("#category").append("<li data-index='" + data[i].id + "' class='cataHover'><a href='/views/blogPage/"+data[i].id+"/"+1+"'>" + data[i].name + "</a></li>");
 					//
-					$("#catequeue").append("<a href='@{/views/blogPage/" + data[i].id + "/"+1+"'>" + data[i].name + "</a>");
+					$("#catequeue").append("<a href='/views/blogPage/" + data[i].id + "/"+1+"'>" + data[i].name + "</a>");
 				}
 				$("#catequeue").append("<div class=\"f-cb\"></div>");
 			}

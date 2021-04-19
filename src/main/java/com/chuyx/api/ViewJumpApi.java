@@ -253,4 +253,11 @@ public interface ViewJumpApi {
     @RequestMapping({"/views/apply"})
     String apply(HttpSession session, String editorContent);
 
+    /**
+     * 去类别管理页面
+     * @return 类别管理页面
+     */
+    @RequestMapping({"/views/toCategoryAdmin"})
+    String toCategoryAdmin();
+
 }

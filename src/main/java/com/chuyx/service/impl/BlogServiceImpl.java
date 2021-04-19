@@ -205,6 +205,13 @@ public class BlogServiceImpl implements BlogService {
         return blogs.stream().collect(Collectors.toMap(Blog::getId, Blog::getTitle, (ok, nk) -> ok));
     }
 
+    @Override
+    public boolean checkBlogInCategory(Integer id) {
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("category_id", id);
+        return !CollectionUtils.isEmpty(blogMapper.selectList(queryWrapper));
+    }
+
 
     /**
      * blog实体类转blog视图类

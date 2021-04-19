@@ -126,4 +126,11 @@ public interface BlogService {
     * @return 博客id 博客名
     */
    Map<Integer, String> getBlogIdNameMap(List<Integer> blogIdList);
+
+   /**
+    * 检查该类别下是否有博客
+    * @param id 类别id
+    * @return true 有
+    */
+    boolean checkBlogInCategory(Integer id);
 }

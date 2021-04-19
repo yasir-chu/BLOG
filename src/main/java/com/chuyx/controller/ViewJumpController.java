@@ -253,5 +253,10 @@ public class ViewJumpController implements ViewJumpApi {
         return "ordinary/suc";
     }
 
+    @Override
+    public String toCategoryAdmin() {
+        return "admin/categoryAdmin";
+    }
+
 
 }

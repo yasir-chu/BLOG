@@ -1,5 +1,6 @@
 package com.chuyx.service;
 
+import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Category;
 
 import java.util.List;
@@ -32,4 +33,26 @@ public interface CategoryService {
     * @return 类别id 类别名
     */
    Map<Integer, String> getCategoryIdNameMap(List<Integer> categoryList);
+
+   /**
+    * 分页获取类别
+    * @param page 当前页面
+    * @param size 页面大小
+    * @return 分页信息
+    */
+    Pager<Category> queryPage(Integer page, Integer size);
+
+   /**
+    * 删除类别
+    * @param id 类别id
+    * @return 状态
+    */
+   Integer delCategory(Integer id);
+
+   /**
+    * 新增类别
+    * @param name 类别名
+    * @param id 类别id 有修改 没有新增
+    */
+   void saveCategory(Integer id,String name);
 }

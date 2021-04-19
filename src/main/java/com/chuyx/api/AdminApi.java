@@ -86,4 +86,32 @@ public interface AdminApi {
     @ApiOperation("删除博客")
     String delUser(@PathVariable("uid") Integer id);
 
+    /**
+     * 获取分页类别
+     * @param page 当前页面
+     * @return 类别
+     */
+    @PostMapping(value = "/admin/queryPageCategory/{page}",  produces = {"application/json;charset=utf-8"})
+    @ApiOperation("获取分页类别")
+    String queryPageCategory(@PathVariable("page") Integer page);
+
+    /**
+     * 删除类别
+     * @param id 类别id
+     * @return 管理页面
+     */
+    @PostMapping(value = "/admin/delCategory/{id}",  produces = {"application/json;charset=utf-8"})
+    @ApiOperation("删除类别")
+    String delCategory(@PathVariable("id") Integer id);
+
+    /**
+     * 保存类别
+     * @param id 类别id
+     * @param name 类别名
+     * @return 管理页面
+     */
+    @PostMapping(value = "/admin/saveCategory/{id}/{name}",  produces = {"application/json;charset=utf-8"})
+    @ApiOperation("保存类别")
+    String saveCategory(@PathVariable("id") Integer id, @PathVariable("name") String name);
+
 }
