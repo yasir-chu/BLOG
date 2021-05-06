@@ -1,8 +1,6 @@
 package com.chuyx.api;
 
-import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.LoginUserDTO;
-import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.dto.PublishBlogDTO;
 import com.chuyx.wrapper.CommentWrapper;
 import com.chuyx.wrapper.UserWrapper;

@@ -40,6 +40,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     private static final String CATEGORY_ALL_REDIS = "category.all";
 
+    private static final Integer ONE_HOUR = 60 * 60;
+
     @Override
     public Category getCategoryById(int id) {
         return categoryMapper.selectById(id);
@@ -57,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
             return Collections.emptyList();
         }
         String allCategory = JSON.toJSONString(categories);
-        jedis.set(CATEGORY_ALL_REDIS, allCategory);
+        jedis.setex(CATEGORY_ALL_REDIS, ONE_HOUR, allCategory);
         return CollectionUtils.isEmpty(categories) ? Collections.emptyList() : categories;
     }
 

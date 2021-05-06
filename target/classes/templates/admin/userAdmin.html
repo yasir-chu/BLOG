@@ -157,7 +157,13 @@
 					tr += "<tr>\n";
 					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].uid+"</a></td>";
 					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].uname+"</a></td>";
-					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].capacity+"</a></td>";
+					if (data.rows[i].capacity == 0){
+						tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">普通用户</a></td>";
+					}else if (data.rows[i].capacity == -1){
+						tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">博主申请中</a></td>";
+					}else{
+						tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">博主</a></td>";
+					}
 					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].email+"</a></td>";
 					tr += "<td><a th:href=\"@{/ordinary/read/}\""+data.rows[i].id+">"+data.rows[i].brith+"</a></td>";
 					tr += "<td>\n" +

@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
    public Pager<LoginUserDTO> getWaitAuthorPage(int page, int size) {
       Page<User> pager = new Page<>(page, size);
       QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-      userQueryWrapper.eq("capacity", NormalConstant.ONE);
+      userQueryWrapper.eq("capacity", NormalConstant.DOWN_ONE);
       Page<User> userPage = userMapper.selectPage(pager, userQueryWrapper);
       Pager<LoginUserDTO> result = new Pager<>();
       result.setTotal(userPage.getTotal());
@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService {
       Page<User> userPage = new Page<>(page, size);
       QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
       userQueryWrapper.eq("del", NormalConstant.ZERO);
+      userQueryWrapper.ne("capacity", NormalConstant.TWE);
       Page<User> userPager = userMapper.selectPage(userPage, userQueryWrapper);
       if (CollectionUtils.isEmpty(userPager.getRecords())){
          return  NormalUtils.pagerRows(userPager, null);
