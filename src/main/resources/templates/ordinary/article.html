@@ -244,7 +244,7 @@
 				success: function (data) {
 					$("#searchRes").empty();
 					for (var i = 0; i < data.length; i++){
-						$("#searchRes").append("<li class='child'><a href=\"/ordinary/read/"+data[i].id+"\" style='display: block'>"+data[i].title+"</a></li>");
+						$("#searchRes").append("<li class='child'><a href=\"/views/blog/read/"+data[i].id+"\" style='display: block'>"+data[i].title+"</a></li>");
 					}
 				}
 			});
