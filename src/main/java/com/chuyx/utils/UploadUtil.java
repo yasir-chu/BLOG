@@ -29,8 +29,7 @@ public class UploadUtil {
     *
     * @param file 上传文件
     * @return 文件名
-    */
-   public static String uploadQiniu(MultipartFile file) {
+    */public static String uploadQiniu(MultipartFile file) {
       try {
          log.info("七牛云上传图片开始-文件名为-{}", file.getName());
          Configuration cfg = new Configuration(Zone.zone2());
@@ -50,4 +49,5 @@ public class UploadUtil {
       }
       return null;
    }
+
 }

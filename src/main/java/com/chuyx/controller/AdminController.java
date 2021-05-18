@@ -8,6 +8,7 @@ import com.chuyx.service.BlogService;
 import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;
 import com.chuyx.service.UserService;
+import com.chuyx.wrapper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -92,5 +93,10 @@ public class AdminController implements AdminApi {
    public String saveCategory(Integer id, String name) {
       categoryService.saveCategory(id, name);
       return queryPageCategory(NormalConstant.ONE);
+   }
+
+   @Override
+   public String searchUser(UserWrapper.SearchUserDTO searchUserDTO) {
+      return JSON.toJSONString(userService.searchUser(searchUserDTO));
    }
 }

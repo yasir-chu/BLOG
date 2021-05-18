@@ -59,4 +59,19 @@ public class UserWrapper {
         private String headPic;
 
     }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(value = "UserWrapper.SearchUserDTO")
+    public static class SearchUserDTO {
+
+        @ApiModelProperty(notes = "模糊搜索用户名")
+        private String userName;
+
+        @ApiModelProperty(notes = "级别")
+        private Integer capacity;
+
+    }
 }

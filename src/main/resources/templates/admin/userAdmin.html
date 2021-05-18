@@ -45,6 +45,19 @@
 
 		<div class="container" style="width: 80%;">
 			<table id="table-two-axis" class="two-axis">
+				<div style="margin-top: 20px;">
+					用户名：
+					<input type="text" id="userName" style="height: 30px;">
+					用户身份：
+					<select id="capacity" style="padding: 5px;">
+						<option value="" selected></option>
+						<option value="0">普通用户</option>
+						<option value="-1">正在申请的用户</option>
+						<option value="1">博主</option>
+					</select>
+
+					<button onclick="search()" class="layui-btn layui-btn-normal">搜索</button>
+				</div>
 				<thead>
 				<tr>
 					<th>用户id</th>
@@ -69,6 +82,27 @@
 			</nav>
 		</div>
 		<script>
+
+			function search () {
+				let userName = $("#userName").val();
+				let capacity = $("#capacity").val();
+				if (capacity === null || capacity === undefined || capacity === ''){
+					capacity = null;
+				}
+				$.ajax({
+					type: "post",
+					url: "/admin/searchUser",
+					dataType: "json",
+					contentType: "application/json;charset=UTF-8",//指定消息请求类型
+					data: "{" +
+							"\"userName\":\"" + userName +
+							"\",\"capacity\":" + capacity + "}",
+					success: function (data) {
+						fillMsg(data);
+					}
+				});
+			}
+
 			function delUser(id) {
 				$.ajax({
 					type: "post",

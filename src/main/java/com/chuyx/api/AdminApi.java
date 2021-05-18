@@ -1,9 +1,11 @@
 package com.chuyx.api;
 
+import com.chuyx.wrapper.UserWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -113,5 +115,14 @@ public interface AdminApi {
     @PostMapping(value = "/admin/saveCategory/{id}/{name}",  produces = {"application/json;charset=utf-8"})
     @ApiOperation("保存类别")
     String saveCategory(@PathVariable("id") Integer id, @PathVariable("name") String name);
+
+    /**
+     * 查询用户
+     * @param searchUserDTO 查询条件
+     * @return 查询结果
+     */
+    @PostMapping(value = "/admin/searchUser", produces = {"application/json;charset=utf-8"})
+    @ApiOperation("查询用户")
+    String searchUser(@RequestBody UserWrapper.SearchUserDTO searchUserDTO);
 
 }

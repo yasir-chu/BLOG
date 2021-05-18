@@ -2,6 +2,7 @@ package com.chuyx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.LogMapper;
@@ -53,7 +54,9 @@ public class UserServiceImpl implements UserService {
 
    @Override
    public Integer getCountUserSize() {
-      return userMapper.selectCount(new QueryWrapper<>());
+      QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+      queryWrapper.ne("capacity", NormalConstant.TWE);
+      return userMapper.selectCount(queryWrapper);
    }
 
    @Override
@@ -222,5 +225,21 @@ public class UserServiceImpl implements UserService {
          return Collections.emptyMap();
       }
       return users.stream().collect(Collectors.toMap(User::getUid, User::getUname, (ok, nk) -> ok));
+   }
+
+   @Override
+   public Pager<AdminUser> searchUser(UserWrapper.SearchUserDTO searchUserDTO) {
+      QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+      queryWrapper.like("uname", searchUserDTO.getUserName());
+      queryWrapper.eq("capacity", searchUserDTO.getCapacity());
+      List<User> users = userMapper.selectList(queryWrapper);
+      Page<User> userPager = new Page<>();
+      if (CollectionUtils.isEmpty(users)){
+         return  NormalUtils.pagerRows(userPager, null);
+      }
+      userPager.setRecords(users);
+      userPager.setTotal(Long.parseLong(String.valueOf(users.size())));
+      userPager.setSize(Long.parseLong(String.valueOf(NormalConstant.ONE)));
+      return NormalUtils.pagerRows(userPager, mapListAdminUser(userPager.getRecords()));
    }
 }

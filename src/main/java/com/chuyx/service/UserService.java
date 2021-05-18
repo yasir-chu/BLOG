@@ -121,4 +121,12 @@ public interface UserService {
     * @return uid uname
     */
    Map<Integer, String> getUidNameMap(List<Integer> userIdList);
+
+
+   /**
+    * 查询用户
+    * @param searchUserDTO 查询条件
+    * @return 查询结果
+    */
+   Pager<AdminUser> searchUser(UserWrapper.SearchUserDTO searchUserDTO);
 }
