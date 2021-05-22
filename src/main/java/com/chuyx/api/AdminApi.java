@@ -1,5 +1,6 @@
 package com.chuyx.api;
 
+import com.chuyx.wrapper.BlogWrapper;
 import com.chuyx.wrapper.UserWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author chuyx
  * @data 2021-04-17
  */
-@Api(tags = "博客模块")
+@Api(tags = "后台api")
 @ResponseBody
 public interface AdminApi {
 
@@ -33,6 +34,15 @@ public interface AdminApi {
     @PostMapping(value = "/admin/passAuthor/{uid}",  produces = {"application/json;charset=utf-8"})
     @ApiOperation("通过审批")
     String passAuthor(@PathVariable("uid") Integer uid);
+
+    /**
+     * 拒绝用户审批
+     * @param uid 用户id
+     * @return 等待审批的博主
+     */
+    @PostMapping(value = "/admin/refuseAuthor/{uid}",  produces = {"application/json;charset=utf-8"})
+    @ApiOperation("通过审批")
+    String refuseAuthor(@PathVariable("uid") Integer uid);
 
     /**
      * 分页获取评论
@@ -124,5 +134,14 @@ public interface AdminApi {
     @PostMapping(value = "/admin/searchUser", produces = {"application/json;charset=utf-8"})
     @ApiOperation("查询用户")
     String searchUser(@RequestBody UserWrapper.SearchUserDTO searchUserDTO);
+
+    /**
+     * 查询博客
+     * @param searchBlogDTO 查询条件
+     * @return 查询结果
+     */
+    @PostMapping(value = "/admin/searchBlog", produces = {"application/json;charset=utf-8"})
+    @ApiOperation("查询用户")
+    String searchBlog(@RequestBody BlogWrapper.SearchBlogDTO searchBlogDTO);
 
 }

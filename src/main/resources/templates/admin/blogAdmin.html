@@ -24,6 +24,8 @@
 	<link rel="stylesheet" th:href="@{../../../layui/css/layui.css}"/>
 	<script th:src="@{../../layui/layui.js}"></script>
 	<script type="text/javascript" th:src="@{../../js/jquery.basictable.min.js}"></script>
+	<link rel="stylesheet" th:href="@{../../../layui/css/layui.css}"/>
+	<script th:src="@{../../layui/layui.js}"></script>
 	<link rel="shortcut icon" href="/favicon1.ico"/>
 	<style>
 
@@ -45,6 +47,17 @@
 
 		<div class="container" style="width: 80%;">
 			<table id="table-two-axis" class="two-axis">
+				<div style="margin-top: 20px;">
+					博客标题：
+					<input type="text" id="blogTitle" style="height: 30px;">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 100px;">发布时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" id="test10" placeholder=" - ">
+						</div>
+					</div>
+					<button onclick="search()" class="layui-btn layui-btn-normal">搜索</button>
+				</div>
 				<thead>
 				<tr>
 					<th>博客标题</th>
@@ -220,6 +233,32 @@
 		}
 		toggle = !toggle;
 	});
+	layui.use('laydate', function() {
+		var laydate = layui.laydate;
+		//日期时间范围
+		laydate.render({
+			elem: '#test10'
+			,type: 'datetime'
+			,range: true
+		});
+	});
+	function search(){
+		var date = $("#test10").val();
+		var blogTitle = $("#blogTitle").val();
+		$.ajax({
+			type: "post",
+			url: "/admin/searchBlog",
+			dataType: "json",
+			contentType: "application/json;charset=UTF-8",//指定消息请求类型
+			data: "{" +
+					"\"date\":\"" + date +
+					"\",\"blogTitle\":\"" + blogTitle + "\"}",
+			success: function (data) {
+				fillMsg(data);
+			}
+		});
+	}
+
 </script>
 </body>
 

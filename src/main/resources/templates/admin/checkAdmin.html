@@ -76,6 +76,15 @@
 					}
 				});
 			}
+			function refuseAuthor(id){
+				$.ajax({
+					type: "post",
+					url: "/admin/refuseAuthor/" + id,
+					success: function (data){
+						fillMsg(data);
+					}
+				})
+			}
 			function page(i){
 				$.ajax({
 					type: "post",
@@ -156,7 +165,8 @@
 					tr += "<td>"+data.rows[i].uname+"</td>";
 					tr += "<td>"+data.rows[i].logged+"</td>";
 					tr += "<td>\n" +
-							"\t\t\t\t\t\t\t<button class=\"layui-btn layui-btn-danger\"  onclick='passAuthor("+data.rows[i].uid+")'>通过审批</button>\n" +
+							"\t\t\t\t\t\t\t<button class=\"layui-btn layui-btn-common\"  onclick='passAuthor("+data.rows[i].uid+")'>通过审批</button>\n" +
+							"\t\t\t\t\t\t\t<button class=\"layui-btn layui-btn-danger\"  onclick='refuseAuthor("+data.rows[i].uid+")'>拒绝审批</button>\n" +
 							"\t\t\t\t\t</td>";
 					tr += "</tr>";
 					$("#showMsg").append(tr);

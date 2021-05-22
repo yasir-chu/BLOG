@@ -1,5 +1,6 @@
 package com.chuyx.service;
 
+import com.chuyx.pojo.dto.AdminUser;
 import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.dto.PublishBlogDTO;
@@ -133,4 +134,11 @@ public interface BlogService {
     * @return true 有
     */
     boolean checkBlogInCategory(Integer id);
+
+   /**
+    * 查询博客
+    * @param searchBlogDTO 查询条件
+    * @return 查询结果
+    */
+   Pager<BlogDTO> searchBlog(BlogWrapper.SearchBlogDTO searchBlogDTO);
 }

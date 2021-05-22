@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -230,8 +231,12 @@ public class UserServiceImpl implements UserService {
    @Override
    public Pager<AdminUser> searchUser(UserWrapper.SearchUserDTO searchUserDTO) {
       QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-      queryWrapper.like("uname", searchUserDTO.getUserName());
-      queryWrapper.eq("capacity", searchUserDTO.getCapacity());
+      if (!StringUtils.isEmpty(searchUserDTO.getUserName())){
+         queryWrapper.like("uname", searchUserDTO.getUserName());
+      }
+      if (searchUserDTO.getCapacity() != null){
+         queryWrapper.or().eq("capacity", searchUserDTO.getCapacity());
+      }
       List<User> users = userMapper.selectList(queryWrapper);
       Page<User> userPager = new Page<>();
       if (CollectionUtils.isEmpty(users)){
@@ -241,5 +246,13 @@ public class UserServiceImpl implements UserService {
       userPager.setTotal(Long.parseLong(String.valueOf(users.size())));
       userPager.setSize(Long.parseLong(String.valueOf(NormalConstant.ONE)));
       return NormalUtils.pagerRows(userPager, mapListAdminUser(userPager.getRecords()));
+   }
+
+   @Override
+   public void refuseAuthor(Integer uid) {
+      User user = new User();
+      user.setUid(uid);
+      user.setCapacity(NormalConstant.ZERO);
+      userMapper.updateById(user);
    }
 }

@@ -129,4 +129,10 @@ public interface UserService {
     * @return 查询结果
     */
    Pager<AdminUser> searchUser(UserWrapper.SearchUserDTO searchUserDTO);
+
+   /**
+    * 拒绝审批
+    * @param uid 用户id
+    */
+   void refuseAuthor(Integer uid);
 }

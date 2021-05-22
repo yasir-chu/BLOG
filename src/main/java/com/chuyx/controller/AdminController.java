@@ -8,6 +8,7 @@ import com.chuyx.service.BlogService;
 import com.chuyx.service.CategoryService;
 import com.chuyx.service.CommentsService;
 import com.chuyx.service.UserService;
+import com.chuyx.wrapper.BlogWrapper;
 import com.chuyx.wrapper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,12 @@ public class AdminController implements AdminApi {
    @Override
    public String passAuthor(Integer uid) {
       userService.passAuthor(uid);
+      return queryPageWaitPassAuthor(NormalConstant.ONE);
+   }
+
+   @Override
+   public String refuseAuthor(Integer uid) {
+      userService.refuseAuthor(uid);
       return queryPageWaitPassAuthor(NormalConstant.ONE);
    }
 
@@ -98,5 +105,10 @@ public class AdminController implements AdminApi {
    @Override
    public String searchUser(UserWrapper.SearchUserDTO searchUserDTO) {
       return JSON.toJSONString(userService.searchUser(searchUserDTO));
+   }
+
+   @Override
+   public String searchBlog(BlogWrapper.SearchBlogDTO searchBlogDTO) {
+      return JSON.toJSONString(blogService.searchBlog(searchBlogDTO));
    }
 }

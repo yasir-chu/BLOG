@@ -99,4 +99,19 @@ public class BlogWrapper {
         @ApiModelProperty(notes = "查询内容")
         private String comment;
     }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(value = "UserWrapper.SearchBlogDTO")
+    public static class SearchBlogDTO {
+
+        @ApiModelProperty(notes = "发布时间范围")
+        private String date;
+
+        @ApiModelProperty(notes = "博客标题")
+        private String blogTitle;
+
+    }
 }

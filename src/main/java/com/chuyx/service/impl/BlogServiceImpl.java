@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.BlogMapper;
+import com.chuyx.pojo.dto.AdminUser;
 import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Blog;
@@ -27,10 +28,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -210,6 +208,30 @@ public class BlogServiceImpl implements BlogService {
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("category_id", id);
         return !CollectionUtils.isEmpty(blogMapper.selectList(queryWrapper));
+    }
+
+    @Override
+    public Pager<BlogDTO> searchBlog(BlogWrapper.SearchBlogDTO searchBlogDTO) {
+        String blogTitle = searchBlogDTO.getBlogTitle();
+        String date = searchBlogDTO.getDate();
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(date)){
+            String[] split = date.split(" - ");
+            List<Date> collect = Arrays.stream(split).map(a -> DateUtils.stringToSqlDate(a)).collect(Collectors.toList());
+            queryWrapper.ge("release_date", collect.get(0)).le("release_date", collect.get(1));
+        }
+        if (!StringUtils.isEmpty(blogTitle)){
+            queryWrapper.or().like("title", blogTitle);
+        }
+        List<Blog> blogs = blogMapper.selectList(queryWrapper);
+        Page<Blog> userPager = new Page<>();
+        if (CollectionUtils.isEmpty(blogs)){
+            return  NormalUtils.pagerRows(userPager, null);
+        }
+        userPager.setRecords(blogs);
+        userPager.setTotal(Long.parseLong(String.valueOf(blogs.size())));
+        userPager.setSize(Long.parseLong(String.valueOf(NormalConstant.ONE)));
+        return NormalUtils.pagerRows(userPager, pageBlogUtil(userPager.getRecords()));
     }
 
 
