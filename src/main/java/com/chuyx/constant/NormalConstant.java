@@ -5,7 +5,7 @@ package com.chuyx.constant;
  *
  * @author yasir.chu
  */
-public class StaParam {
+public class NormalConstant {
     /**
      * 发送邮箱号码
      */
