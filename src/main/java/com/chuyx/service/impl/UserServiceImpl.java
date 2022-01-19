@@ -2,16 +2,12 @@ package com.chuyx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
-import com.chuyx.mapper.LogMapper;
 import com.chuyx.mapper.UserMapper;
 import com.chuyx.pojo.dto.AdminUser;
 import com.chuyx.pojo.dto.LoginUserDTO;
 import com.chuyx.pojo.dto.Pager;
-import com.chuyx.pojo.dto.UpdateUserDTO;
-import com.chuyx.pojo.model.Log;
 import com.chuyx.pojo.model.User;
 import com.chuyx.service.UserService;
 import com.chuyx.utils.DateUtils;
@@ -20,13 +16,10 @@ import com.chuyx.utils.NormalUtils;
 import com.chuyx.wrapper.UserWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,21 +29,15 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
+
    @Autowired
    UserMapper userMapper;
-   @Autowired
-   LogMapper logMapper;
 
    @Override
    public void applyBlogUpdate(Integer uid, String logged) {
       UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
       updateWrapper.eq("uid",uid).set("logged", logged).set("capacity", NormalConstant.DOWN_ONE);
       userMapper.update(null, updateWrapper);
-      Log log = new Log();
-      log.setConnent("用户" + uid + "申请博主资格");
-      log.setUid(uid);
-      log.setEvent("博主申请");
-      logMapper.insert(log);
    }
 
    @Override

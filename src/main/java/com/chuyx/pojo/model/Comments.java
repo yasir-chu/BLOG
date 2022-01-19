@@ -17,7 +17,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("Comments")
+@TableName("comments")
 public class Comments implements Serializable {
 
    /**

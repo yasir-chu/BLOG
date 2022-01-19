@@ -17,7 +17,7 @@ import java.sql.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("Blog")
+@TableName("blog")
 public class Blog implements Serializable {
 
    /**

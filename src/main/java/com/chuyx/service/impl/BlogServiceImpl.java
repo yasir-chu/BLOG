@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chuyx.constant.NormalConstant;
 import com.chuyx.mapper.BlogMapper;
-import com.chuyx.pojo.dto.AdminUser;
 import com.chuyx.pojo.dto.BlogDTO;
 import com.chuyx.pojo.dto.Pager;
 import com.chuyx.pojo.model.Blog;
@@ -31,6 +30,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author yuxiang.chu
+ */
 @Service
 public class BlogServiceImpl implements BlogService {
     @Autowired
@@ -132,6 +134,7 @@ public class BlogServiceImpl implements BlogService {
         if (req.getOrdinaryId() != null){
             wrapper.eq("category_id", req.getOrdinaryId());
         }
+        wrapper.orderByDesc("release_date");
         IPage<Blog> blog = blogMapper.selectPage(page, wrapper);
         if (CollectionUtils.isEmpty(page.getRecords())){
             return result;

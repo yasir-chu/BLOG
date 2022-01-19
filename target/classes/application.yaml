@@ -2,8 +2,8 @@
 spring:
   datasource:
     username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/chuyxblog?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    password: q1hang
+    url: jdbc:mysql://124.223.43.218:3306/chuyxblog?useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源
   mail:
