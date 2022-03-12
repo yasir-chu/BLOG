@@ -1,5 +1,12 @@
 
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8087/eureka/
 spring:
+  application:
+    name: chuyx-blog
   datasource:
     username: root
     password: 123456

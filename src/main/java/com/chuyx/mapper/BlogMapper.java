@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface BlogMapper extends BaseMapper<Blog> {
+public interface BlogMapper extends  BaseMapper<Blog> {
 
 
  /**
