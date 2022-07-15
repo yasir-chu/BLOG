@@ -2,8 +2,11 @@
 spring:
   datasource:
     username: root
-    password: q1hang
-    url: jdbc:mysql://124.223.43.218:3306/chuyxblog?useUnicode=true&characterEncoding=utf-8
+    # 开发环境
+    #    password: q1hang
+    #    url: jdbc:mysql://124.223.43.218:3306/chuyxblog?useUnicode=true&characterEncoding=utf-8
+    password: 123456
+    url: jdbc:mysql://1.15.47.109:3306/chuyxblog?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源
   mail:
@@ -22,11 +25,11 @@ spring:
 #  configuration:
 #    map-underscore-to-camel-case: true
 server:
-  port: 8088
+  port: 80
 mybatis-plus:
   type-aliases-package: com.chuyx.pojo.*
   mapper-locations: classpath:mybatis/mapper/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 

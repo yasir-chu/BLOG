@@ -34,7 +34,6 @@ E:\ideaProject\BLOG\src\main\java\com\chuyx\pojo\dto\UpdateUserDTO.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\service\impl\AdminServiceImpl.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\api\UserApi.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\pojo\dto\ErrorVO.java
-E:\ideaProject\BLOG\src\main\java\com\chuyx\pojo\model\Log.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\config\SecurityConfig.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\utils\DozerUtil.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\utils\DateUtils.java
@@ -70,7 +69,6 @@ E:\ideaProject\BLOG\src\main\java\com\chuyx\pojo\dto\RegisterDTO.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\wrapper\CommentWrapper.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\pojo\vo\BlogBaseVO.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\config\CharacterEncodingFilter.java
-E:\ideaProject\BLOG\src\main\java\com\chuyx\mapper\LogMapper.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\pojo\dto\PublishBlogDTO.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\api\ViewJumpApi.java
 E:\ideaProject\BLOG\src\main\java\com\chuyx\service\impl\LoginUserServiceImpl.java
