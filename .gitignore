@@ -1,34 +1,17 @@
-# maven ignore
-target/
-*.jar
-*.war
-*.zip
-*.tar
-*.tar.gz
+target
+logs
+tmp
 
-# eclipse ignore
-.settings/
-.project
+.apt_generated
 .classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-# idea ignore
-.idea/
-*.ipr
-*.iml
+.idea
 *.iws
-
-# temp ignore
-logs/
-*.doc
+*.iml
+*.ipr
 *.log
-*.cache
-*.diff
-*.patch
-*.tmp
-
-# system ignore
-.DS_Store
-Thumbs.db
-
-# to8to rpc
-version
